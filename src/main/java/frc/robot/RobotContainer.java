@@ -26,6 +26,10 @@ import frc.robot.subsystems.Intake;
 
 
 public class RobotContainer {
+//Subsystem Imports
+    private final Shooter shooter = new Shooter();
+    private final Kicker kicker = new Kicker();
+//Swerve
     private double MaxSpeed = 0.6 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed //.6
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
@@ -49,8 +53,6 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     //Subsystem Imports
-    private final Shooter shooter = new Shooter();
-    private final Kicker kicker = new Kicker();
     private final Intake intake = new Intake(); 
 
     public final VisionPros visionpros = new VisionPros(drivetrain);
@@ -124,6 +126,21 @@ public class RobotContainer {
             SmartDashboard.putData("set velocity 25 rps shooter", shooter.moveAtVelocityCommand(25));
             SmartDashboard.putData("set velocity 50 rps", shooter.moveAtVelocityCommand(50));
             SmartDashboard.putData("trench shot, set velocity 51 rps", shooter.moveAtVelocityCommand(51)); //Trench shot estimate
+    //Glass/SmartDashboard Buttons
+            // SmartDashboard.putData("set voltage 0V", shooter.setVoltage(0));
+        //Kicker buttons
+            SmartDashboard.putData("set voltage 1V kicker", kicker.setVoltage(-1));
+            SmartDashboard.putData("set voltage 3V kicker", kicker.setVoltage(-3));
+            SmartDashboard.putData("set voltage 6V kicker", kicker.setVoltage(-6));
+            SmartDashboard.putData("set voltage 9V kicker", kicker.setVoltage(-9));
+            SmartDashboard.putData("set voltage 12V kicker", kicker.setVoltage(-12));
+            // SmartDashboard.putData("set velocity 5", shooter.moveAtVelocityCommand(5));
+            // SmartDashboard.putData("set velocity 4.6", shooter.moveAtVelocityCommand(4.6));
+        //Shooter buttons
+            SmartDashboard.putData("set velocity 25 rps shooter", shooter.moveAtVelocityCommand(25));
+            // SmartDashboard.putData("set velocity 50 rps", shooter.moveAtVelocityCommand(50));
+            SmartDashboard.putData("trench shot, set velocity 51 rps", shooter.moveAtVelocityCommand(51)); //Trench shot estimate
+            
             SmartDashboard.putData("set velocity 52 rps", shooter.moveAtVelocityCommand(52));
             SmartDashboard.putData("set velocity 53 rps", shooter.moveAtVelocityCommand(53));
             SmartDashboard.putData("set velocity 54 rps", shooter.moveAtVelocityCommand(54));

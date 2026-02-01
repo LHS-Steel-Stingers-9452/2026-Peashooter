@@ -33,18 +33,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 /**
  * Pivot subsystem using TalonFX with Krakenx60 motor
  */
-@Logged(name = "Shooter")
-public class Shooter extends SubsystemBase {
+@Logged(name = "Indexer")
+public class Indexer extends SubsystemBase {
 
   // Constants
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
-  private final int canID = 16;
+  private final int canID = 19;
   private final double gearRatio = 1;
-  private final double kP = .55; //started at 1
+  private final double kP = 1; //started at 1
   private final double kI = 0;
-  private final double kD = 0.025; //helped with reducing noise, somehwat
+  private final double kD = 0; //helped with reducing noise, somehwat
   private final double kS = 0;
-  private final double kV = 0.118; //voltage, divide voltage by velocity
+  private final double kV = 0; //voltage, divide voltage by velocity
   private final double kA = 0;
   // private final double kG = 0; // Unused for pivots
   // private final double maxVelocity = 1; // rad/s
@@ -72,7 +72,7 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new Pivot Subsystem.
    */
-  public Shooter() {
+  public Indexer() {
     // Initialize motor controller
     motor = new TalonFX(canID);
 
