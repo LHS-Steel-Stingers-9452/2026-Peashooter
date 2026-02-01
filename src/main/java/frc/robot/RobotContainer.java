@@ -19,6 +19,11 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Kicker;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Intake; 
+
+
 
 public class RobotContainer {
     private double MaxSpeed = 0.6 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed //.6
@@ -43,10 +48,16 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+    //Subsystem Imports
+    private final Shooter shooter = new Shooter();
+    private final Kicker kicker = new Kicker();
+    private final Intake intake = new Intake(); 
+
     public final VisionPros visionpros = new VisionPros(drivetrain);
 
     public RobotContainer() {
         configureBindings();
+        // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
     }
 
     private void configureBindings() {
@@ -89,10 +100,42 @@ public class RobotContainer {
          joystick
             .rightTrigger()
             .whileTrue(aimAtTarget(drivetrain));
+        joystick 
+            .rightBumper()
+            .whileTrue(aimAtHub(drivetrain));
                
                     
 
         drivetrain.registerTelemetry(logger::telemeterize);
+
+     //Glass/SmartDashboard Buttons
+                    // The format is "(subsystem name) set (variable) (amount)""
+        //Kicker buttons
+            SmartDashboard.putData("kicker set voltage 1V", kicker.setVoltage(-1));
+            SmartDashboard.putData("kicker set voltage 3V", kicker.setVoltage(-3));
+            SmartDashboard.putData("kicker set voltage 6V", kicker.setVoltage(-6));
+            SmartDashboard.putData("kicker set voltage 9V", kicker.setVoltage(-9));
+            SmartDashboard.putData("kicker set voltage 12V", kicker.setVoltage(-12));
+        //Shooter buttons
+            /* Most of these are irrelevant :P, has to be redone
+            SmartDashboard.putData("set voltage 0V", shooter.setVoltage(0));
+            SmartDashboard.putData("set velocity 5", shooter.moveAtVelocityCommand(5));
+            SmartDashboard.putData("set velocity 4.6", shooter.moveAtVelocityCommand(4.6));
+            SmartDashboard.putData("set velocity 25 rps shooter", shooter.moveAtVelocityCommand(25));
+            SmartDashboard.putData("set velocity 50 rps", shooter.moveAtVelocityCommand(50));
+            SmartDashboard.putData("trench shot, set velocity 51 rps", shooter.moveAtVelocityCommand(51)); //Trench shot estimate
+            SmartDashboard.putData("set velocity 52 rps", shooter.moveAtVelocityCommand(52));
+            SmartDashboard.putData("set velocity 53 rps", shooter.moveAtVelocityCommand(53));
+            SmartDashboard.putData("set velocity 54 rps", shooter.moveAtVelocityCommand(54));
+            SmartDashboard.putData("set velocity 55 rps", shooter.moveAtVelocityCommand(55));
+            SmartDashboard.putData("set velocity 57 rps", shooter.moveAtVelocityCommand(57));
+            SmartDashboard.putData("set velocity 60 rps", shooter.moveAtVelocityCommand(60));
+            SmartDashboard.putData("set velocity 65 rps", shooter.moveAtVelocityCommand(65));
+             */
+        //Intake Buttons
+            SmartDashboard.putData("intake set voltage 0V", intake.setVoltage(0));
+            SmartDashboard.putData("intake set voltage 3V", intake.setVoltage(3));
+             //and so on so forth..
     }
 
     public Command getAutonomousCommand() {
@@ -131,4 +174,45 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
     }
+
+     public Command aimAtHub(CommandSwerveDrivetrain drivetrain) {
+        return  drivetrain.applyRequest(
+                    () -> {
+                        
+
+                        var currentPose = drivetrain.getState().Pose;
+                        var currentAngle = currentPose.getRotation().getRadians();
+                        var poseX = currentPose.getX();
+                        var poseY = currentPose.getY();
+
+                        var targetX = 12;
+                        var targetY = 4;
+
+                        var angle = Math.atan2(poseX - targetX, poseY - targetY);
+                        var error = currentAngle - angle;
+                        
+                        SmartDashboard.putNumber("angle", angle);
+                        SmartDashboard.putNumber("current angle", currentAngle);
+                        SmartDashboard.putNumber("error", error);
+
+                       
+
+                        double kP = .35; //kp was .0176
+                        double targetingAngularVelocity = error * kP;
+                        // targetingAngularVelocity *= MaxAngularRate;
+                        // targetingAngularVelocity *= -1.0;
+
+                        // var angle = Math.atan2(, )
+
+                        
+                        return drive
+                            .withVelocityX(
+                                -joystick.getLeftY()
+                                    * MaxSpeed) // Drive forward with negative Y (forward)
+                            .withVelocityY(
+                                -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                            .withRotationalRate(
+                                targetingAngularVelocity); // Drive counterclockwise with negative X (left)
+                    });
+                }
 }
