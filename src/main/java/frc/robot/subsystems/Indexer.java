@@ -17,6 +17,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 // import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -118,6 +119,8 @@ public class Indexer extends SubsystemBase {
 
     // Apply gear ratio
     config.Feedback.SensorToMechanismRatio = gearRatio;
+
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     // Apply configuration
     motor.getConfigurator().apply(config);

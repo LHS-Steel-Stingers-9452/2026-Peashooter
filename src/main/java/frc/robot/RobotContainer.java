@@ -38,7 +38,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePivot; 
 
 @Logged
-
 public class RobotContainer {
 //Subsystem Imports
     private final Climber climber = new Climber();
@@ -76,14 +75,14 @@ public class RobotContainer {
     public final VisionPros visionpros = new VisionPros(drivetrain);
 
     
-    private final SendableChooser<Command> autoChooser;
+    // private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
 
         configureBindings();
         // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
         //Auto Selection is already handled by Glass.
-        autoChooser = AutoBuilder.buildAutoChooser();
+        // autoChooser = AutoBuilder.buildAutoChooser();
 
          //See if you need this if the options for the autos are not popping up.
         //  autoChooser.setDefaultOption("1", Commands.print("1"));
@@ -91,7 +90,7 @@ public class RobotContainer {
         //  autoChooser.addOption("BlueBottomAuto", getAutonomousCommand());
         //  autoChooser.addOption("1", getAutonomousCommand());
 
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        // SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
     private void configureBindings() {
@@ -123,19 +122,38 @@ public class RobotContainer {
         // Reset the field-centric heading on left bumper press.
         joystick.y().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-        // vision bindings, for driver( he doesn't even use it T-T )
+   
+//Joystick/controller buttons    
+        
+    //left trigger/bumper
+        joystick        //slow button
+            .leftBumper()
+            .whileTrue(
+             drivetrain.applyRequest(
+                () -> 
+                 drive
+                .withVelocityX(
+                   (-joystick.getLeftY() * MaxSpeed)*(.45)) 
+                .withVelocityY(
+                    (-joystick.getLeftX() * MaxSpeed)*(.45))
+                .withRotationalRate(
+                    -joystick.getRightX()
+                        *MaxAngularRate)
+            ));
+        joystick
+            .leftTrigger()
+            .whileTrue(intake.setVoltage(0.67));
 
-    //lock onto april tag
-         joystick
+    //right trigger/bumper   
+        joystick
             .rightTrigger()
             .whileTrue(aimAtTarget(drivetrain));
+
         joystick 
             .rightBumper()
             .whileTrue(aimAtHub(drivetrain));
-              
 
-    //Joystick/controller buttons    
-        
+    //dpad
         joystick
             .povUp()
             .whileTrue(climber.setVoltage(0.67));
@@ -148,9 +166,23 @@ public class RobotContainer {
         joystick
             .povLeft()
             .whileTrue(drivetrain.applyRequest(() -> brake));
-        
-                    
 
+    //face buttons (a, b, x, y)
+        // joystick
+        //     .a()
+        //     .whileTrue(getAutonomousCommand());
+        // joystick
+        //     .b()
+        //     .whileTrue(getAutonomousCommand());
+        // joystick
+        //     .x()
+        //     .whileTrue(getAutonomousCommand());
+        /* joystick
+            .y()
+            .whileTrue(getAutonomousCommand());
+            */
+    //special buttons (start, select)    
+    
         drivetrain.registerTelemetry(logger::telemeterize);
 
     //Glass/SmartDashboard Buttons
@@ -162,42 +194,40 @@ public class RobotContainer {
             SmartDashboard.putData("kicker set voltage 9V", kicker.setVoltage(-9));
             SmartDashboard.putData("kicker set voltage 12V", kicker.setVoltage(-12));
         //Shooter buttons
-            /* Most of these are irrelevant :P, has to be redone
-            SmartDashboard.putData("set voltage 0V", shooter.setVoltage(0));
-            SmartDashboard.putData("set velocity 5", shooter.moveAtVelocityCommand(5));
-            SmartDashboard.putData("set velocity 4.6", shooter.moveAtVelocityCommand(4.6));
-            SmartDashboard.putData("set velocity 25 rps shooter", shooter.moveAtVelocityCommand(25));
-            SmartDashboard.putData("set velocity 50 rps", shooter.moveAtVelocityCommand(50));
-            SmartDashboard.putData("trench shot, set velocity 51 rps", shooter.moveAtVelocityCommand(51)); //Trench shot estimate
-    //Glass/SmartDashboard Buttons
-            // SmartDashboard.putData("set voltage 0V", shooter.setVoltage(0));
-        //Kicker buttons
-            SmartDashboard.putData("set voltage 1V kicker", kicker.setVoltage(-1));
-            SmartDashboard.putData("set voltage 3V kicker", kicker.setVoltage(-3));
-            SmartDashboard.putData("set voltage 6V kicker", kicker.setVoltage(-6));
-            SmartDashboard.putData("set voltage 9V kicker", kicker.setVoltage(-9));
-            SmartDashboard.putData("set voltage 12V kicker", kicker.setVoltage(-12));
-            // SmartDashboard.putData("set velocity 5", shooter.moveAtVelocityCommand(5));
-            // SmartDashboard.putData("set velocity 4.6", shooter.moveAtVelocityCommand(4.6));
-        //Shooter buttons
-            SmartDashboard.putData("set velocity 25 rps shooter", shooter.moveAtVelocityCommand(25));
-            // SmartDashboard.putData("set velocity 50 rps", shooter.moveAtVelocityCommand(50));
-            SmartDashboard.putData("trench shot, set velocity 51 rps", shooter.moveAtVelocityCommand(51)); //Trench shot estimate
+            //Most of these are irrelevant :P, has to be redone
+            SmartDashboard.putData("shooter set voltage 0V", shooter.setVoltage(0));
+            SmartDashboard.putData("shooter set voltage 1V", shooter.setVoltage(1));
+            SmartDashboard.putData("shooter set voltage 3V", shooter.setVoltage(3));
+            SmartDashboard.putData("shooter set voltage 4.5V", shooter.setVoltage(4.5));
+            SmartDashboard.putData("shooter set voltage 6V", shooter.setVoltage(6));
+            SmartDashboard.putData("shooter set voltage 9V", shooter.setVoltage(9));
+            SmartDashboard.putData("shooter set voltage 12V", shooter.setVoltage(12));
             
-            SmartDashboard.putData("set velocity 52 rps", shooter.moveAtVelocityCommand(52));
-            SmartDashboard.putData("set velocity 53 rps", shooter.moveAtVelocityCommand(53));
-            SmartDashboard.putData("set velocity 54 rps", shooter.moveAtVelocityCommand(54));
-            SmartDashboard.putData("set velocity 55 rps", shooter.moveAtVelocityCommand(55));
-            SmartDashboard.putData("set velocity 57 rps", shooter.moveAtVelocityCommand(57));
-            SmartDashboard.putData("set velocity 60 rps", shooter.moveAtVelocityCommand(60));
-            SmartDashboard.putData("set velocity 65 rps", shooter.moveAtVelocityCommand(65));
-             */
+        /*     
+            SmartDashboard.putData("set velocity 5", shooter.setVelocity(5));
+            SmartDashboard.putData("set velocity 4.6", shooter.setVelocity(4.6));
+            SmartDashboard.putData("set velocity 25 rps shooter", shooter.setVelocity(25));
+            SmartDashboard.putData("set velocity 50 rps", shooter.setVelocity(50));
+            SmartDashboard.putData("trench shot, set velocity 51 rps", shooter.setVelocity(51)); //Trench shot estimate
+            SmartDashboard.putData("set velocity 52 rps", shooter.setVelocity(52));
+            SmartDashboard.putData("set velocity 53 rps", shooter.setVelocity(53));
+            SmartDashboard.putData("set velocity 54 rps", shooter.setVelocity(54));
+            SmartDashboard.putData("set velocity 55 rps", shooter.setVelocity(55));
+            SmartDashboard.putData("set velocity 57 rps", shooter.setVelocity(57));
+            SmartDashboard.putData("set velocity 60 rps", shooter.setVelocity(60));
+            SmartDashboard.putData("set velocity 65 rps", shooter.setVelocity(65));
+        */     
         //Intake Buttons
             SmartDashboard.putData("intake set voltage 0V", intake.setVoltage(0));
             SmartDashboard.putData("intake set voltage 3V", intake.setVoltage(3));
              //and so on so forth..
+        //spindexer buttons
+            SmartDashboard.putData("spindexer set voltage 0V", indexer.setVoltage(0));
+            SmartDashboard.putData("spindexer set voltage 3V", indexer.setVoltage(3));
+            SmartDashboard.putData("spindexer set voltage 6V", indexer.setVoltage(6));
+            SmartDashboard.putData("spindexer set voltage 9V", indexer.setVoltage(9));
+            SmartDashboard.putData("spindexer set voltage 12V", indexer.setVoltage(12));
     }
-
     //Subsystem Commands
     public Command loadFuel(){
         return kicker.setVoltage(3)
@@ -228,7 +258,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+        // return autoChooser.getSelected()
+        return null;
         // Simple drive forward auton
         // final var idle = new SwerveRequest.Idle();
         // return Commands.sequence(

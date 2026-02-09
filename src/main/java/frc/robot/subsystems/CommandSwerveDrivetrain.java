@@ -339,7 +339,8 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     public Optional<Pose2d> samplePoseAt(double timestampSeconds) {
         return super.samplePoseAt(Utils.fpgaToCurrentTime(timestampSeconds));
     }
-    @Logged Pose2d getPose() {
+    @Logged
+    public Pose2d getPose() {
         return this.getState().Pose;
     }
 }

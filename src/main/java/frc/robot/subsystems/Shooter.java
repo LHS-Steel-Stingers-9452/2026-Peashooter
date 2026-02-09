@@ -43,11 +43,11 @@ public class Shooter extends SubsystemBase {
   private final int canID = 17;
   private final int canID2 = 18;
   private final double gearRatio = 1;
-  private final double kP = .55; //started at 1
+  private final double kP = 1; //started at 1
   private final double kI = 0;
-  private final double kD = 0.025; //helped with reducing noise, somehwat
+  private final double kD = 0; //helped with reducing noise, somehwat
   private final double kS = 0;
-  private final double kV = 0.118; //voltage, divide voltage by velocity
+  private final double kV = 0; //voltage, divide voltage by velocity
   private final double kA = 0;
   // private final double kG = 0; // Unused for pivots
   // private final double maxVelocity = 1; // rad/s
@@ -80,7 +80,7 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     // Initialize motor controller
     motor = new TalonFX(canID);
-    motor2 = new TalonFX(canID);
+    motor2 = new TalonFX(canID2);
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);

@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Volt;
+
 // import static edu.wpi.first.units.Units.Radians;
 // import static edu.wpi.first.units.Units.RadiansPerSecond;
 // import static edu.wpi.first.units.Units.Rotations;
@@ -15,7 +17,9 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 // import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.epilogue.Logged;
@@ -40,7 +44,7 @@ public class Kicker extends SubsystemBase {
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 16;
   private final double gearRatio = 1;
-  private final double kP = 1; //started at 1
+  private final double kP = 0; //started at 1
   private final double kI = 0;
   private final double kD = 0; //helped with reducing noise, somehwat
   private final double kS = 0;
@@ -51,7 +55,7 @@ public class Kicker extends SubsystemBase {
   // private final double maxAcceleration = 1; // rad/s²
   private final boolean brakeMode = false;
   private final boolean enableStatorLimit = true;
-  private final double statorCurrentLimit = 60;
+  private final double statorCurrentLimit = 100;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
 
@@ -60,6 +64,7 @@ public class Kicker extends SubsystemBase {
   private final TalonFX motor;
   private final PositionVoltage positionRequest;
   private final VelocityVoltage velocityRequest;
+  private final VoltageOut voltageRequest;
   private final StatusSignal<Angle> positionSignal;
   private final StatusSignal<AngularVelocity> velocitySignal;
   private final StatusSignal<Voltage> voltageSignal;
@@ -79,6 +84,7 @@ public class Kicker extends SubsystemBase {
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);
     velocityRequest = new VelocityVoltage(0).withSlot(0);
+    voltageRequest = new VoltageOut(0);
 
     // get status signals
     positionSignal = motor.getPosition();
@@ -112,6 +118,7 @@ public class Kicker extends SubsystemBase {
 
     // Apply gear ratio
     config.Feedback.SensorToMechanismRatio = gearRatio;
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     // Apply configuration
     motor.getConfigurator().apply(config);
@@ -174,6 +181,11 @@ public class Kicker extends SubsystemBase {
     return voltageSignal.getValueAsDouble();
   }
 
+  @Logged(name="SupplyVotlage")
+  public double supplyVoltage() {
+    return motor.getSupplyVoltage(true).getValueAsDouble();
+  }
+
   /**
    * Get the current motor current.
    * @return Motor current in amps
@@ -204,7 +216,7 @@ public class Kicker extends SubsystemBase {
   }
 */
   public Command setVoltage(double voltage) {
-    return runOnce(() -> motor.setVoltage(voltage));
+    return runOnce(() -> motor.setControl(voltageRequest.withOutput(Volt.of(voltage))));
   }
 
   /**
