@@ -43,12 +43,12 @@ public class Shooter extends SubsystemBase {
   private final int canID = 17;
   private final int canID2 = 18;
   private final double gearRatio = 1;
-  private final double kP = 1; //started at 1
+  private final double kP = 0.2; // //70 started at 1, should improve recovery
   private final double kI = 0;
-  private final double kD = 0; //helped with reducing noise, somehwat
+  private final double kD = 0; //0.75//helped with reducing noise, somehwat
   private final double kS = 0;
-  private final double kV = 0; //voltage, divide voltage by velocity
-  private final double kA = 0;
+  private final double kV = 0.127; //voltage, divide voltage by velocity
+  private final double kA = 0; //chat said try 1, removed for now bcuz extra variable
   // private final double kG = 0; // Unused for pivots
   // private final double maxVelocity = 1; // rad/s
   // private final double maxAcceleration = 1; // rad/s²
@@ -70,6 +70,11 @@ public class Shooter extends SubsystemBase {
   private final StatusSignal<Temperature> temperatureSignal;
 
   private final TalonFX motor2;
+  private final StatusSignal<Angle> positionSignal2;
+  private final StatusSignal<AngularVelocity> velocitySignal2;
+  private final StatusSignal<Voltage> voltageSignal2;
+  private final StatusSignal<Current> statorCurrentSignal2;
+  private final StatusSignal<Temperature> temperatureSignal2;
 
   // Simulation
   private final SingleJointedArmSim pivotSim;
@@ -92,6 +97,12 @@ public class Shooter extends SubsystemBase {
     voltageSignal = motor.getMotorVoltage();
     statorCurrentSignal = motor.getStatorCurrent();
     temperatureSignal = motor.getDeviceTemp();
+
+    positionSignal2 = motor2.getPosition();
+    velocitySignal2 = motor2.getVelocity();
+    voltageSignal2 = motor2.getMotorVoltage();
+    statorCurrentSignal2 = motor2.getStatorCurrent();
+    temperatureSignal2 = motor2.getDeviceTemp();
 
     TalonFXConfiguration config = new TalonFXConfiguration();
 
@@ -150,7 +161,12 @@ public class Shooter extends SubsystemBase {
       velocitySignal,
       voltageSignal,
       statorCurrentSignal,
-      temperatureSignal
+      temperatureSignal,
+      positionSignal2,
+      velocitySignal2,
+      voltageSignal2,
+      statorCurrentSignal2,
+      temperatureSignal2
     );
   }
  
@@ -164,6 +180,12 @@ public class Shooter extends SubsystemBase {
     return positionSignal.getValueAsDouble();
   }
 
+  @Logged(name = "Position2/Rotations")
+  public double getPosition2() {
+    // Rotations
+    return positionSignal2.getValueAsDouble();
+  }
+
   /**
    * Get the current velocity in rotations per second.
    * @return Velocity in rotations per second
@@ -171,6 +193,11 @@ public class Shooter extends SubsystemBase {
   @Logged(name = "Velocity")
   public double getVelocity() {
     return velocitySignal.getValueAsDouble();
+  }
+
+  @Logged(name = "Velocity2")
+  public double getVelocity2() {
+    return velocitySignal2.getValueAsDouble();
   }
 
   /**
@@ -182,20 +209,36 @@ public class Shooter extends SubsystemBase {
     return voltageSignal.getValueAsDouble();
   }
 
+  @Logged(name = "Voltage2")
+  public double getVoltage2() {
+    return voltageSignal2.getValueAsDouble();
+  }
   /**
    * Get the current motor current.
    * @return Motor current in amps
    */
+  @Logged(name = "Current")
   public double getCurrent() {
     return statorCurrentSignal.getValueAsDouble();
+  }
+
+  @Logged(name = "Current2")
+  public double getCurrent2() {
+    return statorCurrentSignal2.getValueAsDouble();
   }
 
   /**
    * Get the current motor temperature.
    * @return Motor temperature in Celsius
    */
+  @Logged(name = "Temperature")
   public double getTemperature() {
     return temperatureSignal.getValueAsDouble();
+  }
+
+  @Logged(name = "Temperature2")
+  public double getTemperature2() {
+    return temperatureSignal2.getValueAsDouble();
   }
 
 

@@ -40,7 +40,7 @@ public class Hood extends SubsystemBase {
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 11;
   private final double gearRatio = 1;
-  private final double kP = 1; //started at 1
+  private final double kP = 0.5; //started at 1
   private final double kI = 0;
   private final double kD = 0; //helped with reducing noise, somehwat
   private final double kS = 0;
@@ -223,6 +223,10 @@ public class Hood extends SubsystemBase {
    * @return A command that moves the pivot at the specified velocity
    */
   public Command moveAtVelocityCommand(double velocity) {
-    return run(() -> setVelocity(velocity));
+    return run(() -> setVelocity(velocity));  
+  }
+
+  public Command resetEncoder() {
+    return runOnce(() -> motor.setPosition(0));  
   }
 }

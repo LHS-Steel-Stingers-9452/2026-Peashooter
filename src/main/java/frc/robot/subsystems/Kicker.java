@@ -48,7 +48,7 @@ public class Kicker extends SubsystemBase {
   private final double kI = 0;
   private final double kD = 0; //helped with reducing noise, somehwat
   private final double kS = 0;
-  private final double kV = 0; //voltage, divide voltage by velocity
+  private final double kV = 0.133; //voltage, divide voltage by velocity
   private final double kA = 0;
   // private final double kG = 0; // Unused for pivots
   // private final double maxVelocity = 1; // rad/s
@@ -118,7 +118,7 @@ public class Kicker extends SubsystemBase {
 
     // Apply gear ratio
     config.Feedback.SensorToMechanismRatio = gearRatio;
-    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     // Apply configuration
     motor.getConfigurator().apply(config);
@@ -137,6 +137,8 @@ public class Kicker extends SubsystemBase {
       false, // Simulate gravity - Disable gravity for pivot
       Units.degreesToRadians(0) // Starting position (rad)
     );
+
+    setDefaultCommand(setVoltage(0));
   }
 
   /**
@@ -203,8 +205,8 @@ public class Kicker extends SubsystemBase {
   }
 
 
-  public void setVelocity(double velocity) {
-    motor.setControl(velocityRequest.withVelocity(velocity));
+  public Command setVelocity(double velocity) {
+    return run(() ->  motor.setControl(velocityRequest.withVelocity(velocity)));
   }
 
   /**

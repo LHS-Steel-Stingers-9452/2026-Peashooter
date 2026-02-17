@@ -50,7 +50,7 @@ public class Intake extends SubsystemBase {
   // private final double maxVelocity = 1; // rad/s
   // private final double maxAcceleration = 1; // rad/s²
   private final boolean brakeMode = false;
-  private final boolean enableStatorLimit = true;
+  private final boolean enableStatorLimit = false;
   private final double statorCurrentLimit = 60;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
@@ -130,6 +130,8 @@ public class Intake extends SubsystemBase {
       false, // Simulate gravity - Disable gravity for pivot
       Units.degreesToRadians(0) // Starting position (rad)
     );
+
+    setDefaultCommand(setVoltage(0));
   }
 
   /**
@@ -204,13 +206,14 @@ public class Intake extends SubsystemBase {
   }
 */
   public Command setVoltage(double voltage) {
-    return runOnce(() -> motor.setVoltage(voltage));
+    return run(() -> motor.setVoltage(voltage));
   }
 
   /**
    * Creates a command to stop the pivot.
    * @return A command that stops the pivot
    */
+
   public Command stopCommand() {
     return runOnce(() -> setVelocity(0));
   }
