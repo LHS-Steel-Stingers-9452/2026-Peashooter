@@ -161,17 +161,7 @@ public class Indexer extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    BaseStatusSignal.refreshAll(
-      positionSignal,
-      velocitySignal,
-      voltageSignal,
-      statorCurrentSignal,
-      positionSignal2,
-      velocitySignal2,
-      voltageSignal2,
-      statorCurrentSignal2,
-      temperatureSignal2
-    );
+    
   }
  
   /**

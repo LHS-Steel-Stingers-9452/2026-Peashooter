@@ -104,6 +104,19 @@ public class Shooter extends SubsystemBase {
     statorCurrentSignal2 = motor2.getStatorCurrent();
     temperatureSignal2 = motor2.getDeviceTemp();
 
+    // Set automatic update rates (Hz)
+    positionSignal.setUpdateFrequency(20);
+    velocitySignal.setUpdateFrequency(20);
+    voltageSignal.setUpdateFrequency(10);
+    statorCurrentSignal.setUpdateFrequency(10);
+    temperatureSignal.setUpdateFrequency(5);
+    // Set automatic update rates (Hz)
+    positionSignal2.setUpdateFrequency(20);
+    velocitySignal2.setUpdateFrequency(20);
+    voltageSignal2.setUpdateFrequency(10);
+    statorCurrentSignal2.setUpdateFrequency(10);
+    temperatureSignal2.setUpdateFrequency(5);
+
     TalonFXConfiguration config = new TalonFXConfiguration();
 
     // Configure PID for slot 0
@@ -156,18 +169,7 @@ public class Shooter extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    BaseStatusSignal.refreshAll(
-      positionSignal,
-      velocitySignal,
-      voltageSignal,
-      statorCurrentSignal,
-      temperatureSignal,
-      positionSignal2,
-      velocitySignal2,
-      voltageSignal2,
-      statorCurrentSignal2,
-      temperatureSignal2
-    );
+    
   }
  
   /**

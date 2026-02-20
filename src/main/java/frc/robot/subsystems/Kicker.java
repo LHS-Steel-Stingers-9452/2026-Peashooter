@@ -92,6 +92,12 @@ public class Kicker extends SubsystemBase {
     voltageSignal = motor.getMotorVoltage();
     statorCurrentSignal = motor.getStatorCurrent();
     temperatureSignal = motor.getDeviceTemp();
+    // Set automatic update rates (Hz)
+    positionSignal.setUpdateFrequency(20);
+    velocitySignal.setUpdateFrequency(20);
+    voltageSignal.setUpdateFrequency(10);
+    statorCurrentSignal.setUpdateFrequency(10);
+    temperatureSignal.setUpdateFrequency(5);
 
     TalonFXConfiguration config = new TalonFXConfiguration();
 
@@ -146,13 +152,7 @@ public class Kicker extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    BaseStatusSignal.refreshAll(
-      positionSignal,
-      velocitySignal,
-      voltageSignal,
-      statorCurrentSignal,
-      temperatureSignal
-    );
+    
   }
  
   /**

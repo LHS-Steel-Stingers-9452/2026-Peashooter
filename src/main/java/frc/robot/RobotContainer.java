@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -40,7 +41,7 @@ import frc.robot.subsystems.IntakePivot;
 @Logged
 public class RobotContainer {
 //Subsystem Imports
-    private final Climber climber = new Climber();
+    // private final Climber climber = new Climber();
     private final Shooter shooter = new Shooter();
     private final Kicker kicker = new Kicker();
     private final Intake intake = new Intake();
@@ -69,6 +70,7 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandPS5Controller joystick2 = new CommandPS5Controller(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -80,6 +82,7 @@ public class RobotContainer {
     public RobotContainer() {
 
         configureBindings();
+        hoodSafety(drivetrain, hood).schedule();
         // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
         //Auto Selection is already handled by Glass.
         // autoChooser = AutoBuilder.buildAutoChooser();
@@ -154,7 +157,7 @@ public class RobotContainer {
 
         joystick 
             .rightBumper()
-            .whileTrue(aimAtHub(drivetrain));
+            .whileTrue(aimAtTarget(drivetrain));
 
     //dpad
         joystick
@@ -174,7 +177,7 @@ public class RobotContainer {
     //face buttons (a, b, x, y) y is outpost, b is trench, a is fender
         joystick  
             .a()
-            .onTrue(shooter.setVelocity(44));   //may not be physically possible
+            .onTrue(shooter.setVelocity(0));   //may not be physically possible
         joystick
             .b()
             .onTrue(shooter.setVelocity(39));
@@ -247,6 +250,8 @@ public class RobotContainer {
             SmartDashboard.putData("intake set voltage 3V", intake.setVoltage(3));
             SmartDashboard.putData("intake set voltage 6V", intake.setVoltage(6));
             SmartDashboard.putData("intake set voltage 9V", intake.setVoltage(9));
+            SmartDashboard.putData("intake set voltage 12V", intake.setVoltage(12));
+
              //and so on so forth..
         //spindexer buttons
             SmartDashboard.putData("spindexer velocity 20", indexer.setVelocity(20));
@@ -263,11 +268,27 @@ public class RobotContainer {
             SmartDashboard.putData("hood reset encoder", hood.resetEncoder());
             SmartDashboard.putData("hood position 1", hood.setPosition(1));
             SmartDashboard.putData("hood position 5", hood.setPosition(5));
+            SmartDashboard.putData("hood position 7", hood.setPosition(7));
+            SmartDashboard.putData("hood position 8", hood.setPosition(8));
+            SmartDashboard.putData("hood position 9", hood.setPosition(9));
+            SmartDashboard.putData("hood position 10", hood.setPosition(10));
+
+
+
 
 
 
 
     }
+    //Auto
+     public void autoInit(){
+                    drivetrain.seedFieldCentric();
+    }
+
+
+
+
+
     //Subsystem Commands
     public Command loadFuel(){
         return kicker.setVoltage(3)
@@ -293,9 +314,6 @@ public class RobotContainer {
                     .andThen(new WaitCommand(0.10))
                     .andThen(funnel.stopFunnel().alongWith(intake.stopIntake()));
              */
-    public void autoInit(){
-                    drivetrain.seedFieldCentric();
-    }
 
     public Command getAutonomousCommand() {
         // return autoChooser.getSelected()
@@ -376,4 +394,36 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
+        public Command hoodSafety(CommandSwerveDrivetrain drivetrain, Hood hood) {
+            return Commands.run(() -> {
+
+        var currentPose = drivetrain.getState().Pose;
+        double poseX = currentPose.getX();
+        double poseY = currentPose.getY();
+
+        double radius = 4;
+
+        double target1X = 12; //real cords for both trenches, target 1 is left, target 2 is right.
+        double target1Y = 0.6;
+        double target2X = 12;
+        double target2Y = 7.2;
+
+        // Distance first zone
+        double dx1 = poseX - target1X;
+        double dy1 = poseY - target1Y;
+        double distance1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+
+        // Distance second zone
+        double dx2 = poseX - target2X;
+        double dy2 = poseY - target2Y;
+        double distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+
+        if (distance1 <= radius || distance2 <= radius) {
+            hood.setPosition(1);  // DOWN
+        } else {
+            hood.setPosition(10);  // UP
+        }
+
+    }, hood);
+    }
 }
