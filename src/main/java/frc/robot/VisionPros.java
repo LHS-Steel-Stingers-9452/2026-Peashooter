@@ -43,9 +43,12 @@ public class VisionPros extends SubsystemBase {
         double headingDog = driveState.Pose.getRotation().getDegrees(); 
         LimelightHelpers.SetRobotOrientation("limelight-left", headingDog, 0, 0, 0, 0, 0); 
 
-        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-left");
+        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
+
+        var distance = poseEstimate.pose.getTranslation().getDistance(driveState.Pose.getTranslation());
+        
         if (LimelightHelpers.validPoseEstimate(poseEstimate)) {
-             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.004, 0.004, 99999999));
+             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.008, 0.008, 99999999));
              drivetrain.addVisionMeasurement(poseEstimate.pose, poseEstimate.timestampSeconds);
         }
     }

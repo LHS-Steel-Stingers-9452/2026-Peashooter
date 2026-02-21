@@ -146,7 +146,14 @@ public class Intake extends SubsystemBase {
    */
   @Override
   public void periodic() {
+    BaseStatusSignal.refreshAll(
+      positionSignal,
+      velocitySignal,
+      voltageSignal,
+      statorCurrentSignal,
+      temperatureSignal
 
+    );
   }
  
   /**

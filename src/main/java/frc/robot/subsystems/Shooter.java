@@ -169,7 +169,14 @@ public class Shooter extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    
+    BaseStatusSignal.refreshAll(
+      positionSignal,
+      velocitySignal,
+      voltageSignal,
+      statorCurrentSignal,
+      temperatureSignal
+
+    );
   }
  
   /**

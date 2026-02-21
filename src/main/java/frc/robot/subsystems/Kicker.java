@@ -152,7 +152,14 @@ public class Kicker extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    
+    BaseStatusSignal.refreshAll(
+      positionSignal,
+      velocitySignal,
+      voltageSignal,
+      statorCurrentSignal,
+      temperatureSignal
+
+    );
   }
  
   /**

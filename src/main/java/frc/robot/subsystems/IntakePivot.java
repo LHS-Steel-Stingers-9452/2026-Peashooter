@@ -40,7 +40,7 @@ public class IntakePivot extends SubsystemBase {
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 15;
   private final double gearRatio = 1;
-  private final double kP = 1; //started at 1
+  private final double kP = 1.25; //started at 1
   private final double kI = 0;
   private final double kD = 0; //helped with reducing noise, somehwat
   private final double kS = 0;
@@ -143,14 +143,21 @@ public class IntakePivot extends SubsystemBase {
    */
   @Override
   public void periodic() {
-    
+    BaseStatusSignal.refreshAll(
+      positionSignal,
+      velocitySignal,
+      voltageSignal,
+      statorCurrentSignal,
+      temperatureSignal
+
+    );
   }
  
   /**
    * Get the current position in Rotations.
    * @return Position in Rotations
    */
-  @Logged(name = "Position/Rotations")
+  @Logged(name = "Position")
   public double getPosition() {
     // Rotations
     return positionSignal.getValueAsDouble();
@@ -225,6 +232,9 @@ public class IntakePivot extends SubsystemBase {
     return runOnce(() -> setVelocity(0));
   }
 
+  public Command resetEncoder() {
+    return runOnce(() -> motor.setPosition(0));  
+  }
   /**
    * Creates a command to move the pivot at a specific velocity.
    * @return A command that moves the pivot at the specified velocity

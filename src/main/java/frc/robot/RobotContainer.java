@@ -15,6 +15,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -70,14 +71,13 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
-    private final CommandPS5Controller joystick2 = new CommandPS5Controller(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     public final VisionPros visionpros = new VisionPros(drivetrain);
 
     
-    // private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
 
@@ -85,14 +85,10 @@ public class RobotContainer {
         hoodSafety(drivetrain, hood).schedule();
         // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
         //Auto Selection is already handled by Glass.
-        // autoChooser = AutoBuilder.buildAutoChooser();
-
-         //See if you need this if the options for the autos are not popping up.
+        autoChooser = AutoBuilder.buildAutoChooser();
+        //See if you need this if the options for the autos are not popping up.
         //  autoChooser.setDefaultOption("1", Commands.print("1"));
         //  autoChooser.addOption("BlueTopAuto", getAutonomousCommand());
-        //  autoChooser.addOption("BlueBottomAuto", getAutonomousCommand());
-        //  autoChooser.addOption("1", getAutonomousCommand());
-
         // SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
@@ -123,47 +119,86 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // Reset the field-centric heading on left bumper press.
-        joystick.x().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        joystick.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
    
 //Joystick/controller buttons    
         
-    //left trigger/bumper
-        joystick        //slow button
-            .leftBumper()
-            .whileTrue(
-             drivetrain.applyRequest(
-                () -> 
-                 drive
-                .withVelocityX(
-                   (-joystick.getLeftY() * MaxSpeed)*(.45)) 
-                .withVelocityY(
-                    (-joystick.getLeftX() * MaxSpeed)*(.45))
-                .withRotationalRate(
-                    -joystick.getRightX()
-                        *MaxAngularRate)
-            ));
-        
-
+    //Left Bumper = AimAtOutpost
+        joystick.leftBumper()
+        .whileTrue(aimAtOutpost(drivetrain));
+    //Left Trigger = Intake
         joystick
             .leftTrigger()
             .whileTrue(intake.setVoltage(10));
-    //right trigger/bumper   
+    //Right Trigger = Indexer + Kicker  
         joystick
-            .rightTrigger()     //indexer + kicker
+            .rightTrigger() 
             .whileTrue(indexer.setVelocity(45)
-            .alongWith(kicker.setVelocity(60)
-            ,(intake.setVoltage(10))));
-
+            .alongWith(kicker.setVelocity(60)));
+            // ,(intake.setVoltage(10))));
+    //Right Bumper = Aim at Hub
         joystick 
             .rightBumper()
-            .whileTrue(aimAtTarget(drivetrain));
-
-    //dpad
+            .whileTrue(aimAtTarget(drivetrain, new Translation2d(12, 4)));
+    //Face Buttons
+    //face buttons (a, b, x, y) y is outpost, b is trench, a is fender
         joystick
-            .povUp()
-            .whileTrue(shooter.setVoltage(0));
-            //.whileTrue(climber.setVoltage(0.67));
+            .y()
+            .onTrue(shooter.setVelocity(44));
+        joystick
+            .b()
+            .onTrue(shooter.setVelocity(0));
+        // joystick        
+        //     .b()
+        //     .whileTrue(
+        //      drivetrain.applyRequest(
+        //         () -> 
+        //          drive
+        //         .withVelocityX(
+        //            (-joystick.getLeftY() * MaxSpeed)*(.45)) 
+        //         .withVelocityY(
+        //             (-joystick.getLeftX() * MaxSpeed)*(.45))
+        //         .withRotationalRate(
+        //             -joystick.getRightX()
+        //                 *MaxAngularRate)
+        //     ));
+        joystick
+            .a()
+            .onTrue(intakepivot.setPosition(8));
+        joystick
+            .x()
+            .onTrue(intakepivot.setPosition(0));
+        // joystick
+        //     .x()
+        //     .onTrue(getAutonomousCommand()); //Anti jam thing
+    
+
+
+
+        // joystick  
+        //     .a()
+        //     .onTrue(shooter.setVelocity(0));   //may not be physically possible
+        // joystick
+        //     .b()
+        //     .onTrue(shooter.setVelocity(39));
+        // // joystick
+        // //     .x()
+        // //     .whileTrue(getAutonomousCommand());
+        // joystick
+        //     .y()
+        //     .onTrue(shooter.setVelocity(44));
+
+
+            // joystick
+            //     .povUp()
+            //     .onTrue(getAutonomousCommand());
+            
+    //D Pad Buttons
+    //     joystick
+    //         .povUp()
+    //         .whileTrue(shooter.setVoltage(0));
+    //         //.whileTrue(climber.setVoltage(0.67));
         // joystick
         //     .povRight()
         //     .whileTrue(intakepivot.setPosition(-0.67).alongWith(hood.setPosition(-0.67)));
@@ -174,19 +209,6 @@ public class RobotContainer {
         //     .povLeft()
         //     .whileTrue(drivetrain.applyRequest(() -> brake));
 
-    //face buttons (a, b, x, y) y is outpost, b is trench, a is fender
-        joystick  
-            .a()
-            .onTrue(shooter.setVelocity(0));   //may not be physically possible
-        joystick
-            .b()
-            .onTrue(shooter.setVelocity(39));
-        // joystick
-        //     .x()
-        //     .whileTrue(getAutonomousCommand());
-        joystick
-            .y()
-            .onTrue(shooter.setVelocity(44));
             
     //special buttons (start, select)    
     
@@ -246,6 +268,9 @@ public class RobotContainer {
              */
 
         //Intake Buttons
+            SmartDashboard.putData("intake pivot reset encoder", intakepivot.resetEncoder());
+            SmartDashboard.putData("intake pivot position 0", intakepivot.setPosition(0));
+            SmartDashboard.putData("intake pivot position 8", intakepivot.setPosition(8));
             SmartDashboard.putData("intake set voltage 0V", intake.setVoltage(0));
             SmartDashboard.putData("intake set voltage 3V", intake.setVoltage(3));
             SmartDashboard.putData("intake set voltage 6V", intake.setVoltage(6));
@@ -272,7 +297,6 @@ public class RobotContainer {
             SmartDashboard.putData("hood position 8", hood.setPosition(8));
             SmartDashboard.putData("hood position 9", hood.setPosition(9));
             SmartDashboard.putData("hood position 10", hood.setPosition(10));
-
 
 
 
@@ -316,8 +340,7 @@ public class RobotContainer {
              */
 
     public Command getAutonomousCommand() {
-        // return autoChooser.getSelected()
-        return null;
+        return autoChooser.getSelected();
         // Simple drive forward auton
         // final var idle = new SwerveRequest.Idle();
         // return Commands.sequence(
@@ -358,14 +381,75 @@ public class RobotContainer {
         return  drivetrain.applyRequest(
                     () -> {
                         
+                         var currentPose = drivetrain.getState().Pose;
+                         var targetTranslation = new Translation2d(13, 4); // We got (12, 4) IRL but (13, 4) works better in sim, we can play with it
+                         var direction =
+                            targetTranslation.minus(currentPose.getTranslation());
+                        var error =
+                            direction.getAngle()
+                                .minus(currentPose.getRotation())
+                                .getRadians();
+
+                        double kP = .35; //kp was .0176
+                        double targetingAngularVelocity = error * kP;
+                        // targetingAngularVelocity *= MaxAngularRate;
+                        // targetingAngularVelocity *= -1.0;
+
+                        // var angle = Math.atan2(, )
+
+                        
+                        return drive
+                            .withVelocityX(
+                                -joystick.getLeftY()
+                                    * MaxSpeed) // Drive forward with negative Y (forward)
+                            .withVelocityY(
+                                -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                            .withRotationalRate(
+                                targetingAngularVelocity); // Drive counterclockwise with negative X (left)
+                    });
+                }
+    public Command aimAtTarget(CommandSwerveDrivetrain drivetrain, Translation2d target) {
+        return  drivetrain.applyRequest(
+                    () -> {
+                        
+                         var currentPose = drivetrain.getState().Pose;
+                         var direction =
+                            target.minus(currentPose.getTranslation());
+                        var error =
+                            direction.getAngle()
+                                .minus(currentPose.getRotation())
+                                .getRadians();
+                                
+                        double kP = .35; //kp was .0176
+                        double targetingAngularVelocity = error * kP;
+                        // targetingAngularVelocity *= MaxAngularRate;
+                        // targetingAngularVelocity *= -1.0;
+
+                        // var angle = Math.atan2(, )
+
+                        
+                        return drive
+                            .withVelocityX(
+                                -joystick.getLeftY()
+                                    * MaxSpeed) // Drive forward with negative Y (forward)
+                            .withVelocityY(
+                                -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                            .withRotationalRate(
+                                targetingAngularVelocity); // Drive counterclockwise with negative X (left)
+                    });
+                }
+    public Command aimAtOutpost(CommandSwerveDrivetrain drivetrain) {
+        return  drivetrain.applyRequest(
+                    () -> {
+                        
 
                         var currentPose = drivetrain.getState().Pose;
                         var currentAngle = currentPose.getRotation().getRadians();
                         var poseX = currentPose.getX();
                         var poseY = currentPose.getY();
 
-                        var targetX = 12;
-                        var targetY = 4;
+                        var targetX = 12; //get cords
+                        var targetY = 4; //get cords
 
                         var angle = Math.atan2(poseX - targetX, poseY - targetY);
                         var error = currentAngle - angle;
@@ -394,36 +478,36 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
-        public Command hoodSafety(CommandSwerveDrivetrain drivetrain, Hood hood) {
+    public Command hoodSafety(CommandSwerveDrivetrain drivetrain, Hood hood) {
             return Commands.run(() -> {
 
-        var currentPose = drivetrain.getState().Pose;
-        double poseX = currentPose.getX();
-        double poseY = currentPose.getY();
+                var currentPose = drivetrain.getState().Pose;
+                double poseX = currentPose.getX();
+                double poseY = currentPose.getY();
 
-        double radius = 4;
+                double radius = 4;
 
-        double target1X = 12; //real cords for both trenches, target 1 is left, target 2 is right.
-        double target1Y = 0.6;
-        double target2X = 12;
-        double target2Y = 7.2;
+                double target1X = 12; //real cords for both trenches, target 1 is left, target 2 is right.
+                double target1Y = 0.6;
+                double target2X = 12;
+                double target2Y = 7.2;
 
-        // Distance first zone
-        double dx1 = poseX - target1X;
-        double dy1 = poseY - target1Y;
-        double distance1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+                // Distance first zone
+                double dx1 = poseX - target1X;
+                double dy1 = poseY - target1Y;
+                double distance1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
 
-        // Distance second zone
-        double dx2 = poseX - target2X;
-        double dy2 = poseY - target2Y;
-        double distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+                // Distance second zone
+                double dx2 = poseX - target2X;
+                double dy2 = poseY - target2Y;
+                double distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
 
-        if (distance1 <= radius || distance2 <= radius) {
-            hood.setPosition(1);  // DOWN
-        } else {
-            hood.setPosition(10);  // UP
+                if (distance1 <= radius || distance2 <= radius) {
+                    hood.setPosition(1);  // DOWN
+                } else {
+                    hood.setPosition(10);  // UP
+                }
+
+        }, hood);
         }
-
-    }, hood);
-    }
 }
