@@ -301,6 +301,8 @@ public class RobotContainer {
             SmartDashboard.putData("hood position 9", hood.setPosition(9));
             SmartDashboard.putData("hood position 10", hood.setPosition(10));
 
+            SmartDashboard.putData("set hood from vision", hood.setPosition(visionpros::getHoodAngleFromTy));
+
 
 
 
@@ -514,3 +516,4 @@ public class RobotContainer {
         }, hood);
         }
 }
+

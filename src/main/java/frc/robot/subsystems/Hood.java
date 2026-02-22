@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 // import static edu.wpi.first.units.Units.Radians;
 // import static edu.wpi.first.units.Units.RadiansPerSecond;
 // import static edu.wpi.first.units.Units.Rotations;
@@ -27,6 +29,7 @@ import edu.wpi.first.units.measure.*;
 // import edu.wpi.first.wpilibj.simulation.BatterySim;
 // import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -199,6 +202,17 @@ public class Hood extends SubsystemBase {
 
   public Command setPosition(double position) {
     return run(() ->  motor.setControl(positionRequest.withPosition(position)));
+  }
+
+  public Command setPosition(Supplier<Double> positionSupplier) {
+    return run(() ->  {
+      var pos = positionSupplier.get();
+      SmartDashboard.putNumber("Hood pos", pos);
+      if (pos < 0 || pos > 8) {
+        return;
+      }
+      motor.setControl(positionRequest.withPosition(pos));
+    });
   }
 
   public void setVelocity(double velocity) {

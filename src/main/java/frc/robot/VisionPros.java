@@ -6,6 +6,7 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,12 +21,15 @@ public class VisionPros extends SubsystemBase {
 
     private static final String LEFT_LL = "limelight-left";
     private Pose2d visionPose = new Pose2d();
+     InterpolatingDoubleTreeMap tyToHoodAngleMap = new InterpolatingDoubleTreeMap();
+
 
     private int[] acceptedTags = {2, 3, 4, 5, 8, 9, 10, 11};
 
 
     public VisionPros(CommandSwerveDrivetrain drivetrain) {
         this.drivetrain = drivetrain;
+        tyToHoodAngleMap.put(0.0, 1.746);
     }
 
     @Override
@@ -78,6 +82,14 @@ public class VisionPros extends SubsystemBase {
     @Logged
     public Pose2d getpPose2d() {
         return visionPose;
+    }
+
+    public double getHoodAngleFromTy() {
+        var ty = LimelightHelpers.getTY("limelight-left");
+        if (ty == 0) {
+            return 0;
+        }
+        return tyToHoodAngleMap.get(ty);
     }
 
     }

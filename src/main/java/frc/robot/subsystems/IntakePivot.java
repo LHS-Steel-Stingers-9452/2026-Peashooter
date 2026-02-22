@@ -233,7 +233,7 @@ public class IntakePivot extends SubsystemBase {
   }
 
   public Command resetEncoder() {
-    return runOnce(() -> motor.setPosition(0));  
+    return runOnce(() -> motor.setPosition(0)).ignoringDisable(true);  
   }
   /**
    * Creates a command to move the pivot at a specific velocity.
