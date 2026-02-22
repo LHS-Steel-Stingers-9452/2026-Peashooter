@@ -55,7 +55,7 @@ public class Kicker extends SubsystemBase {
   // private final double maxAcceleration = 1; // rad/s²
   private final boolean brakeMode = false;
   private final boolean enableStatorLimit = true;
-  private final double statorCurrentLimit = 100;
+  private final double statorCurrentLimit = 80;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
 

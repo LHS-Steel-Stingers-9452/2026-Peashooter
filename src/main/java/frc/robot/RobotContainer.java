@@ -130,22 +130,23 @@ public class RobotContainer {
     //Left Trigger = Intake
         joystick
             .leftTrigger()
-            .whileTrue(intake.setVoltage(10));
+            .whileTrue(intake.setVoltage(12));
     //Right Trigger = Indexer + Kicker  
         joystick
             .rightTrigger() 
             .whileTrue(indexer.setVelocity(45)
-            .alongWith(kicker.setVelocity(60)));
+            .alongWith(kicker.setVelocity(25)));
             // ,(intake.setVoltage(10))));
     //Right Bumper = Aim at Hub
         joystick 
             .rightBumper()
-            .whileTrue(aimAtTarget(drivetrain, new Translation2d(12, 4)));
-    //Face Buttons
-    //face buttons (a, b, x, y) y is outpost, b is trench, a is fender
+            // .whileTrue(aimAtTarget(drivetrain, new Translation2d(12, 4)));
+             .whileTrue(aimAtTarget(drivetrain));
+    //Face Button
+    //face buttons (a, b, x, y) y is trench, b is turn off, a is fender
         joystick
             .y()
-            .onTrue(shooter.setVelocity(44));
+            .onTrue(shooter.setVelocity(42));
         joystick
             .b()
             .onTrue(shooter.setVelocity(0));
@@ -291,7 +292,9 @@ public class RobotContainer {
             SmartDashboard.putData("spindexer set voltage 12V", indexer.setVoltage(12));
         //Hood buttons
             SmartDashboard.putData("hood reset encoder", hood.resetEncoder());
+            SmartDashboard.putData("hood position 0", hood.setPosition(0));
             SmartDashboard.putData("hood position 1", hood.setPosition(1));
+             SmartDashboard.putData("hood position 1.74, far trench shot", hood.setPosition(1.746));
             SmartDashboard.putData("hood position 5", hood.setPosition(5));
             SmartDashboard.putData("hood position 7", hood.setPosition(7));
             SmartDashboard.putData("hood position 8", hood.setPosition(8));
@@ -420,7 +423,7 @@ public class RobotContainer {
                                 .minus(currentPose.getRotation())
                                 .getRadians();
                                 
-                        double kP = .35; //kp was .0176
+                        double kP = .6; //kp was .0176
                         double targetingAngularVelocity = error * kP;
                         // targetingAngularVelocity *= MaxAngularRate;
                         // targetingAngularVelocity *= -1.0;
