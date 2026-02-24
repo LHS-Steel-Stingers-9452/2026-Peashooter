@@ -82,14 +82,14 @@ public class RobotContainer {
     public RobotContainer() {
 
         configureBindings();
-        hoodSafety(drivetrain, hood).schedule();
+        // hoodSafety(drivetrain, hood).schedule();
         // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
         //Auto Selection is already handled by Glass.
         autoChooser = AutoBuilder.buildAutoChooser();
-        //See if you need this if the options for the autos are not popping up.
-        //  autoChooser.setDefaultOption("1", Commands.print("1"));
-        //  autoChooser.addOption("BlueTopAuto", getAutonomousCommand());
-        // SmartDashboard.putData("Auto Chooser", autoChooser);
+        // See if you need this if the options for the autos are not popping up.
+         autoChooser.setDefaultOption("1", Commands.print("1"));
+         autoChooser.addOption("OutpostToMiddleOfHub", getAutonomousCommand());
+        SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
     private void configureBindings() {
@@ -150,20 +150,20 @@ public class RobotContainer {
         joystick
             .b()
             .onTrue(shooter.setVelocity(0));
-        // joystick        
-        //     .b()
-        //     .whileTrue(
-        //      drivetrain.applyRequest(
-        //         () -> 
-        //          drive
-        //         .withVelocityX(
-        //            (-joystick.getLeftY() * MaxSpeed)*(.45)) 
-        //         .withVelocityY(
-        //             (-joystick.getLeftX() * MaxSpeed)*(.45))
-        //         .withRotationalRate(
-        //             -joystick.getRightX()
-        //                 *MaxAngularRate)
-        //     ));
+        joystick        
+            .povUp()
+            .whileTrue(
+             drivetrain.applyRequest(
+                () -> 
+                 drive
+                .withVelocityX(
+                   (-joystick.getLeftY() * MaxSpeed)*(.45)) 
+                .withVelocityY(
+                    (-joystick.getLeftX() * MaxSpeed)*(.45))
+                .withRotationalRate(
+                    -joystick.getRightX()
+                        *MaxAngularRate)
+            ));
         joystick
             .a()
             .onTrue(intakepivot.setPosition(8));
@@ -294,7 +294,7 @@ public class RobotContainer {
             SmartDashboard.putData("hood reset encoder", hood.resetEncoder());
             SmartDashboard.putData("hood position 0", hood.setPosition(0));
             SmartDashboard.putData("hood position 1", hood.setPosition(1));
-             SmartDashboard.putData("hood position 1.74, far trench shot", hood.setPosition(1.746));
+            SmartDashboard.putData("hood position 1.74, far trench shot", hood.setPosition(1.746));
             SmartDashboard.putData("hood position 5", hood.setPosition(5));
             SmartDashboard.putData("hood position 7", hood.setPosition(7));
             SmartDashboard.putData("hood position 8", hood.setPosition(8));
@@ -413,7 +413,7 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
-    public Command aimAtTarget(CommandSwerveDrivetrain drivetrain, Translation2d target) {
+    public Command aimAtTargetMega(CommandSwerveDrivetrain drivetrain, Translation2d target) {
         return  drivetrain.applyRequest(
                     () -> {
                         
@@ -449,21 +449,13 @@ public class RobotContainer {
                         
 
                         var currentPose = drivetrain.getState().Pose;
-                        var currentAngle = currentPose.getRotation().getRadians();
-                        var poseX = currentPose.getX();
-                        var poseY = currentPose.getY();
-
-                        var targetX = 12; //get cords
-                        var targetY = 4; //get cords
-
-                        var angle = Math.atan2(poseX - targetX, poseY - targetY);
-                        var error = currentAngle - angle;
-                        
-                        SmartDashboard.putNumber("angle", angle);
-                        SmartDashboard.putNumber("current angle", currentAngle);
-                        SmartDashboard.putNumber("error", error);
-
-                       
+                         var targetTranslation = new Translation2d(13, 4); // Get cords for Outpost
+                         var direction =
+                            targetTranslation.minus(currentPose.getTranslation());
+                        var error =
+                            direction.getAngle()
+                                .minus(currentPose.getRotation())
+                                .getRadians();
 
                         double kP = .35; //kp was .0176
                         double targetingAngularVelocity = error * kP;
@@ -483,37 +475,45 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
-    public Command hoodSafety(CommandSwerveDrivetrain drivetrain, Hood hood) {
-            return Commands.run(() -> {
+    // public Command hoodSafety(CommandSwerveDrivetrain drivetrain, Hood hood) {
+    //         return Commands.run(() -> {
 
-                var currentPose = drivetrain.getState().Pose;
-                double poseX = currentPose.getX();
-                double poseY = currentPose.getY();
+    //     //          var currentPose = drivetrain.getState().Pose;
+    //     //          var targetTranslation = new Translation2d(13,4); // Get cords for Outpost
+    //     //          var targetTranslation2 = new Translation2d(13,4); // Get cords for Outpost
 
-                double radius = 4;
+    //     //          var direction =
+    //     //                     targetTranslation.minus(currentPose.getTranslation());
+    //     //             var error =
+    //     //                     direction.getAngle()
+    //     //                         .minus(currentPose.getRotation())
+    //     //                         .getRadians();
 
-                double target1X = 12; //real cords for both trenches, target 1 is left, target 2 is right.
-                double target1Y = 0.6;
-                double target2X = 12;
-                double target2Y = 7.2;
+    //     //         double kP = .35; //kp was .0176
+    //     //         double targetingAngularVelocity = error * kP;
+    //     //                 // targetingAngularVelocity *= MaxAngularRate;
+    //     //                 // targetingAngularVelocity *= -1.0;
 
-                // Distance first zone
-                double dx1 = poseX - target1X;
-                double dy1 = poseY - target1Y;
-                double distance1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+    //     //                 // var angle = Math.atan2(, )
 
-                // Distance second zone
-                double dx2 = poseX - target2X;
-                double dy2 = poseY - target2Y;
-                double distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+    //     //         // Distance first zone
+    //     //         double dx1 = poseX - target1X;
+    //     //         double dy1 = poseY - target1Y;
+    //     //         double distance1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
 
-                if (distance1 <= radius || distance2 <= radius) {
-                    hood.setPosition(1);  // DOWN
-                } else {
-                    hood.setPosition(10);  // UP
-                }
+    //     //         // Distance second zone
+    //     //         double dx2 = poseX - target2X;
+    //     //         double dy2 = poseY - target2Y;
+    //     //         double distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
 
-        }, hood);
-        }
+    //     //         if (distance1 <= radius || distance2 <= radius) {
+    //     //             hood.setPosition(1);  // DOWN
+    //     //         } else {
+    //     //             hood.setPosition(10);  // UP
+    //     //         }
+
+    //     // }, hood);
+    //     }
+    // }
 }
 
