@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Angel's Grand Path 1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": null
+            "pathName": "Angel's Grand Path 1 Topside"
           }
         },
         {
@@ -25,7 +19,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Angel's Grand Path 2"
+            "pathName": "Angel's Grand Path 2 Topside"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot"
           }
         }
       ]
