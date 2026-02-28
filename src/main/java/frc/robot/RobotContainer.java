@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import javax.crypto.spec.DHGenParameterSpec;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -38,10 +39,11 @@ import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePivot; 
+import frc.robot.VisionPros;
 
 @Logged
 public class RobotContainer {
-//Subsystem Imports
+    //Subsystem Imports
     // private final Climber climber = new Climber();
     private final Shooter shooter = new Shooter();
     private final Kicker kicker = new Kicker();
@@ -74,7 +76,10 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    public final VisionPros visionpros = new VisionPros(drivetrain);
+    private final Pigeon2 pigeon = new Pigeon2(0);
+    private final VisionPros visionPros = new VisionPros(drivetrain, pigeon);
+
+    public final VisionPros visionpros = new VisionPros(drivetrain, pigeon);
 
     
     private final SendableChooser<Command> autoChooser;
@@ -300,8 +305,10 @@ public class RobotContainer {
             SmartDashboard.putData("hood position 8", hood.setPosition(8));
             SmartDashboard.putData("hood position 9", hood.setPosition(9));
             SmartDashboard.putData("hood position 10", hood.setPosition(10));
+        //vision feed + gyro
+            // SmartDashboard.getData("getRotation3d():" + pigeon.getRotation3d().getAngle());
 
-            SmartDashboard.putData("set hood from vision", hood.setPosition(visionpros::getHoodAngleFromTy));
+            // SmartDashboard.putData("set hood from vision", hood.setPosition(visionpros::getHoodAngleFromTy));
 
 
 
