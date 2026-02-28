@@ -310,7 +310,10 @@ public class RobotContainer {
 
             // SmartDashboard.putData("set hood from vision", hood.setPosition(visionpros::getHoodAngleFromTy));
 
+        //Named Commands, Necessary for autos!   NOT THE COMMANDS THEMSELVES, basically translating them to be used on pathplanner 
 
+
+            NamedCommands.registerCommand("Dump Mag", RobotContainer.dumpMag(shooter, indexer, kicker));
 
 
 
@@ -333,8 +336,12 @@ public class RobotContainer {
         );
     }
 
-    public Command shootFuel(){
-        return shooter.setVelocity(1.67); 
+    public static Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
+        return shooter.setVelocity(42)
+        .andThen(new WaitCommand(0.10))
+        .andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25)))
+        .andThen(new WaitCommand(3))
+        .andThen(shooter.stopCommand().alongWith(kicker.stopCommand().alongWith(indexer.stopCommand())));
     }
 
     public Command intakeFuel(){
