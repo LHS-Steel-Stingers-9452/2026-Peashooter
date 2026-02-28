@@ -40,7 +40,7 @@ public class VisionPros extends SubsystemBase {
         tyToHoodAngleMap.put(0.0, 1.746);
         LimelightHelpers.setCameraPose_RobotSpace( "limelight-left", 
      0.381, 
-     0.1397, 
+     -0.1397, 
      0.5207, 
      0, 
      10, 
@@ -55,7 +55,12 @@ public class VisionPros extends SubsystemBase {
         // Feed vision measurements into the drivetrain's pose estimator
         // System.out.println("periodic is running");
     
-        processLimelight(LEFT_LL);
+        // processLimelight(LEFT_LL);
+        if (DriverStation.isEnabled()) {
+            processLimelightMt2();
+        } else {
+            processLimelightMt1();
+        }
         // System.out.println("getYaw():" + pigeon.getYaw().getValue());
         // System.out.println("getAngle():" + pigeon.getAngle());
         // System.out.println("getRotation3d():" + pigeon.getRotation3d().getAngle());
@@ -69,7 +74,7 @@ public class VisionPros extends SubsystemBase {
     
     private void processLimelight(String limelightName) {
         double rawGyroYaw = pigeon.getYaw().getValueAsDouble();
-        // double correctedYaw = -rawGyroYaw;
+        double correctedYaw = -rawGyroYaw;
 
         var driveState = drivetrain.getState();
         double headingDog = driveState.Pose.getRotation().getDegrees();
@@ -77,7 +82,7 @@ public class VisionPros extends SubsystemBase {
          
 
         LimelightHelpers.SetRobotOrientation("limelight-left",
-         rawGyroYaw, 
+         correctedYaw, 
         0,
         10,
         0,
@@ -114,24 +119,80 @@ public class VisionPros extends SubsystemBase {
         // System.out.println("Estimator Rot: " + drivetrain.getState().Pose.getRotation().getDegrees());
         // System.out.println("Vision Rot: " + mt2.pose.getRotation().getDegrees());
     }
+   
+    private void processLimelightMt1() {
+        LimelightHelpers.SetIMUMode(LEFT_LL, 1);
+        var driveState = drivetrain.getState();
+        double headingDog = driveState.Pose.getRotation().getDegrees(); 
+        LimelightHelpers.SetRobotOrientation("limelight-left", headingDog, 0, 0, 0, 0, 0); 
 
-    // private boolean shouldAcceptPoseEstimate(LimelightHelpers.PoseEstimate estimate, Pose2d currentPose) {
+       
+        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
+        
+        if (shouldAcceptPoseEstimate(poseEstimate, driveState.Pose)) {
+             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.004, 0.004, 0.004));
+             drivetrain.addVisionMeasurement(poseEstimate.pose, poseEstimate.timestampSeconds);
+             
+        }
+    }
+    private void processLimelightMt2() {
+        LimelightHelpers.SetIMUMode(LEFT_LL, 4);
+        LimelightHelpers.SetIMUAssistAlpha(LEFT_LL, 0.01);
+        var driveState = drivetrain.getState();
+        double headingDog = driveState.Pose.getRotation().getDegrees(); 
+        LimelightHelpers.SetRobotOrientation("limelight-left", headingDog, 0, 0, 0, 0, 0); 
 
-    //      var distance = estimate.pose.getTranslation().getDistance(currentPose.getTranslation());
+       
+        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
+        
+        if (shouldAcceptPoseEstimate(poseEstimate, driveState.Pose)) {
+             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.004, 0.004, 999999999));
+             drivetrain.addVisionMeasurement(poseEstimate.pose, poseEstimate.timestampSeconds);
+             
+        }
+    }
 
-    //      if (estimate.rawFiducials.length > 0 && estimate.rawFiducials[0].ambiguity > 0.65) {
-    //         // SmartDashboard.putNumber("pose ambiguity", estimate.rawFiducials[0].ambiguity);
-    //         return false;
+
+    private boolean shouldAcceptPoseEstimate(LimelightHelpers.PoseEstimate estimate, Pose2d currentPose) {
+        if (estimate.tagCount ==0) {
+            return false;
+        }
+        double fieldLength = 16.54;
+        double fieldWidth = 8.21;
+
+        if (estimate.pose.getX() < 0.0 ||
+            estimate.pose.getX() > fieldLength ||
+            estimate.pose.getY() < 0.0 ||
+            estimate.pose.getY() > fieldWidth) {
+                return false;
+            }
+
             
-    //      }
-    //      SmartDashboard.putNumber("pose distance", distance);
 
-    //     if (distance > 4 && DriverStation.isEnabled()) {
-    //         return false;
-    //     }
-    //     return LimelightHelpers.validPoseEstimate(estimate);
+        var angularRate = drivetrain.getPigeon2().getAngularVelocityZWorld().getValueAsDouble();
 
-    // }
+        if (angularRate > 360) {
+            return false;
+        }
+    
+        
+
+         var distance = estimate.pose.getTranslation().getDistance(currentPose.getTranslation());
+
+         if (estimate.rawFiducials.length > 0 && estimate.rawFiducials[0].ambiguity > 0.65) {
+            // SmartDashboard.putNumber("pose ambiguity", estimate.rawFiducials[0].ambiguity);
+            return false;
+            
+         }
+        //  SmartDashboard.putNumber("pose distance", distance);
+
+        // if (distance > 4 && DriverStation.isEnabled()) {
+        //     return false;
+        // }
+        return LimelightHelpers.validPoseEstimate(estimate);
+        
+
+    }
  
     @Logged
     public Pose2d getPose2d() {

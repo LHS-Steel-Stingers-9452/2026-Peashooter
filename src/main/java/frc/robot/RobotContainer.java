@@ -77,7 +77,6 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final Pigeon2 pigeon = new Pigeon2(0);
-    private final VisionPros visionPros = new VisionPros(drivetrain, pigeon);
 
     public final VisionPros visionpros = new VisionPros(drivetrain, pigeon);
 
@@ -131,7 +130,7 @@ public class RobotContainer {
         
     //Left Bumper = AimAtOutpost
         joystick.leftBumper()
-        .whileTrue(aimAtOutpost(drivetrain));
+        .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(13, 4)));
     //Left Trigger = Intake
         joystick
             .leftTrigger()
@@ -145,16 +144,27 @@ public class RobotContainer {
     //Right Bumper = Aim at Hub
         joystick 
             .rightBumper()
-            // .whileTrue(aimAtTarget(drivetrain, new Translation2d(12, 4)));
-             .whileTrue(aimAtTarget(drivetrain));
+            .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(11.5, 4)));
+            //  .whileTrue(aimAtTarget(drivetrain));
     //Face Button
-    //face buttons (a, b, x, y) y is trench, b is turn off, a is fender
-        joystick
-            .y()
+    //face buttons
+        joystick 
+            .y() //trench shot
             .onTrue(shooter.setVelocity(42));
-        joystick
-            .b()
-            .onTrue(shooter.setVelocity(0));
+        joystick 
+            .b() //passing shot
+            .onTrue(shooter.setVelocity(56));
+        // joystick
+        //     .a()
+        //     .onTrue(intakepivot.setPosition(8));
+        // joystick
+        //     .x()
+        //     .onTrue(intakepivot.setPosition(0));
+        // joystick
+        //     .x()
+        //     .onTrue(getAutonomousCommand()); //Anti jam thing\
+
+    //D Pad Buttons
         joystick        
             .povUp()
             .whileTrue(
@@ -170,50 +180,14 @@ public class RobotContainer {
                         *MaxAngularRate)
             ));
         joystick
-            .a()
-            .onTrue(intakepivot.setPosition(8));
+            .povRight()
+            .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12, 4)));
         joystick
-            .x()
-            .onTrue(intakepivot.setPosition(0));
-        // joystick
-        //     .x()
-        //     .onTrue(getAutonomousCommand()); //Anti jam thing
-    
-
-
-
-        // joystick  
-        //     .a()
-        //     .onTrue(shooter.setVelocity(0));   //may not be physically possible
-        // joystick
-        //     .b()
-        //     .onTrue(shooter.setVelocity(39));
-        // // joystick
-        // //     .x()
-        // //     .whileTrue(getAutonomousCommand());
-        // joystick
-        //     .y()
-        //     .onTrue(shooter.setVelocity(44));
-
-
-            // joystick
-            //     .povUp()
-            //     .onTrue(getAutonomousCommand());
-            
-    //D Pad Buttons
-    //     joystick
-    //         .povUp()
-    //         .whileTrue(shooter.setVoltage(0));
-    //         //.whileTrue(climber.setVoltage(0.67));
-        // joystick
-        //     .povRight()
-        //     .whileTrue(intakepivot.setPosition(-0.67).alongWith(hood.setPosition(-0.67)));
-        // joystick
-        //     .povDown()
-        //     .whileTrue(climber.setVoltage(-0.67));
-        // joystick
-        //     .povLeft()
-        //     .whileTrue(drivetrain.applyRequest(() -> brake));
+            .povDown()
+            .onTrue(shooter.setVelocity(0));
+        joystick
+            .povLeft()
+            .whileTrue(drivetrain.applyRequest(() -> brake));
 
             
     //special buttons (start, select)    
@@ -305,7 +279,7 @@ public class RobotContainer {
             SmartDashboard.putData("hood position 8", hood.setPosition(8));
             SmartDashboard.putData("hood position 9", hood.setPosition(9));
             SmartDashboard.putData("hood position 10", hood.setPosition(10));
-        //vision feed + gyro
+        // gyro
             // SmartDashboard.getData("getRotation3d():" + pigeon.getRotation3d().getAngle());
 
             // SmartDashboard.putData("set hood from vision", hood.setPosition(visionpros::getHoodAngleFromTy));
@@ -445,7 +419,7 @@ public class RobotContainer {
                                 .minus(currentPose.getRotation())
                                 .getRadians();
                                 
-                        double kP = .6; //kp was .0176
+                        double kP = 3; //kp was .0176
                         double targetingAngularVelocity = error * kP;
                         // targetingAngularVelocity *= MaxAngularRate;
                         // targetingAngularVelocity *= -1.0;
