@@ -223,21 +223,21 @@ public class RobotContainer {
     //Glass/SmartDashboard Buttons
                     // The format is "(subsystem name) set (variable) (amount)""
         //Kicker buttons
-            SmartDashboard.putData("kicker velocity 5", kicker.setVelocity(-5));
-            SmartDashboard.putData("kicker velocity 20", kicker.setVelocity(-20));
-            SmartDashboard.putData("kicker velocity 45", kicker.setVelocity(-45));
-            SmartDashboard.putData("kicker velocity 50", kicker.setVelocity(-50));
-            SmartDashboard.putData("kicker velocity 60", kicker.setVelocity(-60));
-            
-                /* 
-                    SmartDashboard.putData("kicker set voltage 0V", kicker.setVoltage(0));
-                    SmartDashboard.putData("kicker set voltage 1V", kicker.setVoltage(-1));
-                    SmartDashboard.putData("kicker set voltage 3V", kicker.setVoltage(-3));
-                    SmartDashboard.putData("kicker set voltage 4V", kicker.setVoltage(-4));
-                    SmartDashboard.putData("kicker set voltage 6V", kicker.setVoltage(-6));
-                    SmartDashboard.putData("kicker set voltage 9V", kicker.setVoltage(-9));
-                    SmartDashboard.putData("kicker set voltage 12V", kicker.setVoltage(-12));
-                    */
+
+            // SmartDashboard.putData("kicker velocity 5", kicker.setVelocity(-5));
+            // SmartDashboard.putData("kicker velocity 20", kicker.setVelocity(-20));
+            // SmartDashboard.putData("kicker velocity 45", kicker.setVelocity(-45));
+            // SmartDashboard.putData("kicker velocity 50", kicker.setVelocity(-50));
+            // SmartDashboard.putData("kicker velocity 60", kicker.setVelocity(-60));
+             
+            // SmartDashboard.putData("kicker set voltage 0V", kicker.setVoltage(0));
+            // SmartDashboard.putData("kicker set voltage 1V", kicker.setVoltage(-1));
+            // SmartDashboard.putData("kicker set voltage 3V", kicker.setVoltage(-3));
+            // SmartDashboard.putData("kicker set voltage 4V", kicker.setVoltage(-4));
+            // SmartDashboard.putData("kicker set voltage 6V", kicker.setVoltage(-6));
+            // SmartDashboard.putData("kicker set voltage 9V", kicker.setVoltage(-9));
+            // SmartDashboard.putData("kicker set voltage 12V", kicker.setVoltage(-12));
+                    
             
         //Shooter buttons
             SmartDashboard.putData("shooter velocity 5", shooter.setVelocity(5));
@@ -252,17 +252,17 @@ public class RobotContainer {
             SmartDashboard.putData("shooter velocity 45", shooter.setVelocity(45));
             SmartDashboard.putData("shooter velocity 50", shooter.setVelocity(50));
 
-            SmartDashboard.putData("shooter set voltage 0V", shooter.setVoltage(0));
-            SmartDashboard.putData("shooter set voltage .25V", shooter.setVoltage(0.25));
-            SmartDashboard.putData("shooter set voltage .50V", shooter.setVoltage(0.50));
-            SmartDashboard.putData("shooter set voltage .75V", shooter.setVoltage(0.75));
-            SmartDashboard.putData("shooter set voltage 1V", shooter.setVoltage(1));
+            // SmartDashboard.putData("shooter set voltage 0V", shooter.setVoltage(0));
+            // SmartDashboard.putData("shooter set voltage .25V", shooter.setVoltage(0.25));
+            // SmartDashboard.putData("shooter set voltage .50V", shooter.setVoltage(0.50));
+            // SmartDashboard.putData("shooter set voltage .75V", shooter.setVoltage(0.75));
+            // SmartDashboard.putData("shooter set voltage 1V", shooter.setVoltage(1));
             
-            SmartDashboard.putData("shooter set voltage 3V", shooter.setVoltage(3));
-            SmartDashboard.putData("shooter set voltage 4.5V", shooter.setVoltage(4.5));
-            SmartDashboard.putData("shooter set voltage 6V", shooter.setVoltage(6));
-            SmartDashboard.putData("shooter set voltage 9V", shooter.setVoltage(9));
-            SmartDashboard.putData("shooter set voltage 12V", shooter.setVoltage(12));
+            // SmartDashboard.putData("shooter set voltage 3V", shooter.setVoltage(3));
+            // SmartDashboard.putData("shooter set voltage 4.5V", shooter.setVoltage(4.5));
+            // SmartDashboard.putData("shooter set voltage 6V", shooter.setVoltage(6));
+            // SmartDashboard.putData("shooter set voltage 9V", shooter.setVoltage(9));
+            // SmartDashboard.putData("shooter set voltage 12V", shooter.setVoltage(12));
             
              
            
@@ -313,7 +313,7 @@ public class RobotContainer {
         //Named Commands, Necessary for autos!   NOT THE COMMANDS THEMSELVES, basically translating them to be used on pathplanner 
 
 
-            NamedCommands.registerCommand("Dump Mag", RobotContainer.dumpMag(shooter, indexer, kicker));
+            NamedCommands.registerCommand("Dump Mag", dumpMag(shooter, indexer, kicker));
 
 
 
@@ -336,13 +336,19 @@ public class RobotContainer {
         );
     }
 
-    public static Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
+    public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
         return shooter.setVelocity(42)
         .andThen(new WaitCommand(0.10))
         .andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25)))
         .andThen(new WaitCommand(3))
         .andThen(shooter.stopCommand().alongWith(kicker.stopCommand().alongWith(indexer.stopCommand())));
     }
+    public Command autonIntakeFuel(){
+        return intake.setVoltage(12);
+        // .alongWith(
+        // intakepivot.setPosition(0.7));
+    } 
+
 
     public Command intakeFuel(){
         return intake.setVoltage(3)
@@ -351,7 +357,7 @@ public class RobotContainer {
     } 
 
 
-                /*
+                /* code from kevlio pay no mind
              *  return funnel.runFunnel(0.4).alongWith(intake.runIntake(0.2))
                     .until(intake::hasCoral)
                     .andThen(new WaitCommand(0.10))
@@ -529,5 +535,6 @@ public class RobotContainer {
     //     // }, hood);
     //     }
     // }
+    
 }
 
