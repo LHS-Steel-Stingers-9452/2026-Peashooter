@@ -56,7 +56,7 @@ public class VisionPros extends SubsystemBase {
         // System.out.println("periodic is running");
     
         // processLimelight(LEFT_LL);
-        if (DriverStation.isEnabled()) {
+        if (DriverStation.isTeleop()) {
             processLimelightMt2();
         } else {
             processLimelightMt1();

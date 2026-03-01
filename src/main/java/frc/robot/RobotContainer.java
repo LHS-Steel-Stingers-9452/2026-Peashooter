@@ -130,7 +130,7 @@ public class RobotContainer {
         
     //Left Bumper = AimAtOutpost
         joystick.leftBumper()
-        .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(13, 4)));
+        .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12.5, 4)));
     //Left Trigger = Intake
         joystick
             .leftTrigger()
@@ -144,7 +144,7 @@ public class RobotContainer {
     //Right Bumper = Aim at Hub
         joystick 
             .rightBumper()
-            .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(11.5, 4)));
+            .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(11.25, 4)));
             //  .whileTrue(aimAtTarget(drivetrain));
     //Face Button
     //face buttons
@@ -153,7 +153,7 @@ public class RobotContainer {
             .onTrue(shooter.setVelocity(42));
         joystick 
             .b() //passing shot
-            .onTrue(shooter.setVelocity(56));
+            .onTrue(shooter.setVelocity(68));
         // joystick
         //     .a()
         //     .onTrue(intakepivot.setPosition(8));
