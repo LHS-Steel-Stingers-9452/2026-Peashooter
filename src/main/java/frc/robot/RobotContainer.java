@@ -287,7 +287,7 @@ public class RobotContainer {
         //Named Commands, Necessary for autos!   NOT THE COMMANDS THEMSELVES, basically translating them to be used on pathplanner 
 
 
-            NamedCommands.registerCommand("Dump Mag", dumpMag(shooter, indexer, kicker));
+            NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker, drivetrain));
 
 
 
@@ -310,14 +310,15 @@ public class RobotContainer {
         );
     }
 
-    public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
+    public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker, CommandSwerveDrivetrain drivetrain){
         return shooter.setVelocity(42)
+        .alongWith(aimAtTargetMega(drivetrain, new Translation2d(12.5, 4))) //(aimAtTargetMega(drivetrain, new Translation2d(12.5, 4)));
         .andThen(new WaitCommand(0.10))
         .andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25)))
-        .andThen(new WaitCommand(3))
+        .andThen(new WaitCommand(5.5))
         .andThen(shooter.stopCommand().alongWith(kicker.stopCommand().alongWith(indexer.stopCommand())));
     }
-    public Command autonIntakeFuel(){
+    public Command autonIntakeFuel(Intake intake){
         return intake.setVoltage(12);
         // .alongWith(
         // intakepivot.setPosition(0.7));
