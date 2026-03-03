@@ -13,6 +13,18 @@
         {
           "type": "named",
           "data": {
+            "name": "autoIntakeFuel"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "dumpMag"
           }
         },
@@ -26,6 +38,18 @@
           "type": "path",
           "data": {
             "pathName": "Angel's Grand Path 2 Topside"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoIntakeFuel"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 5.0
           }
         },
         {

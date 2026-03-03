@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.4835062611806795,
-        "y": 3.9782110912343462
+        "x": 3.509967105263158,
+        "y": 7.6603179824561405
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.4510554561717353,
-        "y": 2.8748837209302325
+        "x": 4.509967105263158,
+        "y": 7.6603179824561405
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "BlueTopTrench-NeutralzoneFar"
     },
     {
       "anchor": {
-        "x": 3.4835062611806795,
-        "y": 1.625527728085867
+        "x": 7.491085526315789,
+        "y": 6.862171052631579
       },
       "prevControl": {
-        "x": 3.467280858676207,
-        "y": 2.761305903398926
+        "x": 6.221743421052631,
+        "y": 7.458377192982456
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "NeutralZoneFarTop"
     }
   ],
   "rotationTargets": [],
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -34.286876977209
   },
   "reversed": false,
   "folder": null,

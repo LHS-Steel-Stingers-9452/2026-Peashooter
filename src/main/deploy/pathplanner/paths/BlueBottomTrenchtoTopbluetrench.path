@@ -1,0 +1,103 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.481118421052632,
+        "y": 0.8039473684210521
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.481118421052631,
+        "y": 0.8039473684210521
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.18345394736842,
+        "y": 1.813651315789473
+      },
+      "prevControl": {
+        "x": 8.510405701754385,
+        "y": 0.27505482456140173
+      },
+      "nextControl": {
+        "x": 7.804988888610035,
+        "y": 3.5946633570054036
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.933344298245614,
+        "y": 6.006326754385964
+      },
+      "prevControl": {
+        "x": 7.7223083938875146,
+        "y": 4.903678138790053
+      },
+      "nextControl": {
+        "x": 6.1351973684210535,
+        "y": 7.121809210526315
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.9138486842105262,
+        "y": 7.3045175438596495
+      },
+      "prevControl": {
+        "x": 6.5294627192982455,
+        "y": 7.7372478070175426
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Bluetoptrench67"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.37264150943396224,
+      "rotationDegrees": -179.52104373645173
+    },
+    {
+      "waypointRelativePos": 0.820754716981132,
+      "rotationDegrees": 22.81448254607939
+    },
+    {
+      "waypointRelativePos": 1.7641509433962295,
+      "rotationDegrees": 54.12881426502299
+    },
+    {
+      "waypointRelativePos": 2.65094339622642,
+      "rotationDegrees": -91.2983775634333
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -76.82744657667305
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

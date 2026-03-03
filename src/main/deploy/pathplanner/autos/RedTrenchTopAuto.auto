@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "OutToHub"
+            "pathName": "RedTopTrench-RedNeutralTop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedTopFarNeutral-bottom"
           }
         }
       ]

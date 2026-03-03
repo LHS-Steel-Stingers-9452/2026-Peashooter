@@ -29,10 +29,15 @@ import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Kicker;
@@ -45,12 +50,13 @@ import frc.robot.VisionPros;
 public class RobotContainer {
     //Subsystem Imports
     // private final Climber climber = new Climber();
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final Shooter shooter = new Shooter();
     private final Kicker kicker = new Kicker();
     private final Intake intake = new Intake();
     private final IntakePivot intakepivot = new IntakePivot();
     private final Indexer indexer = new Indexer();
-    private final Hood hood = new Hood();
+    private final Hood hood = new Hood(drivetrain);
     
 
 //Swerve
@@ -74,7 +80,7 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    // public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final Pigeon2 pigeon = new Pigeon2(0);
 
@@ -89,6 +95,10 @@ public class RobotContainer {
         // hoodSafety(drivetrain, hood).schedule();
         // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
         //Auto Selection is already handled by Glass.
+        NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker));
+        NamedCommands.registerCommand("autoIntakeFuel",autoIntakeFuel());
+        NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto(drivetrain));
+        NamedCommands.registerCommand("print", Commands.runOnce(()-> System.out.println("commandsent")));
         autoChooser = AutoBuilder.buildAutoChooser();
         // See if you need this if the options for the autos are not popping up.
          autoChooser.setDefaultOption("1", Commands.print("1"));
@@ -130,7 +140,7 @@ public class RobotContainer {
         
     //Left Bumper = AimAtOutpost
         joystick.leftBumper()
-        .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12.5, 4)));
+        .whileTrue(aimAtOutpostMegaTag2(drivetrain,new Translation2d(15.1, 6.9) ));
     //Left Trigger = Intake
         joystick
             .leftTrigger()
@@ -144,7 +154,7 @@ public class RobotContainer {
     //Right Bumper = Aim at Hub
         joystick 
             .rightBumper()
-            .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(11.25, 4)));
+            .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4)));
             //  .whileTrue(aimAtTarget(drivetrain));
     //Face Button
     //face buttons
@@ -153,7 +163,7 @@ public class RobotContainer {
             .onTrue(shooter.setVelocity(42));
         joystick 
             .b() //passing shot
-            .onTrue(shooter.setVelocity(68));
+            .onTrue(shooter.setVelocity(0));
         // joystick
         //     .a()
         //     .onTrue(intakepivot.setPosition(8));
@@ -179,9 +189,9 @@ public class RobotContainer {
                     -joystick.getRightX()
                         *MaxAngularRate)
             ));
-        joystick
-            .povRight()
-            .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12, 4)));
+        // joystick
+        //     .povRight()
+        //     .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12, 4)));
         joystick
             .povDown()
             .onTrue(shooter.setVelocity(0));
@@ -287,7 +297,7 @@ public class RobotContainer {
         //Named Commands, Necessary for autos!   NOT THE COMMANDS THEMSELVES, basically translating them to be used on pathplanner 
 
 
-            NamedCommands.registerCommand("Dump Mag", dumpMag(shooter, indexer, kicker));
+            // NamedCommands.registerCommand("Dump Mag", dumpMag(shooter, indexer, kicker));
 
 
 
@@ -312,23 +322,29 @@ public class RobotContainer {
 
     public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
         return shooter.setVelocity(42)
-        .andThen(new WaitCommand(0.10))
+        .andThen(new WaitCommand(1))
         .andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25)))
         .andThen(new WaitCommand(3))
         .andThen(shooter.stopCommand().alongWith(kicker.stopCommand().alongWith(indexer.stopCommand())));
     }
-    public Command autonIntakeFuel(){
-        return intake.setVoltage(12);
-        // .alongWith(
-        // intakepivot.setPosition(0.7));
-    } 
+    public Command autoIntakeFuel(){
+        return intake.setVoltage(12)
+        .andThen(new WaitCommand(2))
+        .andThen(intake.setVoltage(0));
+    }
+    
+    // public Command autoIntakeFuel(){
+    //     return intake.setVoltage(12);
+    //     // .alongWith(
+    //     // intakepivot.setPosition(0.7));
+    // }
 
 
-    public Command intakeFuel(){
-        return intake.setVoltage(3)
-        .alongWith(
-        intakepivot.setPosition(0.7));
-    } 
+    // public Command intakeFuel(){
+    //     return intake.setVoltage(3)
+    //     .alongWith(
+    //     intakepivot.setPosition(0.7));
+    // } 
 
 
                 /* code from kevlio pay no mind
@@ -358,7 +374,7 @@ public class RobotContainer {
         // );
     }
 
-    public Command aimAtTarget(CommandSwerveDrivetrain drivetrain) {
+    public Command aimAtTargetAuto(CommandSwerveDrivetrain drivetrain) {
         return  drivetrain.applyRequest(
                     () -> {
                         double kP = .03; //kp was .0176
@@ -376,12 +392,12 @@ public class RobotContainer {
                     });
     }
 
-     public Command aimAtHub(CommandSwerveDrivetrain drivetrain) {
+     public Command aimAtHubAuto(CommandSwerveDrivetrain drivetrain) {
         return  drivetrain.applyRequest(
                     () -> {
                         
                          var currentPose = drivetrain.getState().Pose;
-                         var targetTranslation = new Translation2d(13, 4); // We got (12, 4) IRL but (13, 4) works better in sim, we can play with it
+                         var targetTranslation = new Translation2d(4.5, 4); //blue
                          var direction =
                             targetTranslation.minus(currentPose.getTranslation());
                         var error =
@@ -407,7 +423,7 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
-    public Command aimAtTargetMega(CommandSwerveDrivetrain drivetrain, Translation2d target) {
+    public Command aimAtHubMegaTag2(CommandSwerveDrivetrain drivetrain, Translation2d target) {
         return  drivetrain.applyRequest(
                     () -> {
                         
@@ -437,21 +453,19 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
-    public Command aimAtOutpost(CommandSwerveDrivetrain drivetrain) {
+    public Command aimAtOutpostMegaTag2(CommandSwerveDrivetrain drivetrain, Translation2d target) {
         return  drivetrain.applyRequest(
                     () -> {
                         
-
-                        var currentPose = drivetrain.getState().Pose;
-                         var targetTranslation = new Translation2d(13, 4); // Get cords for Outpost
+                         var currentPose = drivetrain.getState().Pose;
                          var direction =
-                            targetTranslation.minus(currentPose.getTranslation());
+                            target.minus(currentPose.getTranslation());
                         var error =
                             direction.getAngle()
                                 .minus(currentPose.getRotation())
                                 .getRadians();
-
-                        double kP = .35; //kp was .0176
+                                
+                        double kP = 3; //kp was .0176
                         double targetingAngularVelocity = error * kP;
                         // targetingAngularVelocity *= MaxAngularRate;
                         // targetingAngularVelocity *= -1.0;
@@ -469,46 +483,6 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
-    // public Command hoodSafety(CommandSwerveDrivetrain drivetrain, Hood hood) {
-    //         return Commands.run(() -> {
+            }
 
-    //     //          var currentPose = drivetrain.getState().Pose;
-    //     //          var targetTranslation = new Translation2d(13,4); // Get cords for Outpost
-    //     //          var targetTranslation2 = new Translation2d(13,4); // Get cords for Outpost
-
-    //     //          var direction =
-    //     //                     targetTranslation.minus(currentPose.getTranslation());
-    //     //             var error =
-    //     //                     direction.getAngle()
-    //     //                         .minus(currentPose.getRotation())
-    //     //                         .getRadians();
-
-    //     //         double kP = .35; //kp was .0176
-    //     //         double targetingAngularVelocity = error * kP;
-    //     //                 // targetingAngularVelocity *= MaxAngularRate;
-    //     //                 // targetingAngularVelocity *= -1.0;
-
-    //     //                 // var angle = Math.atan2(, )
-
-    //     //         // Distance first zone
-    //     //         double dx1 = poseX - target1X;
-    //     //         double dy1 = poseY - target1Y;
-    //     //         double distance1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
-
-    //     //         // Distance second zone
-    //     //         double dx2 = poseX - target2X;
-    //     //         double dy2 = poseY - target2Y;
-    //     //         double distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-
-    //     //         if (distance1 <= radius || distance2 <= radius) {
-    //     //             hood.setPosition(1);  // DOWN
-    //     //         } else {
-    //     //             hood.setPosition(10);  // UP
-    //     //         }
-
-    //     // }, hood);
-    //     }
-    // }
-    
-}
 

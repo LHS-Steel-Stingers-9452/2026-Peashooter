@@ -143,7 +143,7 @@ public class VisionPros extends SubsystemBase {
         LimelightHelpers.SetRobotOrientation("limelight-left", headingDog, 0, 0, 0, 0, 0); 
 
        
-        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-left");
+        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-left");
         
         if (shouldAcceptPoseEstimate(poseEstimate, driveState.Pose)) {
              drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.004, 0.004, 999999999));

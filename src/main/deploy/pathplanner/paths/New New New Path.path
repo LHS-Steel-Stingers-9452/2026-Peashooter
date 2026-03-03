@@ -1,0 +1,91 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.9138486842105262,
+        "y": 7.3045175438596495
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.5486951754385965,
+        "y": 7.6795504385964914
+      },
+      "isLocked": false,
+      "linkedName": "Bluetoptrench67"
+    },
+    {
+      "anchor": {
+        "x": 6.433300438596491,
+        "y": 6.025559210526316
+      },
+      "prevControl": {
+        "x": 6.692938596491227,
+        "y": 7.178304550438597
+      },
+      "nextControl": {
+        "x": 6.1736622807017545,
+        "y": 4.872813870614035
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.433300438596491,
+        "y": 1.9001973684210522
+      },
+      "prevControl": {
+        "x": 6.430295367324562,
+        "y": 2.4270614891721487
+      },
+      "nextControl": {
+        "x": 6.436305509868419,
+        "y": 1.3733332476699553
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.9138486842105262,
+        "y": 0.7462500000000001
+      },
+      "prevControl": {
+        "x": 6.856414473684209,
+        "y": 3.0541447368421046
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.2547169811320755,
+      "rotationDegrees": -90.3260903485488
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 71.20011484134726
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -76.82744657667305
+  },
+  "useDefaultConstraints": true
+}

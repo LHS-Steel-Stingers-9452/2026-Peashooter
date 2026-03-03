@@ -21,6 +21,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 // import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.math.geometry.Translation2d;
 // import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -57,6 +58,7 @@ public class Hood extends SubsystemBase {
   private final double statorCurrentLimit = 60;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
+  private boolean safetyEnabled = false;
 
 
   // Motor controller
@@ -69,15 +71,20 @@ public class Hood extends SubsystemBase {
   private final StatusSignal<Current> statorCurrentSignal;
   private final StatusSignal<Temperature> temperatureSignal;
 
+
+  private final CommandSwerveDrivetrain drivetrain;
+
   // Simulation
   private final SingleJointedArmSim pivotSim;
 
   /**
    * Creates a new Pivot Subsystem.
    */
-  public Hood() {
+  public Hood(CommandSwerveDrivetrain drivetrain) {
     // Initialize motor controller
     motor = new TalonFX(canID);
+    //drivetrain
+    this.drivetrain = drivetrain;
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);
@@ -152,8 +159,11 @@ public class Hood extends SubsystemBase {
       voltageSignal,
       statorCurrentSignal,
       temperatureSignal
-
     );
+
+    if (safetyEnabled) {
+        hoodSafety();
+    }
   }
  
   /**
@@ -250,4 +260,45 @@ public class Hood extends SubsystemBase {
   public Command resetEncoder() {
     return runOnce(() -> motor.setPosition(0)).ignoringDisable(true);  
   }
+
+  public void hoodSafety(){
+    var currentPose = drivetrain.getState().Pose;
+    var currentTranslation = currentPose.getTranslation();
+
+    Translation2d target1 = new Translation2d(12, 7);
+    Translation2d target2 = new Translation2d(12, 0);
+
+    double radius = 1.5;
+
+    double distance1 = currentTranslation.getDistance(target1);
+    double distance2 = currentTranslation.getDistance(target2);
+
+    if (distance1 <= radius || distance2 <= radius) {
+        motor.setControl(positionRequest.withPosition(0));
+    } else {
+        motor.setControl(positionRequest.withPosition(10));
+    }
 }
+}
+// public Command hoodSafety(CommandSwerveDrivetrain drivetrain, Hood hood) {
+//     return Commands.run(() -> {
+
+//         var currentPose = drivetrain.getState().Pose;
+//         var currentTranslation = currentPose.getTranslation();
+
+//         Translation2d target1 = new Translation2d(12, 7);
+//         Translation2d target2 = new Translation2d(12, 0);
+
+//         double radius = 1.5; // safety zone radius of trench
+
+//         double distance1 = currentTranslation.getDistance(target1);
+//         double distance2 = currentTranslation.getDistance(target2);
+
+//         if (distance1 <= radius || distance2 <= radius) {
+//             hood.setPosition(1);   // DOWN
+//         } else {
+//             hood.setPosition(10);  // UP
+//         }
+
+//     }, hood);
+// }
