@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 11.760690789473685,
-        "y": 7.42952850877193
+        "x": 12.54922149122807,
+        "y": 7.3429824561403505
       },
       "prevControl": null,
       "nextControl": {
-        "x": 12.760690789473685,
-        "y": 7.42952850877193
+        "x": 13.54922149122807,
+        "y": 7.3429824561403505
       },
       "isLocked": false,
       "linkedName": "pdkm1"
@@ -69,7 +69,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -84.17365797044444
+    "rotation": -98.42696902148052
   },
   "useDefaultConstraints": true
 }
