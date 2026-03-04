@@ -95,7 +95,7 @@ public class RobotContainer {
         // hoodSafety(drivetrain, hood).schedule();
         // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
         //Auto Selection is already handled by Glass.
-        NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker));
+        NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker,drivetrain));
         NamedCommands.registerCommand("autoIntakeFuel",autoIntakeFuel());
         NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto(drivetrain));
         NamedCommands.registerCommand("print", Commands.runOnce(()-> System.out.println("commandsent")));
@@ -320,11 +320,11 @@ public class RobotContainer {
         );
     }
 
-    public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
+    public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker, CommandSwerveDrivetrain drivetrain){
         return shooter.setVelocity(42)
         .andThen(new WaitCommand(1))
         .andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25)))
-        .andThen(new WaitCommand(3))
+        .andThen(new WaitCommand(5.5))
         .andThen(shooter.stopCommand().alongWith(kicker.stopCommand().alongWith(indexer.stopCommand())));
     }
     public Command autoIntakeFuel(){
