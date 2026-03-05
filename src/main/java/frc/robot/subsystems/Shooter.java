@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 // import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 // import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -39,6 +40,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Shooter extends SubsystemBase {
 
   // Constants
+  public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 17;
   private final int canID2 = 18;
@@ -84,8 +86,8 @@ public class Shooter extends SubsystemBase {
    */
   public Shooter() {
     // Initialize motor controller
-    motor = new TalonFX(canID);
-    motor2 = new TalonFX(canID2);
+    motor = new TalonFX(canID,kCANBus.getName());
+    motor2 = new TalonFX(canID2,kCANBus.getName());
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);

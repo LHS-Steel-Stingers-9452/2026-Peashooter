@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.Volt;
 // import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 // import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -41,6 +42,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Kicker extends SubsystemBase {
 
   // Constants
+  public static final CANBus kCANBus = new CANBus("Carnivore", "./logs/example.hoot");
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 16;
   private final double gearRatio = 1;
@@ -79,7 +81,7 @@ public class Kicker extends SubsystemBase {
    */
   public Kicker() {
     // Initialize motor controller
-    motor = new TalonFX(canID);
+    motor = new TalonFX(canID,kCANBus.getName());
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);

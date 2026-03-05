@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 // import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 // import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -40,9 +41,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Indexer extends SubsystemBase {
 
   // Constants
+  public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
   private final DCMotor dcMotor = DCMotor.getKrakenX44(2);
-  private final int canID = 12;
-  private final int canID2 = 13;
+  private final int canID = 22;
+  private final int canID2 = 23;
   private final double gearRatio = 1;
   private final double kP = 1; //started at 1
   private final double kI = 0;
@@ -85,8 +87,8 @@ public class Indexer extends SubsystemBase {
    */
   public Indexer() {
     // Initialize motor controller
-    motor = new TalonFX(canID);
-    motor2 = new TalonFX(canID2);
+    motor = new TalonFX(canID,kCANBus.getName());
+    motor2 = new TalonFX(canID2,kCANBus.getName());
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);
@@ -151,7 +153,7 @@ public class Indexer extends SubsystemBase {
       Units.degreesToRadians(0) // Starting position (rad)
     );
         
-    motor2.setControl(new Follower(canID, MotorAlignmentValue.Aligned));
+    motor2.setControl(new Follower(canID, MotorAlignmentValue.Opposed));
 
     setDefaultCommand(setVoltage(0));
   }

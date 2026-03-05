@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "pdkm"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "dumpMag"
+            "pathName": "BottomRedtotopred"
           }
         }
       ]

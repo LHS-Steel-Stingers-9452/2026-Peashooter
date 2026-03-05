@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.1544298245614035,
-        "y": 0.5346929824561402
+        "x": 7.433388157894737,
+        "y": 0.44814692982456106
       },
       "isLocked": false,
       "linkedName": "BlueBottomTrench1"
@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 6.385219298245614,
-        "y": 1.5540131578947363
+        "y": 1.5443969298245612
       },
       "prevControl": {
         "x": 6.1928947368421055,
-        "y": 0.8520285087719297
+        "y": 0.8424122807017547
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -145.24408744645862
+    "rotation": 6.632514615138485
   },
   "reversed": false,
   "folder": null,

@@ -1,0 +1,103 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 12.683848684210528,
+        "y": 7.391063596491227
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 10.289407894736842,
+        "y": 7.583388157894737
+      },
+      "isLocked": false,
+      "linkedName": "Redtopfartrench667"
+    },
+    {
+      "anchor": {
+        "x": 9.991304824561404,
+        "y": 6.073640350877192
+      },
+      "prevControl": {
+        "x": 9.607172523074146,
+        "y": 7.626870961238703
+      },
+      "nextControl": {
+        "x": 10.21247807017544,
+        "y": 5.179331140350877
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 9.991304824561404,
+        "y": 1.8232675438596484
+      },
+      "prevControl": {
+        "x": 9.702817982456141,
+        "y": 4.90046052631579
+      },
+      "nextControl": {
+        "x": 10.09140070539786,
+        "y": 0.7555781482707891
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 12.683848684210528,
+        "y": 0.7174013157894727
+      },
+      "prevControl": {
+        "x": 11.13563596491228,
+        "y": 0.3712171052631558
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.15566037735849061,
+      "rotationDegrees": -91.14438948610986
+    },
+    {
+      "waypointRelativePos": 0.8726415094339622,
+      "rotationDegrees": -139.0252874952974
+    },
+    {
+      "waypointRelativePos": 2.0235849056603756,
+      "rotationDegrees": -140.0640299630103
+    },
+    {
+      "waypointRelativePos": 2.6556603773585046,
+      "rotationDegrees": 89.80588409424028
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 103.57043438516155
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -112.90576965841717
+  },
+  "useDefaultConstraints": true
+}

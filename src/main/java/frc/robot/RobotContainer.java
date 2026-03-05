@@ -144,7 +144,7 @@ public class RobotContainer {
     //Left Trigger = Intake
         joystick
             .leftTrigger()
-            .whileTrue(intake.setVoltage(12));
+            .whileTrue(intake.setVoltage(-12));
     //Right Trigger = Indexer + Kicker  
         joystick
             .rightTrigger() 
@@ -483,6 +483,8 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
+                
             }
+
 
 

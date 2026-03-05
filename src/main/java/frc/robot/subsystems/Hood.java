@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 // import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 // import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -41,8 +42,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Hood extends SubsystemBase {
 
   // Constants
+  public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
-  private final int canID = 11;
+  private final int canID = 21;
   private final double gearRatio = 1;
   private final double kP = 1; //started at 1
   private final double kI = 0;
@@ -82,7 +84,7 @@ public class Hood extends SubsystemBase {
    */
   public Hood(CommandSwerveDrivetrain drivetrain) {
     // Initialize motor controller
-    motor = new TalonFX(canID);
+    motor = new TalonFX(canID,kCANBus.getName());
     //drivetrain
     this.drivetrain = drivetrain;
 

@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 13.212741228070177,
-        "y": 0.8039473684210521
+        "x": 13.039649122807019,
+        "y": 0.42891447368421043
       },
       "prevControl": null,
       "nextControl": {
-        "x": 12.962741228070177,
-        "y": 0.8039473684210521
+        "x": 12.789649122807019,
+        "y": 0.42891447368421043
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 9.087379385964914,
-        "y": 1.0635855263157885
+        "x": 9.106611842105263,
+        "y": 0.9481907894736832
       },
       "prevControl": {
-        "x": 9.760515350877192,
-        "y": 0.7077850877192975
+        "x": 9.779747807017541,
+        "y": 0.5923903508771922
       },
       "nextControl": {
-        "x": 8.098844487451569,
-        "y": 1.5860968298157019
+        "x": 8.118076943591918,
+        "y": 1.4707020929735966
       },
       "isLocked": false,
       "linkedName": null
@@ -36,55 +36,46 @@
         "y": 7.150657894736842
       },
       "prevControl": {
-        "x": 9.081443284321953,
-        "y": 6.708954603857856
+        "x": 9.12517286090833,
+        "y": 6.70050111278569
       },
       "nextControl": {
-        "x": 10.683673245614036,
-        "y": 7.621853070175439
+        "x": 10.60674342105263,
+        "y": 7.612236842105263
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-<<<<<<< HEAD
-        "x": 12.54922149122807,
-        "y": 7.3429824561403505
+        "x": 12.683848684210528,
+        "y": 7.391063596491227
       },
       "prevControl": {
-        "x": 12.039561403508772,
-        "y": 7.304517543859648
-=======
-        "x": 12.52681883024251,
-        "y": 7.4572753209700435
-      },
-      "prevControl": {
-        "x": 12.017158742523211,
-        "y": 7.418810408689341
->>>>>>> 619ce36c8546951aaf218c62a27ecfaae6dfcbca
+        "x": 11.98186403508772,
+        "y": 7.487225877192982
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "pdkm1"
+      "linkedName": "Redtopfartrench667"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 0.6084905660377359,
-      "rotationDegrees": 174.72038359893708
+      "rotationDegrees": -1.3912932081152856
     },
     {
       "waypointRelativePos": 0.9591194968553457,
-      "rotationDegrees": -30.667206316136376
+      "rotationDegrees": -34.36397957034866
     },
     {
-      "waypointRelativePos": 2.0047169811320713,
-      "rotationDegrees": -24.427003940525587
+      "waypointRelativePos": 1.8443396226415083,
+      "rotationDegrees": -24.427
     },
     {
-      "waypointRelativePos": 2.330188679245281,
-      "rotationDegrees": -89.70424218230676
+      "waypointRelativePos": 2.353773584905663,
+      "rotationDegrees": -90.84706584648458
     }
   ],
   "constraintZones": [],
@@ -100,17 +91,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-<<<<<<< HEAD
-    "rotation": -98.42696902148052
-=======
-    "rotation": -90.0
->>>>>>> 619ce36c8546951aaf218c62a27ecfaae6dfcbca
+    "rotation": -112.90576965841717
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.4855458300081247
   },
   "useDefaultConstraints": true
 }
