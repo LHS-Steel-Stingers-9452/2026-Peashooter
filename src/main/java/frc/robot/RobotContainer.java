@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -45,6 +44,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePivot; 
 import frc.robot.VisionPros;
+import frc.robot.autos.AlignToHubPoint;
 
 @Logged
 public class RobotContainer {
@@ -79,12 +79,28 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController joystick2 = new CommandXboxController(1);
 
     // public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final Pigeon2 pigeon = new Pigeon2(0);
 
     public final VisionPros visionpros = new VisionPros(drivetrain, pigeon);
+
+
+    private final Translation2d HUB_POSITION = new Translation2d(11.5, 4);
+    private final Translation2d[] HUB_ALIGNMENT_POINTS = new Translation2d[] {
+    //LeftTrench
+    new Translation2d(12.7, 7.3),
+    //RightTrench
+    new Translation2d(12.7, 0.6),
+    //Tower
+    new Translation2d(14.7, 4.0),
+    //Depot
+    new Translation2d(15.7, 1),
+    //Outpost
+    new Translation2d(15.5, 7.3)
+};
 
     
     private final SendableChooser<Command> autoChooser;
@@ -132,8 +148,9 @@ public class RobotContainer {
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-        // Reset the field-centric heading on left bumper press.
+        // Reset the field-centric heading on start.
         joystick.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        joystick.back().whileTrue(indexer.setVelocity(-25).alongWith(kicker.setVelocity(-25)));
 
    
 //Joystick/controller buttons    
@@ -152,10 +169,10 @@ public class RobotContainer {
             .alongWith(kicker.setVelocity(25)));
             // ,(intake.setVoltage(10))));
     //Right Bumper = Aim at Hub
-        joystick 
-            .rightBumper()
-            .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4)));
-            //  .whileTrue(aimAtTarget(drivetrain));
+        joystick.rightBumper()
+        .whileTrue(alignToClosestHubPoint());
+    
+        //.whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4)));
     //Face Button
     //face buttons
         joystick 
@@ -198,6 +215,21 @@ public class RobotContainer {
         joystick
             .povLeft()
             .whileTrue(drivetrain.applyRequest(() -> brake));
+        
+    //Luis Buttons
+        joystick2
+            .a()
+            .onTrue(shooter.setVelocity(35));
+        joystick2
+            .x()
+            .onTrue(shooter.setVelocity(41));
+        joystick2
+            .y()
+            .onTrue(shooter.setVelocity(62));
+        joystick2
+            .a()
+            .onTrue(shooter.setVelocity(0));
+       
 
             
     //special buttons (start, select)    
@@ -483,6 +515,14 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
+    private Command alignToClosestHubPoint() {
+        return new AlignToHubPoint(
+        drivetrain,
+        HUB_ALIGNMENT_POINTS[0],   // dummy value
+        HUB_ALIGNMENT_POINTS,
+        HUB_POSITION
+        );
+}
                 
             }
 
