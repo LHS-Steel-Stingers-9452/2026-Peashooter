@@ -26,9 +26,11 @@ public class VisionPros extends SubsystemBase {
     private final CommandSwerveDrivetrain drivetrain;
 
     private static final String LEFT_LL = "limelight-left";
+    private static final String CENTER_LL = "limelight-center";
     private Pose2d visionPose = new Pose2d();
      InterpolatingDoubleTreeMap tyToHoodAngleMap = new InterpolatingDoubleTreeMap();
      private final Pigeon2 pigeon;
+     private int visionCounter = 0;
 
 
     private int[] acceptedTags = {2, 3, 4, 5, 8, 9, 10, 11};
@@ -39,11 +41,18 @@ public class VisionPros extends SubsystemBase {
         this.pigeon = pigeon;
         tyToHoodAngleMap.put(0.0, 1.746);
         LimelightHelpers.setCameraPose_RobotSpace( "limelight-left", 
-     0.381, 
-     -0.1397, 
-     0.5207, 
+     0.350, 
+     0.153, 
+     0.478, 
      0, 
      10, 
+     0 );
+        LimelightHelpers.setCameraPose_RobotSpace("limelight-center",
+    0.243, //0.381
+     0.137, 
+     0.524, 
+     0, 
+     0, 
      0 );
 
      
@@ -56,11 +65,27 @@ public class VisionPros extends SubsystemBase {
         // System.out.println("periodic is running");
     
         // processLimelight(LEFT_LL);
-        if (DriverStation.isTeleop()) {
-            processLimelightMt2();
-        } else {
-            processLimelightMt1();
-        }
+
+    // visionCounter++;
+
+    // if (visionCounter % 5 != 0) {
+    // return;
+    // }
+    if (DriverStation.isTeleop()) {
+    processLimelightMt2();
+    } else {
+    processLimelightMt1();
+    }
+
+        // if (DriverStation.isTeleop()) {
+        //     processLimelightMt2();
+        //     // processLimelight3GMt2();
+        // } else {
+        //     processLimelightMt1();
+        // }
+
+
+
         // System.out.println("getYaw():" + pigeon.getYaw().getValue());
         // System.out.println("getAngle():" + pigeon.getAngle());
         // System.out.println("getRotation3d():" + pigeon.getRotation3d().getAngle());
@@ -144,6 +169,22 @@ public class VisionPros extends SubsystemBase {
 
        
         LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-left");
+        
+        if (shouldAcceptPoseEstimate(poseEstimate, driveState.Pose)) {
+             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.004, 0.004, 999999999));
+             drivetrain.addVisionMeasurement(poseEstimate.pose, poseEstimate.timestampSeconds);
+             
+        }
+    }
+    private void processLimelight3GMt2() {
+        LimelightHelpers.SetIMUMode(CENTER_LL, 4);
+        LimelightHelpers.SetIMUAssistAlpha(CENTER_LL, 0.01);
+        var driveState = drivetrain.getState();
+        double headingDog = driveState.Pose.getRotation().getDegrees(); 
+        LimelightHelpers.SetRobotOrientation("limelight-center", headingDog, 0, 0, 0, 0, 0); 
+
+       
+        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-center");
         
         if (shouldAcceptPoseEstimate(poseEstimate, driveState.Pose)) {
              drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.004, 0.004, 999999999));

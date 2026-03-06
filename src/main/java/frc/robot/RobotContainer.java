@@ -36,7 +36,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Kicker;
@@ -85,7 +84,7 @@ public class RobotContainer {
 
     private final Pigeon2 pigeon = new Pigeon2(0);
 
-    public final VisionPros visionpros = new VisionPros(drivetrain, pigeon);
+    // public final VisionPros visionpros = new VisionPros(drivetrain, pigeon);
 
 
     private final Translation2d HUB_POSITION = new Translation2d(11.5, 4);
@@ -100,6 +99,7 @@ public class RobotContainer {
     new Translation2d(15.7, 1),
     //Outpost
     new Translation2d(15.5, 7.3)
+
 };
 
     
@@ -111,7 +111,7 @@ public class RobotContainer {
         // hoodSafety(drivetrain, hood).schedule();
         // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
         //Auto Selection is already handled by Glass.
-        NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker,drivetrain));
+        NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker));
         NamedCommands.registerCommand("autoIntakeFuel",autoIntakeFuel());
         NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto(drivetrain));
         NamedCommands.registerCommand("print", Commands.runOnce(()-> System.out.println("commandsent")));
@@ -212,9 +212,6 @@ public class RobotContainer {
         joystick
             .povDown()
             .onTrue(shooter.setVelocity(0));
-        joystick
-            .povLeft()
-            .whileTrue(drivetrain.applyRequest(() -> brake));
         
     //Luis Buttons
         joystick2
@@ -229,6 +226,9 @@ public class RobotContainer {
         joystick2
             .a()
             .onTrue(shooter.setVelocity(0));
+        joystick2
+            .povLeft()
+            .whileTrue(drivetrain.applyRequest(() -> brake));
        
 
             
@@ -337,7 +337,7 @@ public class RobotContainer {
     }
     //Auto
      public void autoInit(){
-                    drivetrain.seedFieldCentric();
+                    drivetrain.seedFieldCentric(Rotation2d.fromDegrees(180));
     }
 
 
@@ -352,7 +352,7 @@ public class RobotContainer {
         );
     }
 
-    public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker, CommandSwerveDrivetrain drivetrain){
+    public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
         return shooter.setVelocity(42)
         .andThen(new WaitCommand(1))
         .andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25)))
@@ -406,7 +406,7 @@ public class RobotContainer {
         // );
     }
 
-    public Command aimAtTargetAuto(CommandSwerveDrivetrain drivetrain) {
+    public Command aimAtTarget(CommandSwerveDrivetrain drivetrain) {
         return  drivetrain.applyRequest(
                     () -> {
                         double kP = .03; //kp was .0176
@@ -423,6 +423,23 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
     }
+    public Command aimAtTargetAuto(CommandSwerveDrivetrain drivetrain) {
+    return drivetrain.applyRequest(
+        () -> {
+            double kP = .03;
+            double targetingAngularVelocity =
+                LimelightHelpers.getTX("limelight-left") * kP;
+
+            targetingAngularVelocity *= MaxAngularRate;
+            targetingAngularVelocity *= -1.0;
+
+            return drive
+                .withVelocityX(0)   // no translation in auto
+                .withVelocityY(0)
+                .withRotationalRate(targetingAngularVelocity);
+                
+         }).withTimeout(1.0);
+}
 
      public Command aimAtHubAuto(CommandSwerveDrivetrain drivetrain) {
         return  drivetrain.applyRequest(
