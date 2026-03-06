@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+// import frc.robot.autos.AlignToHubPoint;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Indexer;
@@ -43,7 +44,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePivot; 
 import frc.robot.VisionPros;
-import frc.robot.autos.AlignToHubPoint;
+// import frc.robot.autos.AlignToHubPoint;
 
 @Logged
 public class RobotContainer {
@@ -78,29 +79,30 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
-    private final CommandXboxController joystick2 = new CommandXboxController(1);
+    // private final CommandXboxController joystick2 = new CommandXboxController(1);
 
     // public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final Pigeon2 pigeon = new Pigeon2(0);
 
-    // public final VisionPros visionpros = new VisionPros(drivetrain, pigeon);
+    public final VisionPros visionpros = new VisionPros(drivetrain, pigeon);
 
 
-    private final Translation2d HUB_POSITION = new Translation2d(11.5, 4);
-    private final Translation2d[] HUB_ALIGNMENT_POINTS = new Translation2d[] {
-    //LeftTrench
-    new Translation2d(12.7, 7.3),
-    //RightTrench
-    new Translation2d(12.7, 0.6),
-    //Tower
-    new Translation2d(14.7, 4.0),
-    //Depot
-    new Translation2d(15.7, 1),
-    //Outpost
-    new Translation2d(15.5, 7.3)
+//     private final Translation2d HUB_POSITION = new Translation2d(11.5, 4);
+//     private final Translation2d[] HUB_ALIGNMENT_POINTS = new Translation2d[] {
+//     //LeftTrench
+//     new Translation2d(12.7, 7.3),
+//     //RightTrench
+//     new Translation2d(12.7, 0.6),
+//     //Tower
+//     new Translation2d(14.7, 4.0),
+//     //Depot
+//     new Translation2d(15.7, 1),
+//     //Outpost
+//     new Translation2d(15.5, 7.3)
 
-};
+// };
+
 
     
     private final SendableChooser<Command> autoChooser;
@@ -113,7 +115,7 @@ public class RobotContainer {
         //Auto Selection is already handled by Glass.
         NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker));
         NamedCommands.registerCommand("autoIntakeFuel",autoIntakeFuel());
-        NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto(drivetrain));
+        NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto());
         NamedCommands.registerCommand("print", Commands.runOnce(()-> System.out.println("commandsent")));
         autoChooser = AutoBuilder.buildAutoChooser();
         // See if you need this if the options for the autos are not popping up.
@@ -161,32 +163,32 @@ public class RobotContainer {
     //Left Trigger = Intake
         joystick
             .leftTrigger()
-            .whileTrue(intake.setVoltage(-12));
+            .whileTrue(intake.setVoltage(-6));
     //Right Trigger = Indexer + Kicker  
         joystick
             .rightTrigger() 
             .whileTrue(indexer.setVelocity(45)
             .alongWith(kicker.setVelocity(25)));
             // ,(intake.setVoltage(10))));
-    //Right Bumper = Aim at Hub
+    // Right Bumper = Aim at Hub
         joystick.rightBumper()
-        .whileTrue(alignToClosestHubPoint());
+        // .whileTrue(alignToClosestHubPoint());
     
-        //.whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4)));
-    //Face Button
-    //face buttons
+        .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4)));
+    // Face Button
+    // face buttons
         joystick 
             .y() //trench shot
             .onTrue(shooter.setVelocity(42));
         joystick 
             .b() //passing shot
             .onTrue(shooter.setVelocity(0));
-        // joystick
-        //     .a()
-        //     .onTrue(intakepivot.setPosition(8));
-        // joystick
-        //     .x()
-        //     .onTrue(intakepivot.setPosition(0));
+        joystick
+            .povRight()
+            .onTrue(intakepivot.setPosition(0.5));
+        joystick
+            .povLeft()
+            .onTrue(intakepivot.setPosition(0));
         // joystick
         //     .x()
         //     .onTrue(getAutonomousCommand()); //Anti jam thing\
@@ -201,7 +203,8 @@ public class RobotContainer {
                 .withVelocityX(
                    (-joystick.getLeftY() * MaxSpeed)*(.45)) 
                 .withVelocityY(
-                    (-joystick.getLeftX() * MaxSpeed)*(.45))
+                    (
+                        -joystick.getLeftX() * MaxSpeed)*(.45))
                 .withRotationalRate(
                     -joystick.getRightX()
                         *MaxAngularRate)
@@ -214,21 +217,21 @@ public class RobotContainer {
             .onTrue(shooter.setVelocity(0));
         
     //Luis Buttons
-        joystick2
-            .a()
-            .onTrue(shooter.setVelocity(35));
-        joystick2
-            .x()
-            .onTrue(shooter.setVelocity(41));
-        joystick2
-            .y()
-            .onTrue(shooter.setVelocity(62));
-        joystick2
-            .a()
-            .onTrue(shooter.setVelocity(0));
-        joystick2
-            .povLeft()
-            .whileTrue(drivetrain.applyRequest(() -> brake));
+        // joystick2
+        //     .a()
+        //     .onTrue(shooter.setVelocity(35));
+        // joystick2
+        //     .x()
+        //     .onTrue(shooter.setVelocity(41));
+        // joystick2
+        //     .y()
+        //     .onTrue(shooter.setVelocity(62));
+        // joystick2
+        //     .a()
+        //     .onTrue(shooter.setVelocity(0));
+        // joystick2
+        //     .povLeft()
+        //     .whileTrue(drivetrain.applyRequest(() -> brake));
        
 
             
@@ -423,7 +426,7 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
     }
-    public Command aimAtTargetAuto(CommandSwerveDrivetrain drivetrain) {
+    public Command aimAtTargetAuto() {
     return drivetrain.applyRequest(
         () -> {
             double kP = .03;
@@ -532,14 +535,14 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
-    private Command alignToClosestHubPoint() {
-        return new AlignToHubPoint(
-        drivetrain,
-        HUB_ALIGNMENT_POINTS[0],   // dummy value
-        HUB_ALIGNMENT_POINTS,
-        HUB_POSITION
-        );
-}
+//     private Command alignToClosestHubPoint() {
+//         return new AlignToHubPoint(
+//         drivetrain,
+//         HUB_ALIGNMENT_POINTS[0],   // dummy value
+//         HUB_ALIGNMENT_POINTS,
+//         HUB_POSITION
+//         );
+// }
                 
             }
 
