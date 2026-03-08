@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.*;
 
 import javax.crypto.spec.DHGenParameterSpec;
 
+import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -17,6 +18,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,7 +40,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 // import frc.robot.autos.AlignToHubPoint;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Hood;
+// import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
@@ -48,15 +51,20 @@ import frc.robot.VisionPros;
 
 @Logged
 public class RobotContainer {
+
+    private final CANBus rioCanBus = new CANBus("", "./logs/example.hoot");
+    private final CANBus CarnivoreCanBus = new CANBus("Carnivore", "./logs/example.hoot");
+
+
     //Subsystem Imports
     // private final Climber climber = new Climber();
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    private final Shooter shooter = new Shooter();
-    private final Kicker kicker = new Kicker();
-    private final Intake intake = new Intake();
-    private final IntakePivot intakepivot = new IntakePivot();
-    private final Indexer indexer = new Indexer();
-    private final Hood hood = new Hood(drivetrain);
+    private final Shooter shooter = new Shooter(rioCanBus);
+    private final Kicker kicker = new Kicker(CarnivoreCanBus);
+    private final Intake intake = new Intake(CarnivoreCanBus);
+    private final IntakePivot intakepivot = new IntakePivot(rioCanBus);
+    private final Indexer indexer = new Indexer(rioCanBus);
+    // private final Hood hood = new Hood(drivetrain);
     
 
 //Swerve
@@ -79,11 +87,11 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
-    // private final CommandXboxController joystick2 = new CommandXboxController(1);
+    private final CommandXboxController joystick2 = new CommandXboxController(1);
 
     // public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
-    private final Pigeon2 pigeon = new Pigeon2(0);
+    private final Pigeon2 pigeon = drivetrain.getPigeon2();
 
     public final VisionPros visionpros = new VisionPros(drivetrain, pigeon);
 
@@ -115,12 +123,14 @@ public class RobotContainer {
         //Auto Selection is already handled by Glass.
         NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker));
         NamedCommands.registerCommand("autoIntakeFuel",autoIntakeFuel());
-        NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto());
+        // NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto());
         NamedCommands.registerCommand("print", Commands.runOnce(()-> System.out.println("commandsent")));
         autoChooser = AutoBuilder.buildAutoChooser();
         // See if you need this if the options for the autos are not popping up.
          autoChooser.setDefaultOption("1", Commands.print("1"));
-         autoChooser.addOption("OutpostToMiddleOfHub", getAutonomousCommand());
+        //  autoChooser.addOption("OutpostToMiddleOfHub", getAutonomousCommand());
+         autoChooser.addOption("Dumpmagtest67", dumpMag(shooter, indexer,kicker));
+
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
@@ -157,9 +167,9 @@ public class RobotContainer {
    
 //Joystick/controller buttons    
         
-    //Left Bumper = AimAtOutpost
+    //Left Bumper = AimAtHub
         joystick.leftBumper()
-        .whileTrue(aimAtOutpostMegaTag2(drivetrain,new Translation2d(15.1, 6.9) ));
+        .whileTrue(aimAtHubMegaTag2(drivetrain,new Translation2d(11.8, 4), new Translation2d(4.7, 4) ));
     //Left Trigger = Intake
         joystick
             .leftTrigger()
@@ -169,29 +179,28 @@ public class RobotContainer {
             .rightTrigger() 
             .whileTrue(indexer.setVelocity(45)
             .alongWith(kicker.setVelocity(25)));
-            // ,(intake.setVoltage(10))));
+            // ,(intake.setVoltage(10)))); 
     // Right Bumper = Aim at Hub
         joystick.rightBumper()
-        // .whileTrue(alignToClosestHubPoint());
-    
-        .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4)));
+            .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4), new Translation2d(5,4)));
+        // .whileTrue(alignToClosestHubPoint());/
     // Face Button
     // face buttons
         joystick 
             .y() //trench shot
-            .onTrue(shooter.setVelocity(42));
+            .onTrue(shooter.setVelocity(44));
         joystick 
             .b() //passing shot
             .onTrue(shooter.setVelocity(0));
         joystick
-            .povRight()
-            .onTrue(intakepivot.setPosition(0.5));
+            .a()
+            .onTrue(intakepivot.setPosition(26));
         joystick
-            .povLeft()
+            .x()
             .onTrue(intakepivot.setPosition(0));
-        // joystick
-        //     .x()
-        //     .onTrue(getAutonomousCommand()); //Anti jam thing\
+        joystick
+            .povDown()
+            .onTrue(intake.setVoltage(6));
 
     //D Pad Buttons
         joystick        
@@ -209,29 +218,50 @@ public class RobotContainer {
                     -joystick.getRightX()
                         *MaxAngularRate)
             ));
-        // joystick
+        // joystick2
         //     .povRight()
         //     .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12, 4)));
-        joystick
-            .povDown()
-            .onTrue(shooter.setVelocity(0));
+    
         
-    //Luis Buttons
-        // joystick2
-        //     .a()
-        //     .onTrue(shooter.setVelocity(35));
-        // joystick2
-        //     .x()
-        //     .onTrue(shooter.setVelocity(41));
-        // joystick2
-        //     .y()
-        //     .onTrue(shooter.setVelocity(62));
-        // joystick2
-        //     .a()
-        //     .onTrue(shooter.setVelocity(0));
-        // joystick2
-        //     .povLeft()
-        //     .whileTrue(drivetrain.applyRequest(() -> brake));
+    // Luis Buttons
+        joystick2
+            .leftBumper()
+            .onTrue(shooter.setVelocity(43.5)); //left trench
+        joystick2
+            .rightBumper()
+            .onTrue(shooter.setVelocity(43.5)); //right trench
+        joystick2
+            .y()
+            .onTrue(shooter.setVelocity(49)); // tower shot
+        joystick2
+            .x()
+            .onTrue(shooter.setVelocity(56)); // depot shot
+        joystick2
+            .b()
+            .onTrue(shooter.setVelocity(56)); // outpost
+        joystick2
+            .a()
+            .onTrue(shooter.setVelocity(0)); //stops shooter
+        joystick2
+            .leftTrigger()
+            .whileTrue(drivetrain.applyRequest(() -> brake));
+
+
+        joystick2
+            .povUp()
+            .onTrue(shooter.setVelocity(46));
+        joystick2
+            .povLeft()
+            .onTrue(shooter.setVelocity(44));
+
+        joystick2
+            .povRight()
+            .onTrue(shooter.setVelocity(45));
+        joystick2
+            .povDown()
+            .onTrue(shooter.setVelocity(43));
+        
+            
        
 
             
@@ -259,17 +289,17 @@ public class RobotContainer {
                     
             
         //Shooter buttons
-            SmartDashboard.putData("shooter velocity 5", shooter.setVelocity(5));
-            SmartDashboard.putData("shooter velocity 20", shooter.setVelocity(20));
-            SmartDashboard.putData("shooter velocity 25", shooter.setVelocity(25));
-            SmartDashboard.putData("shooter velocity 30", shooter.setVelocity(30));
-            SmartDashboard.putData("shooter velocity 40", shooter.setVelocity(40));
-            SmartDashboard.putData("shooter velocity 41", shooter.setVelocity(41));
-            SmartDashboard.putData("shooter velocity 42", shooter.setVelocity(42));
-            SmartDashboard.putData("shooter velocity 43", shooter.setVelocity(43));
-            SmartDashboard.putData("shooter velocity 44", shooter.setVelocity(44));
-            SmartDashboard.putData("shooter velocity 45", shooter.setVelocity(45));
-            SmartDashboard.putData("shooter velocity 50", shooter.setVelocity(50));
+            // SmartDashboard.putData("shooter velocity 5", shooter.setVelocity(5));
+            // SmartDashboard.putData("shooter velocity 20", shooter.setVelocity(20));
+            // SmartDashboard.putData("shooter velocity 25", shooter.setVelocity(25));
+            // SmartDashboard.putData("shooter velocity 30", shooter.setVelocity(30));
+            // SmartDashboard.putData("shooter velocity 40", shooter.setVelocity(40));
+            // SmartDashboard.putData("shooter velocity 41", shooter.setVelocity(41));
+            // SmartDashboard.putData("shooter velocity 42", shooter.setVelocity(42));
+            // SmartDashboard.putData("shooter velocity 43", shooter.setVelocity(43));
+            // SmartDashboard.putData("shooter velocity 44", shooter.setVelocity(44));
+            // SmartDashboard.putData("shooter velocity 45", shooter.setVelocity(45));
+            // SmartDashboard.putData("shooter velocity 50", shooter.setVelocity(50));
 
             // SmartDashboard.putData("shooter set voltage 0V", shooter.setVoltage(0));
             // SmartDashboard.putData("shooter set voltage .25V", shooter.setVoltage(0.25));
@@ -296,34 +326,34 @@ public class RobotContainer {
             SmartDashboard.putData("intake pivot reset encoder", intakepivot.resetEncoder());
             SmartDashboard.putData("intake pivot position 0", intakepivot.setPosition(0));
             SmartDashboard.putData("intake pivot position 8", intakepivot.setPosition(8));
-            SmartDashboard.putData("intake set voltage 0V", intake.setVoltage(0));
-            SmartDashboard.putData("intake set voltage 3V", intake.setVoltage(3));
-            SmartDashboard.putData("intake set voltage 6V", intake.setVoltage(6));
-            SmartDashboard.putData("intake set voltage 9V", intake.setVoltage(9));
-            SmartDashboard.putData("intake set voltage 12V", intake.setVoltage(12));
+            // SmartDashboard.putData("intake set voltage 0V", intake.setVoltage(0));
+            // SmartDashboard.putData("intake set voltage 3V", intake.setVoltage(3));
+            // SmartDashboard.putData("intake set voltage 6V", intake.setVoltage(6));
+            // SmartDashboard.putData("intake set voltage 9V", intake.setVoltage(9));
+            // SmartDashboard.putData("intake set voltage 12V", intake.setVoltage(12));
 
              //and so on so forth..
         //spindexer buttons
-            SmartDashboard.putData("spindexer velocity 20", indexer.setVelocity(20));
-            SmartDashboard.putData("spindexer velocity 40", indexer.setVelocity(40));
-            SmartDashboard.putData("spindexer velocity 45", indexer.setVelocity(45));
-            SmartDashboard.putData("spindexer velocity 50", indexer.setVelocity(50));
+            // SmartDashboard.putData("spindexer velocity 20", indexer.setVelocity(20));
+            // SmartDashboard.putData("spindexer velocity 40", indexer.setVelocity(40));
+            // SmartDashboard.putData("spindexer velocity 45", indexer.setVelocity(45));
+            // SmartDashboard.putData("spindexer velocity 50", indexer.setVelocity(50));
 
-            SmartDashboard.putData("spindexer set voltage 0V", indexer.setVoltage(0));
-            SmartDashboard.putData("spindexer set voltage 3V", indexer.setVoltage(3));
-            SmartDashboard.putData("spindexer set voltage 6V", indexer.setVoltage(6));
-            SmartDashboard.putData("spindexer set voltage 9V", indexer.setVoltage(9));
-            SmartDashboard.putData("spindexer set voltage 12V", indexer.setVoltage(12));
+            // SmartDashboard.putData("spindexer set voltage 0V", indexer.setVoltage(0));
+            // SmartDashboard.putData("spindexer set voltage 3V", indexer.setVoltage(3));
+            // SmartDashboard.putData("spindexer set voltage 6V", indexer.setVoltage(6));
+            // SmartDashboard.putData("spindexer set voltage 9V", indexer.setVoltage(9));
+            // SmartDashboard.putData("spindexer set voltage 12V", indexer.setVoltage(12));
         //Hood buttons
-            SmartDashboard.putData("hood reset encoder", hood.resetEncoder());
-            SmartDashboard.putData("hood position 0", hood.setPosition(0));
-            SmartDashboard.putData("hood position 1", hood.setPosition(1));
-            SmartDashboard.putData("hood position 1.74, far trench shot", hood.setPosition(1.746));
-            SmartDashboard.putData("hood position 5", hood.setPosition(5));
-            SmartDashboard.putData("hood position 7", hood.setPosition(7));
-            SmartDashboard.putData("hood position 8", hood.setPosition(8));
-            SmartDashboard.putData("hood position 9", hood.setPosition(9));
-            SmartDashboard.putData("hood position 10", hood.setPosition(10));
+            // SmartDashboard.putData("hood reset encoder", hood.resetEncoder());
+            // SmartDashboard.putData("hood position 0", hood.setPosition(0));
+            // SmartDashboard.putData("hood position 1", hood.setPosition(1));
+            // SmartDashboard.putData("hood position 1.74, far trench shot", hood.setPosition(1.746));
+            // SmartDashboard.putData("hood position 5", hood.setPosition(5));
+            // SmartDashboard.putData("hood position 7", hood.setPosition(7));
+            // SmartDashboard.putData("hood position 8", hood.setPosition(8));
+            // SmartDashboard.putData("hood position 9", hood.setPosition(9));
+            // SmartDashboard.putData("hood position 10", hood.setPosition(10));
         // gyro
             // SmartDashboard.getData("getRotation3d():" + pigeon.getRotation3d().getAngle());
 
@@ -348,19 +378,24 @@ public class RobotContainer {
 
 
     //Subsystem Commands
-    public Command loadFuel(){
-        return kicker.setVoltage(3)
-        .alongWith(
-            indexer.setVoltage(3) 
-        );
-    }
+    // public Command loadFuel(){
+    //     return kicker.setVoltage(3)
+    //     .alongWith(
+    //         indexer.setVoltage(3) 
+    //     );
+    // }
 
     public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
-        return shooter.setVelocity(42)
-        .andThen(new WaitCommand(1))
-        .andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25)))
-        .andThen(new WaitCommand(5.5))
-        .andThen(shooter.stopCommand().alongWith(kicker.stopCommand().alongWith(indexer.stopCommand())));
+        return shooter.setVelocity(44)
+            .alongWith(new WaitCommand(1).andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25))));
+
+        
+        
+        // return shooter.setVelocity(42)
+        // .andThen(new WaitCommand(1))
+        // .andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25)))
+        // .andThen(new WaitCommand(5))
+        // .andThen(shooter.stopCommand().alongWith(kicker.stopCommand().alongWith(indexer.stopCommand())));
     }
     public Command autoIntakeFuel(){
         return intake.setVoltage(12)
@@ -390,7 +425,10 @@ public class RobotContainer {
              */
 
     public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
+    return 
+        autoChooser.getSelected();
+    
+}
         // Simple drive forward auton
         // final var idle = new SwerveRequest.Idle();
         // return Commands.sequence(
@@ -407,7 +445,7 @@ public class RobotContainer {
         //     // Finally idle for the rest of auton
         //     drivetrain.applyRequest(() -> idle)
         // );
-    }
+    
 
     public Command aimAtTarget(CommandSwerveDrivetrain drivetrain) {
         return  drivetrain.applyRequest(
@@ -444,7 +482,8 @@ public class RobotContainer {
          }).withTimeout(1.0);
 }
 
-     public Command aimAtHubAuto(CommandSwerveDrivetrain drivetrain) {
+// do not use
+     public Command aimAtHubAuto(CommandSwerveDrivetrain drivetrain) { //what does this command even do??
         return  drivetrain.applyRequest(
                     () -> {
                         
@@ -475,9 +514,20 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
-    public Command aimAtHubMegaTag2(CommandSwerveDrivetrain drivetrain, Translation2d target) {
+    public Command aimAtHubMegaTag2(CommandSwerveDrivetrain drivetrain, Translation2d redTarget, Translation2d blueTarget) {
         return  drivetrain.applyRequest(
                     () -> {
+
+                        var alliance = DriverStation.getAlliance();
+                        var target = redTarget;
+
+                        if (alliance.isPresent()) {
+
+                            if (alliance.get().equals(Alliance.Blue)){
+                                 target = blueTarget;
+                            }
+                           
+                        }
                         
                          var currentPose = drivetrain.getState().Pose;
                          var direction =

@@ -42,7 +42,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Kicker extends SubsystemBase {
 
   // Constants
-  public static final CANBus kCANBus = new CANBus("Carnivore", "./logs/example.hoot");
+  // public static final CANBus kCANBus = new CANBus("Carnivore", "./logs/example.hoot");
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 16;
   private final double gearRatio = 1;
@@ -56,8 +56,8 @@ public class Kicker extends SubsystemBase {
   // private final double maxVelocity = 1; // rad/s
   // private final double maxAcceleration = 1; // rad/s²
   private final boolean brakeMode = false;
-  private final boolean enableStatorLimit = true;
-  private final double statorCurrentLimit = 80;
+  private final boolean enableStatorLimit = false;
+  private final double statorCurrentLimit = 70;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
 
@@ -79,9 +79,9 @@ public class Kicker extends SubsystemBase {
   /**
    * Creates a new Pivot Subsystem.
    */
-  public Kicker() {
+  public Kicker(CANBus canBus) {
     // Initialize motor controller
-    motor = new TalonFX(canID,kCANBus.getName());
+    motor = new TalonFX(canID,canBus);
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);

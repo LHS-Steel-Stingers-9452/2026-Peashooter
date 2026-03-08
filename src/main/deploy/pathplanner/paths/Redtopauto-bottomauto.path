@@ -80,10 +80,33 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "autoIntakeFuel",
+      "waypointRelativePos": 0.9210053859964087,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
+    },
+    {
+      "name": "dumpMag",
+      "waypointRelativePos": 2.6822262118491933,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "dumpMag"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -99,5 +122,5 @@
     "velocity": 0,
     "rotation": -112.90576965841717
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

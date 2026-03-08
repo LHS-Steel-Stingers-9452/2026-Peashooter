@@ -5,15 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "RedToptoRedBottom1rotation"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Bottomtotoprotation267"
+            "name": "dumpMag"
           }
         }
       ]

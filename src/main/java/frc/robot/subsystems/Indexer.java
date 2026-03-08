@@ -41,10 +41,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Indexer extends SubsystemBase {
 
   // Constants
-  public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
+  // public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
   private final DCMotor dcMotor = DCMotor.getKrakenX44(2);
-  private final int canID = 22;
-  private final int canID2 = 23;
+  private final int canID = 23;
+  // private final int canID2 = 667;
   private final double gearRatio = 1;
   private final double kP = 1; //started at 1
   private final double kI = 0;
@@ -72,12 +72,12 @@ public class Indexer extends SubsystemBase {
   private final StatusSignal<Current> statorCurrentSignal;
   private final StatusSignal<Temperature> temperatureSignal;
 
-  private final TalonFX motor2;
-  private final StatusSignal<Angle> positionSignal2;
-  private final StatusSignal<AngularVelocity> velocitySignal2;
-  private final StatusSignal<Voltage> voltageSignal2;
-  private final StatusSignal<Current> statorCurrentSignal2;
-  private final StatusSignal<Temperature> temperatureSignal2;
+  // private final TalonFX motor2;
+  // private final StatusSignal<Angle> positionSignal2;
+  // private final StatusSignal<AngularVelocity> velocitySignal2;
+  // private final StatusSignal<Voltage> voltageSignal2;
+  // private final StatusSignal<Current> statorCurrentSignal2;
+  // private final StatusSignal<Temperature> temperatureSignal2;
 
   // Simulation
   private final SingleJointedArmSim pivotSim;
@@ -85,10 +85,10 @@ public class Indexer extends SubsystemBase {
   /**
    * Creates a new Pivot Subsystem.
    */
-  public Indexer() {
+  public Indexer(CANBus canBus) {
     // Initialize motor controller
-    motor = new TalonFX(canID,kCANBus.getName());
-    motor2 = new TalonFX(canID2,kCANBus.getName());
+    motor = new TalonFX(canID,canBus);
+    // motor2 = new TalonFX(canID2,kCANBus.getName());
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);
@@ -101,11 +101,16 @@ public class Indexer extends SubsystemBase {
     statorCurrentSignal = motor.getStatorCurrent();
     temperatureSignal = motor.getDeviceTemp();
 
-    positionSignal2 = motor2.getPosition();
-    velocitySignal2 = motor2.getVelocity();
-    voltageSignal2 = motor2.getMotorVoltage();
-    statorCurrentSignal2 = motor2.getStatorCurrent();
-    temperatureSignal2 = motor2.getDeviceTemp();
+    positionSignal.setUpdateFrequency(20);
+    velocitySignal.setUpdateFrequency(20);
+    voltageSignal.setUpdateFrequency(10);
+    statorCurrentSignal.setUpdateFrequency(10);
+    temperatureSignal.setUpdateFrequency(5);
+    // positionSignal2 = motor2.getPosition();
+    // velocitySignal2 = motor2.getVelocity();
+    // voltageSignal2 = motor2.getMotorVoltage();
+    // statorCurrentSignal2 = motor2.getStatorCurrent();
+    // temperatureSignal2 = motor2.getDeviceTemp();
 
     TalonFXConfiguration config = new TalonFXConfiguration();
 
@@ -133,7 +138,7 @@ public class Indexer extends SubsystemBase {
     // Apply gear ratio
     config.Feedback.SensorToMechanismRatio = gearRatio;
 
-    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
     // Apply configuration
     motor.getConfigurator().apply(config);
@@ -153,7 +158,7 @@ public class Indexer extends SubsystemBase {
       Units.degreesToRadians(0) // Starting position (rad)
     );
         
-    motor2.setControl(new Follower(canID, MotorAlignmentValue.Opposed));
+    // motor2.setControl(new Follower(canID, MotorAlignmentValue.Opposed));
 
     setDefaultCommand(setVoltage(0));
   }
@@ -183,11 +188,11 @@ public class Indexer extends SubsystemBase {
     return positionSignal.getValueAsDouble();
   }
 
-  @Logged(name = "Position2/Rotations")
-  public double getPosition2() {
-    // Rotations
-    return positionSignal2.getValueAsDouble();
-  }
+  // @Logged(name = "Position2/Rotations")
+  // public double getPosition2() {
+  //   // Rotations
+  //   return positionSignal2.getValueAsDouble();
+  // }
 
   /**
    * Get the current velocity in rotations per second.
@@ -198,10 +203,10 @@ public class Indexer extends SubsystemBase {
     return velocitySignal.getValueAsDouble();
   }
 
-  @Logged(name = "Velocity2")
-  public double getVelocity2() {
-    return velocitySignal2.getValueAsDouble();
-  }
+  // @Logged(name = "Velocity2")
+  // public double getVelocity2() {
+  //   return velocitySignal2.getValueAsDouble();
+  // }
   /**
    * Get the current applied voltage.
    * @return Applied voltage
@@ -211,10 +216,10 @@ public class Indexer extends SubsystemBase {
     return voltageSignal.getValueAsDouble();
   }
 
-  @Logged(name = "Voltage2")
-  public double getVoltage2() {
-    return voltageSignal2.getValueAsDouble();
-  }
+  // @Logged(name = "Voltage2")
+  // public double getVoltage2() {
+  //   return voltageSignal2.getValueAsDouble();
+  // }
   /**
    * Get the current motor current.
    * @return Motor current in amps
@@ -224,10 +229,10 @@ public class Indexer extends SubsystemBase {
     return statorCurrentSignal.getValueAsDouble();
   }
 
-  @Logged(name = "Current2")
-  public double getCurrent2() {
-    return statorCurrentSignal2.getValueAsDouble();
-  }
+  // @Logged(name = "Current2")
+  // public double getCurrent2() {
+  //   return statorCurrentSignal2.getValueAsDouble();
+  // }
 
   /**
    * Get the current motor temperature.
@@ -238,10 +243,10 @@ public class Indexer extends SubsystemBase {
     return temperatureSignal.getValueAsDouble();
   }
 
-  @Logged(name = "Temperature2")
-  public double getTemperature2() {
-    return temperatureSignal2.getValueAsDouble();
-  }
+  // @Logged(name = "Temperature2")
+  // public double getTemperature2() {
+  //   return temperatureSignal2.getValueAsDouble();
+  // }
 
 
   public Command setVelocity(double velocity) {

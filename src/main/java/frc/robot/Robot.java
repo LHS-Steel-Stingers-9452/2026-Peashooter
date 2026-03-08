@@ -15,6 +15,7 @@ import edu.wpi.first.epilogue.logging.errors.ErrorHandler;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -61,6 +62,7 @@ public class Robot extends TimedRobot {
     });
         Epilogue.bind(this);
         m_robotContainer = new RobotContainer();
+        RobotController.setBrownoutVoltage(6.0);
     }
 
     @Override

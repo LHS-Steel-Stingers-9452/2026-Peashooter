@@ -38,11 +38,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class IntakePivot extends SubsystemBase {
 
   // Constants
-  public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
+  // public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 15;
   private final double gearRatio = 1;
-  private final double kP = 1.25; //started at 1
+  private final double kP = 0.3; //started at 1
   private final double kI = 0;
   private final double kD = 0; //helped with reducing noise, somehwat
   private final double kS = 0;
@@ -73,9 +73,9 @@ public class IntakePivot extends SubsystemBase {
   /**
    * Creates a new Pivot Subsystem.
    */
-  public IntakePivot() {
+  public IntakePivot(CANBus canBus) {
     // Initialize motor controller
-    motor = new TalonFX(canID,kCANBus.getName());
+    motor = new TalonFX(canID, canBus);
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);

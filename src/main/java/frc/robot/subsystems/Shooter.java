@@ -40,7 +40,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Shooter extends SubsystemBase {
 
   // Constants
-  public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
+  // public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 17;
   private final int canID2 = 18;
@@ -84,10 +84,10 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new Pivot Subsystem.
    */
-  public Shooter() {
+  public Shooter(CANBus canBus) {
     // Initialize motor controller
-    motor = new TalonFX(canID,kCANBus.getName());
-    motor2 = new TalonFX(canID2,kCANBus.getName());
+    motor = new TalonFX(canID, canBus);
+    motor2 = new TalonFX(canID2, canBus);
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);

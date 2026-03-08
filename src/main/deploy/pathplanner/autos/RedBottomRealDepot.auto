@@ -7,37 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R-Top-L1"
+            "pathName": "BottomRedtotopred"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "dumpMag"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "waitTime": 5.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "R-Top-L2"
+            "pathName": "Redtopauto-bottomauto"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "dumpMag"
+            "waitTime": 5.0
           }
         }
       ]

@@ -177,8 +177,8 @@ public class VisionPros extends SubsystemBase {
         }
     }
     private void processLimelight3GMt2() {
-        LimelightHelpers.SetIMUMode(CENTER_LL, 4);
-        LimelightHelpers.SetIMUAssistAlpha(CENTER_LL, 0.01);
+        // LimelightHelpers.SetIMUMode(CENTER_LL, 4);
+        // LimelightHelpers.SetIMUAssistAlpha(CENTER_LL, 0.01);
         var driveState = drivetrain.getState();
         double headingDog = driveState.Pose.getRotation().getDegrees(); 
         LimelightHelpers.SetRobotOrientation("limelight-center", headingDog, 0, 0, 0, 0, 0); 

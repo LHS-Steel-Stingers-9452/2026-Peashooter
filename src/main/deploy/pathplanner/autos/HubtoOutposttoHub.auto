@@ -7,31 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R-Top-L1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "pathName": "BlueTrenchBottomtoOutPost"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "dumpMag"
+            "name": "autoIntakeFuel"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 1.2
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "R-Top-L2"
+            "pathName": "Blueoutposttobluebottomtrench"
           }
         },
         {
@@ -43,7 +37,7 @@
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }
