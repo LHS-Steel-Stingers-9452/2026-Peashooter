@@ -218,6 +218,10 @@ public class Intake extends SubsystemBase {
     return run(() -> motor.setVoltage(voltage));
   }
 
+   public Command setVoltageRun(double voltage) {
+    return run(() -> motor.setVoltage(voltage));
+  }
+
   /**
    * Creates a command to stop the pivot.
    * @return A command that stops the pivot

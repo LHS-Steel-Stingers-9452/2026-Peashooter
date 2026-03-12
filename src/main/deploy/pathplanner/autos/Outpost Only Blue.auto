@@ -5,21 +5,27 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "dumpMag"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 6.4
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "BlueTrenchBottomtoOutPost"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "autoIntakeFuel"
-          }
-        },
-        {
           "type": "wait",
           "data": {
-            "waitTime": 1.2
+            "waitTime": 2.0
           }
         },
         {

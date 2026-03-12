@@ -122,7 +122,8 @@ public class RobotContainer {
         // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
         //Auto Selection is already handled by Glass.
         NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker));
-        NamedCommands.registerCommand("autoIntakeFuel",autoIntakeFuel());
+        NamedCommands.registerCommand("autoIntakeFuel",autoIntakeFuel(intake, intakepivot));
+        NamedCommands.registerCommand("stopIntake", intake.setVoltage(0));
         // NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto());
         NamedCommands.registerCommand("print", Commands.runOnce(()-> System.out.println("commandsent")));
         autoChooser = AutoBuilder.buildAutoChooser();
@@ -130,6 +131,8 @@ public class RobotContainer {
          autoChooser.setDefaultOption("1", Commands.print("1"));
         //  autoChooser.addOption("OutpostToMiddleOfHub", getAutonomousCommand());
          autoChooser.addOption("Dumpmagtest67", dumpMag(shooter, indexer,kicker));
+        autoChooser.addOption("autoIntakeFuel", autoIntakeFuel(intake, intakepivot));
+
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
@@ -162,7 +165,7 @@ public class RobotContainer {
 
         // Reset the field-centric heading on start.
         joystick.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        joystick.back().whileTrue(indexer.setVelocity(-25).alongWith(kicker.setVelocity(-25)));
+        joystick.back().whileTrue(indexer.setVelocity(-25).alongWith(kicker.setVelocity(-35).alongWith(shooter.setVelocity(-25))));
 
    
 //Joystick/controller buttons    
@@ -188,7 +191,7 @@ public class RobotContainer {
     // face buttons
         joystick 
             .y() //trench shot
-            .onTrue(shooter.setVelocity(44));
+            .onTrue(shooter.setVelocity(43));
         joystick 
             .b() //passing shot
             .onTrue(shooter.setVelocity(0));
@@ -198,9 +201,9 @@ public class RobotContainer {
         joystick
             .x()
             .onTrue(intakepivot.setPosition(0));
-        joystick
-            .povDown()
-            .onTrue(intake.setVoltage(6));
+        // joystick
+        //     .povDown()
+        //     .onTrue(intake.setVoltage(6));
 
     //D Pad Buttons
         joystick        
@@ -226,13 +229,13 @@ public class RobotContainer {
     // Luis Buttons
         joystick2
             .leftBumper()
-            .onTrue(shooter.setVelocity(43.5)); //left trench
+            .onTrue(shooter.setVelocity(43)); //left trench
         joystick2
             .rightBumper()
-            .onTrue(shooter.setVelocity(43.5)); //right trench
+            .onTrue(shooter.setVelocity(43)); //right trench
         joystick2
             .y()
-            .onTrue(shooter.setVelocity(49)); // tower shot
+            .onTrue(shooter.setVelocity(40)); // tower shot
         joystick2
             .x()
             .onTrue(shooter.setVelocity(56)); // depot shot
@@ -386,28 +389,31 @@ public class RobotContainer {
     // }
 
     public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
-        return shooter.setVelocity(44)
-            .alongWith(new WaitCommand(1).andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25))));
+        // return shooter.setVelocity(44)
+        //     .alongWith(new WaitCommand(1).andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25))));
+        return shooter.setVelocity(43)
+            .alongWith(
+                new WaitCommand(1)
+                    .andThen(kicker.setVelocity(25).alongWith(indexer.setVelocity(45))))
+                    .withTimeout(5)
+                    .andThen(indexer.setVoltageRun(0).alongWith(shooter.setVoltageRun(0), kicker.setVoltageRun(0))
+                    .withTimeout(0.1));
+    }
 
-        
-        
-        // return shooter.setVelocity(42)
-        // .andThen(new WaitCommand(1))
-        // .andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25)))
-        // .andThen(new WaitCommand(5))
-        // .andThen(shooter.stopCommand().alongWith(kicker.stopCommand().alongWith(indexer.stopCommand())));
-    }
-    public Command autoIntakeFuel(){
-        return intake.setVoltage(12)
-        .andThen(new WaitCommand(2))
-        .andThen(intake.setVoltage(0));
-    }
-    
     // public Command autoIntakeFuel(){
-    //     return intake.setVoltage(12);
-    //     // .alongWith(
-    //     // intakepivot.setPosition(0.7));
+    //     return intake.setVoltage(12)
+    //     .andThen(new WaitCommand(2))
+    //     .andThen(intake.setVoltage(0));
     // }
+    
+    public Command autoIntakeFuel(Intake intake, IntakePivot intakepivot){
+        return intake.setVoltage(6)
+            .alongWith(intakepivot.setPosition(26));
+
+            // .withTimeout(4) 
+            // .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0))); //test if setVoltageRun is needed instead.    
+            
+    }
 
 
     // public Command intakeFuel(){

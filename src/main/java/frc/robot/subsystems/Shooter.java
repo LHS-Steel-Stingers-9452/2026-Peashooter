@@ -266,6 +266,10 @@ public class Shooter extends SubsystemBase {
   public Command setVoltage(double voltage) {
     return runOnce(() -> motor.setVoltage(voltage));
   }
+  
+  public Command setVoltageRun(double voltage) {
+    return run(() -> motor.setVoltage(voltage));
+  }
 
   /**
    * Creates a command to stop the pivot.

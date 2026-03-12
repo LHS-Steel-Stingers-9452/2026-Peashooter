@@ -57,7 +57,7 @@ public class Kicker extends SubsystemBase {
   // private final double maxAcceleration = 1; // rad/s²
   private final boolean brakeMode = false;
   private final boolean enableStatorLimit = false;
-  private final double statorCurrentLimit = 70;
+  private final double statorCurrentLimit = 150;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
 
@@ -217,6 +217,11 @@ public class Kicker extends SubsystemBase {
   public Command setVelocity(double velocity) {
     return run(() ->  motor.setControl(velocityRequest.withVelocity(velocity)));
   }
+
+  public Command setVoltageRun(double voltage) {
+    return run(() -> motor.setVoltage(voltage));
+  }
+  
 
   /**
    * Set motor voltage directly.

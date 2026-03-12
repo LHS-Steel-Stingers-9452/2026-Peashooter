@@ -5,27 +5,33 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "BlueTopRotation1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.0
+            "name": "dumpMag"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bluetoprotation2"
+            "pathName": "RedToptrenchtoredoutpost"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Redoutpost-redtoptrench"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "dumpMag"
           }
         }
       ]
