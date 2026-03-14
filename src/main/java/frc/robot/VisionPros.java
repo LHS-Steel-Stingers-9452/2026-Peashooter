@@ -42,7 +42,7 @@ public class VisionPros extends SubsystemBase {
         tyToHoodAngleMap.put(0.0, 1.746);
         LimelightHelpers.setCameraPose_RobotSpace( "limelight-left", 
      0.153, 
-     0.350, 
+     0.35, 
      0.478, 
      0, 
      10, 
@@ -73,7 +73,10 @@ public class VisionPros extends SubsystemBase {
     // }
     if (DriverStation.isTeleop()) {
         processLimelightMt2();
-    } else {
+    } else if (DriverStation.isAutonomousEnabled()) {
+        // do nothing
+    }
+     else {
         processLimelightMt1();
     }
 

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.9138486842105262,
-        "y": 7.3045175438596495
+        "x": 3.9619298245614036,
+        "y": 7.477609649122806
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.5486951754385965,
-        "y": 7.6795504385964914
+        "x": 6.596776315789474,
+        "y": 7.852642543859648
       },
       "isLocked": false,
       "linkedName": "Bluetoptrench67"
@@ -74,24 +74,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "",
+      "name": "autoIntakeFuel",
       "waypointRelativePos": 0.7378815080789949,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
           "name": "autoIntakeFuel"
-        }
-      }
-    },
-    {
-      "name": "dumpMag",
-      "waypointRelativePos": 2.703770197486533,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "dumpMag"
         }
       }
     }
@@ -106,13 +95,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 71.20011484134726
+    "rotation": 82.05000952745317
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -76.82744657667305
+    "rotation": -83.95776465402402
   },
   "useDefaultConstraints": false
 }

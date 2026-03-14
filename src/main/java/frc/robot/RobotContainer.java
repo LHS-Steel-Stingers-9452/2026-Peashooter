@@ -19,7 +19,9 @@ import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+// import edu.wpi.first.wpilibj.simulation.PS5ControllerSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -86,7 +89,9 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController joystick = new CommandXboxController(0);
+    // private final PS5Controller joystick = new PS5Controller(0);
+    private final CommandPS5Controller joystick = new CommandPS5Controller(0);
+    // private final CommandXboxController joystick = new CommandXboxController(1);
     private final CommandXboxController joystick2 = new CommandXboxController(1);
 
     // public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -123,16 +128,18 @@ public class RobotContainer {
         //Auto Selection is already handled by Glass.
         NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker));
         NamedCommands.registerCommand("autoIntakeFuel",autoIntakeFuel(intake, intakepivot));
-        NamedCommands.registerCommand("stopIntake", intake.setVoltage(0));
+        NamedCommands.registerCommand("stopIntake",stopIntake(intake, intakepivot));
+        // NamedCommands.registerCommand("intakeShuffle", intakeShuffle(intakepivot));
         // NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto());
         NamedCommands.registerCommand("print", Commands.runOnce(()-> System.out.println("commandsent")));
         autoChooser = AutoBuilder.buildAutoChooser();
         // See if you need this if the options for the autos are not popping up.
          autoChooser.setDefaultOption("1", Commands.print("1"));
         //  autoChooser.addOption("OutpostToMiddleOfHub", getAutonomousCommand());
-         autoChooser.addOption("Dumpmagtest67", dumpMag(shooter, indexer,kicker));
+        autoChooser.addOption("Dumpmagtest67", dumpMag(shooter, indexer,kicker));
         autoChooser.addOption("autoIntakeFuel", autoIntakeFuel(intake, intakepivot));
-
+        autoChooser.addOption("stopIntake", stopIntake(intake, intakepivot));
+        // autoChooser.addOption("intakeShuffle", intakeShuffle(intakepivot));
 
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
@@ -158,48 +165,48 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // Reset the field-centric heading on start.
-        joystick.start().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        joystick.back().whileTrue(indexer.setVelocity(-25).alongWith(kicker.setVelocity(-35).alongWith(shooter.setVelocity(-25))));
+        joystick.touchpad().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+        joystick.R3().whileTrue(indexer.setVelocity(-25).alongWith(kicker.setVelocity(-35).alongWith(shooter.setVelocity(-25))));
 
    
 //Joystick/controller buttons    
         
     //Left Bumper = AimAtHub
-        joystick.leftBumper()
+        joystick.L1()
         .whileTrue(aimAtHubMegaTag2(drivetrain,new Translation2d(11.8, 4), new Translation2d(4.7, 4) ));
     //Left Trigger = Intake
         joystick
-            .leftTrigger()
+            .L2()
             .whileTrue(intake.setVoltage(-6));
     //Right Trigger = Indexer + Kicker  
         joystick
-            .rightTrigger() 
+            .R2() 
             .whileTrue(indexer.setVelocity(45)
             .alongWith(kicker.setVelocity(25)));
             // ,(intake.setVoltage(10)))); 
     // Right Bumper = Aim at Hub
-        joystick.rightBumper()
+        joystick.R1()
             .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4), new Translation2d(5,4)));
         // .whileTrue(alignToClosestHubPoint());/
     // Face Button
     // face buttons
         joystick 
-            .y() //trench shot
+            .triangle() //trench shot
             .onTrue(shooter.setVelocity(43));
         joystick 
-            .b() //passing shot
+            .circle() //passing shot
             .onTrue(shooter.setVelocity(0));
         joystick
-            .a()
+            .cross()
             .onTrue(intakepivot.setPosition(26));
         joystick
-            .x()
+            .square()
             .onTrue(intakepivot.setPosition(0));
         // joystick
         //     .povDown()
@@ -207,7 +214,7 @@ public class RobotContainer {
 
     //D Pad Buttons
         joystick        
-            .povUp()
+            .L3()
             .whileTrue(
              drivetrain.applyRequest(
                 () -> 
@@ -391,7 +398,7 @@ public class RobotContainer {
     public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
         // return shooter.setVelocity(44)
         //     .alongWith(new WaitCommand(1).andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25))));
-        return shooter.setVelocity(43)
+        return shooter.setVelocity(42)
             .alongWith(
                 new WaitCommand(1)
                     .andThen(kicker.setVelocity(25).alongWith(indexer.setVelocity(45))))
@@ -407,13 +414,37 @@ public class RobotContainer {
     // }
     
     public Command autoIntakeFuel(Intake intake, IntakePivot intakepivot){
-        return intake.setVoltage(6)
-            .alongWith(intakepivot.setPosition(26));
+        return intake.setVoltage(-6)
+            .alongWith(intakepivot.setPosition(26))
+            .withTimeout(3);
 
             // .withTimeout(4) 
             // .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0))); //test if setVoltageRun is needed instead.    
-            
     }
+
+    public Command stopIntake(Intake intake, IntakePivot intakepivot){
+        return intake.setVoltage(0)
+            .alongWith(intakepivot.setPosition(0))
+            .withTimeout(3);
+
+    }
+
+    // public Command intakeShuffle(IntakePivot intakePivot) {
+    //     return intakepivot.setPosition(0)
+    //         .alongWith(new WaitCommand(1)
+    //             .andThen(intakepivot.setPosition(26)))
+    //             .withTimeout(1)
+    //             .andThen(intakepivot.setPosition(0))
+    //             .withTimeout(1)
+    //             .andThen(intakepivot.setPosition(26))
+    //             .withTimeout(1)
+    //             .andThen(intakepivot.setPosition(0))
+    //             .withTimeout(1)
+    //             .andThen(intakepivot.setPosition(26))
+    //             .withTimeout(1)
+    //             .andThen(intakepivot.setPosition(0));
+
+    // }
 
 
     // public Command intakeFuel(){
@@ -452,8 +483,8 @@ public class RobotContainer {
         //     drivetrain.applyRequest(() -> idle)
         // );
     
-
-    public Command aimAtTarget(CommandSwerveDrivetrain drivetrain) {
+//back up if LL aint working
+    public Command aimAtTargetMT1(CommandSwerveDrivetrain drivetrain) {
         return  drivetrain.applyRequest(
                     () -> {
                         double kP = .03; //kp was .0176
@@ -470,56 +501,54 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
     }
-    public Command aimAtTargetAuto() {
-    return drivetrain.applyRequest(
-        () -> {
-            double kP = .03;
-            double targetingAngularVelocity =
-                LimelightHelpers.getTX("limelight-left") * kP;
-
-            targetingAngularVelocity *= MaxAngularRate;
-            targetingAngularVelocity *= -1.0;
-
-            return drive
-                .withVelocityX(0)   // no translation in auto
-                .withVelocityY(0)
-                .withRotationalRate(targetingAngularVelocity);
-                
-         }).withTimeout(1.0);
-}
-
-// do not use
-     public Command aimAtHubAuto(CommandSwerveDrivetrain drivetrain) { //what does this command even do??
-        return  drivetrain.applyRequest(
+    //for auto
+    public Command aimAtTargetAutoMT1() {
+    return  drivetrain.applyRequest(
                     () -> {
-                        
-                         var currentPose = drivetrain.getState().Pose;
-                         var targetTranslation = new Translation2d(4.5, 4); //blue
-                         var direction =
-                            targetTranslation.minus(currentPose.getTranslation());
-                        var error =
-                            direction.getAngle()
-                                .minus(currentPose.getRotation())
-                                .getRadians();
-
-                        double kP = .35; //kp was .0176
-                        double targetingAngularVelocity = error * kP;
-                        // targetingAngularVelocity *= MaxAngularRate;
-                        // targetingAngularVelocity *= -1.0;
-
-                        // var angle = Math.atan2(, )
-
-                        
+                        double kP = .03; //kp was .0176
+                        double targetingAngularVelocity = LimelightHelpers.getTX("limelight-left") * kP;
+                        targetingAngularVelocity *= MaxAngularRate;
+                        targetingAngularVelocity *= -1.0;
                         return drive
-                            .withVelocityX(
-                                -joystick.getLeftY()
-                                    * MaxSpeed) // Drive forward with negative Y (forward)
-                            .withVelocityY(
-                                -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                            .withVelocityX(0) // Drive forward with negative Y (forward)
+                            .withVelocityY(0) // Drive left with negative X (left)
                             .withRotationalRate(
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
-                }
+}
+
+// do not use
+    //  public Command aimAtHubno(CommandSwerveDrivetrain drivetrain) { //what does this command even do??
+    //     return  drivetrain.applyRequest(
+    //                 () -> {
+                        
+    //                      var currentPose = drivetrain.getState().Pose;
+    //                      var targetTranslation = new Translation2d(4.5, 4); //blue
+    //                      var direction =
+    //                         targetTranslation.minus(currentPose.getTranslation());
+    //                     var error =
+    //                         direction.getAngle()
+    //                             .minus(currentPose.getRotation())
+    //                             .getRadians();
+
+    //                     double kP = .35; //kp was .0176
+    //                     double targetingAngularVelocity = error * kP;
+    //                     // targetingAngularVelocity *= MaxAngularRate;
+    //                     // targetingAngularVelocity *= -1.0;
+
+    //                     // var angle = Math.atan2(, )
+
+                        
+    //                     return drive
+    //                         .withVelocityX(
+    //                             -joystick.getLeftY()
+    //                                 * MaxSpeed) // Drive forward with negative Y (forward)
+    //                         .withVelocityY(
+    //                             -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    //                         .withRotationalRate(
+    //                             targetingAngularVelocity); // Drive counterclockwise with negative X (left)
+    //                 });
+    //             }
     public Command aimAtHubMegaTag2(CommandSwerveDrivetrain drivetrain, Translation2d redTarget, Translation2d blueTarget) {
         return  drivetrain.applyRequest(
                     () -> {
@@ -561,36 +590,36 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
-    public Command aimAtOutpostMegaTag2(CommandSwerveDrivetrain drivetrain, Translation2d target) {
-        return  drivetrain.applyRequest(
-                    () -> {
+    // public Command aimAtOutpostMegaTag2(CommandSwerveDrivetrain drivetrain, Translation2d target) {
+    //     return  drivetrain.applyRequest(
+    //                 () -> {
                         
-                         var currentPose = drivetrain.getState().Pose;
-                         var direction =
-                            target.minus(currentPose.getTranslation());
-                        var error =
-                            direction.getAngle()
-                                .minus(currentPose.getRotation())
-                                .getRadians();
+    //                      var currentPose = drivetrain.getState().Pose;
+    //                      var direction =
+    //                         target.minus(currentPose.getTranslation());
+    //                     var error =
+    //                         direction.getAngle()
+    //                             .minus(currentPose.getRotation())
+    //                             .getRadians();
                                 
-                        double kP = 3; //kp was .0176
-                        double targetingAngularVelocity = error * kP;
-                        // targetingAngularVelocity *= MaxAngularRate;
-                        // targetingAngularVelocity *= -1.0;
+    //                     double kP = 3; //kp was .0176
+    //                     double targetingAngularVelocity = error * kP;
+    //                     // targetingAngularVelocity *= MaxAngularRate;
+    //                     // targetingAngularVelocity *= -1.0;
 
-                        // var angle = Math.atan2(, )
+    //                     // var angle = Math.atan2(, )
 
                         
-                        return drive
-                            .withVelocityX(
-                                -joystick.getLeftY()
-                                    * MaxSpeed) // Drive forward with negative Y (forward)
-                            .withVelocityY(
-                                -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                            .withRotationalRate(
-                                targetingAngularVelocity); // Drive counterclockwise with negative X (left)
-                    });
-                }
+    //                     return drive
+    //                         .withVelocityX(
+    //                             -joystick.getLeftY()
+    //                                 * MaxSpeed) // Drive forward with negative Y (forward)
+    //                         .withVelocityY(
+    //                             -joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    //                         .withRotationalRate(
+    //                             targetingAngularVelocity); // Drive counterclockwise with negative X (left)
+    //                 });
+    //             }
 //     private Command alignToClosestHubPoint() {
 //         return new AlignToHubPoint(
 //         drivetrain,

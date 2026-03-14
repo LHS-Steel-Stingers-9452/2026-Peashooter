@@ -12,15 +12,15 @@
         "y": 0.747740707536485
       },
       "isLocked": false,
-      "linkedName": "secondstartblueoutpost"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.7414132379248655,
+        "x": 0.595384615384615,
         "y": 0.6693201754385962
       },
       "prevControl": {
-        "x": 1.9636691762606684,
+        "x": 1.8176405537204179,
         "y": 0.7183323025146718
       },
       "nextControl": null,
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "autoIntakeFuel",
+      "waypointRelativePos": 0.24067796610169498,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 1.0,
     "maxAcceleration": 1.0,
@@ -48,7 +60,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 77.13289585998093
+    "rotation": 90.0
   },
   "useDefaultConstraints": false
 }
