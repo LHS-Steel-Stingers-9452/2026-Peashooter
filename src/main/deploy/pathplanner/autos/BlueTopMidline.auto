@@ -11,9 +11,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "dumpMag"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
+            "waitTime": 2.5
           }
         },
         {
@@ -23,15 +29,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "dumpMag"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 5.0
+            "waitTime": 2.5
           }
         }
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }
