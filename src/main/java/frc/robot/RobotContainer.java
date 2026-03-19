@@ -50,7 +50,10 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakePivot; 
 import frc.robot.VisionPros;
+import frc.robot.autos.AutoShoot;
+// import frc.robot.autos.AutoShoot;
 // import frc.robot.autos.AlignToHubPoint;
+import frc.robot.autos.Physics;
 
 @Logged
 public class RobotContainer {
@@ -67,7 +70,7 @@ public class RobotContainer {
     private final Intake intake = new Intake(CarnivoreCanBus);
     private final IntakePivot intakepivot = new IntakePivot(rioCanBus);
     private final Indexer indexer = new Indexer(rioCanBus);
-    // private final Hood hood = new Hood(drivetrain);
+    // private final Hood hood = new Hood(drivetrain, rioCanBus);
     
 
 //Swerve
@@ -87,6 +90,8 @@ public class RobotContainer {
           .withDriveRequestType(
               DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
+
+
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     // private final PS5Controller joystick = new PS5Controller(0);
@@ -99,6 +104,13 @@ public class RobotContainer {
     private final Pigeon2 pigeon = drivetrain.getPigeon2();
 
     public final VisionPros visionpros = new VisionPros(drivetrain, pigeon);
+
+    private final Physics physics = new Physics();
+
+    // private final AutoShoot autoshoot = new AutoShoot(drivetrain, shooter, physics, null, null);
+
+    private final Translation2d RED_HUB = new Translation2d(11.5, 4.0);
+    private final Translation2d BLUE_HUB = new Translation2d(4.7, 4.0);
 
 
 //     private final Translation2d HUB_POSITION = new Translation2d(11.5, 4);
@@ -183,8 +195,8 @@ public class RobotContainer {
     //Left Trigger = Intake
         joystick
             .L2()
-            .whileTrue(intake.setVoltage(-6));
-    //Right Trigger = Indexer + Kicker  
+            .whileTrue(intake.setVoltage(-8));
+    // Right Trigger = Indexer + Kicker  
         joystick
             .R2() 
             .whileTrue(indexer.setVelocity(45)
@@ -194,13 +206,15 @@ public class RobotContainer {
         joystick.R1()
             .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4), new Translation2d(5,4)));
         // .whileTrue(alignToClosestHubPoint());/
-    // Face Button
-    // face buttons
+    // Face Buttons
+        // joystick 
+        //     .triangle() //trench shot
+        //     .onTrue(shooter.setVelocity(41));
+        joystick.triangle()
+    .whileTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
+
         joystick 
-            .triangle() //trench shot
-            .onTrue(shooter.setVelocity(43));
-        joystick 
-            .circle() //passing shot
+            .circle() //turn shooter off shot
             .onTrue(shooter.setVelocity(0));
         joystick
             .cross()
@@ -231,8 +245,7 @@ public class RobotContainer {
         // joystick2
         //     .povRight()
         //     .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12, 4)));
-    
-        
+            
     // Luis Buttons
         joystick2
             .leftBumper()
@@ -242,13 +255,14 @@ public class RobotContainer {
             .onTrue(shooter.setVelocity(43)); //right trench
         joystick2
             .y()
+
             .onTrue(shooter.setVelocity(40)); // tower shot
         joystick2
             .x()
-            .onTrue(shooter.setVelocity(56)); // depot shot
+            .onTrue(shooter.setVelocity(48)); // depot shot
         joystick2
             .b()
-            .onTrue(shooter.setVelocity(56)); // outpost
+            .onTrue(shooter.setVelocity(44)); // outpost
         joystick2
             .a()
             .onTrue(shooter.setVelocity(0)); //stops shooter
@@ -256,20 +270,16 @@ public class RobotContainer {
             .leftTrigger()
             .whileTrue(drivetrain.applyRequest(() -> brake));
 
+        joystick2
+            .rightTrigger() 
+            .whileTrue(indexer.setVelocity(45)
+            .alongWith(kicker.setVelocity(25)));
 
-        joystick2
-            .povUp()
-            .onTrue(shooter.setVelocity(46));
-        joystick2
-            .povLeft()
-            .onTrue(shooter.setVelocity(44));
+        // joystick2.povUp()
+        //     .onTrue(run shooter.increaseVelocityTest(100)));
 
-        joystick2
-            .povRight()
-            .onTrue(shooter.setVelocity(45));
-        joystick2
-            .povDown()
-            .onTrue(shooter.setVelocity(43));
+        // joystick2.povDown()
+        //     .onTrue(Commands.runOnce(() -> (-100)));
         
             
        
@@ -299,17 +309,26 @@ public class RobotContainer {
                     
             
         //Shooter buttons
-            // SmartDashboard.putData("shooter velocity 5", shooter.setVelocity(5));
-            // SmartDashboard.putData("shooter velocity 20", shooter.setVelocity(20));
-            // SmartDashboard.putData("shooter velocity 25", shooter.setVelocity(25));
-            // SmartDashboard.putData("shooter velocity 30", shooter.setVelocity(30));
-            // SmartDashboard.putData("shooter velocity 40", shooter.setVelocity(40));
-            // SmartDashboard.putData("shooter velocity 41", shooter.setVelocity(41));
-            // SmartDashboard.putData("shooter velocity 42", shooter.setVelocity(42));
-            // SmartDashboard.putData("shooter velocity 43", shooter.setVelocity(43));
-            // SmartDashboard.putData("shooter velocity 44", shooter.setVelocity(44));
-            // SmartDashboard.putData("shooter velocity 45", shooter.setVelocity(45));
-            // SmartDashboard.putData("shooter velocity 50", shooter.setVelocity(50));
+            SmartDashboard.putData("shooter velocity 5", shooter.setVelocity(5));
+            SmartDashboard.putData("shooter velocity 20", shooter.setVelocity(20));
+            SmartDashboard.putData("shooter velocity 25", shooter.setVelocity(25));
+            SmartDashboard.putData("shooter velocity 30", shooter.setVelocity(30));
+            SmartDashboard.putData("shooter velocity 35", shooter.setVelocity(35));
+            SmartDashboard.putData("shooter velocity 36", shooter.setVelocity(36));
+            SmartDashboard.putData("shooter velocity 37", shooter.setVelocity(37));
+            SmartDashboard.putData("shooter velocity 38", shooter.setVelocity(38));
+            SmartDashboard.putData("shooter velocity 39", shooter.setVelocity(39));
+            SmartDashboard.putData("shooter velocity 40", shooter.setVelocity(40));
+            SmartDashboard.putData("shooter velocity 41", shooter.setVelocity(41));
+            SmartDashboard.putData("shooter velocity 42", shooter.setVelocity(42));
+            SmartDashboard.putData("shooter velocity 43", shooter.setVelocity(43));
+            SmartDashboard.putData("shooter velocity 44", shooter.setVelocity(44));
+            SmartDashboard.putData("shooter velocity 45", shooter.setVelocity(45));
+            SmartDashboard.putData("shooter velocity 46", shooter.setVelocity(46));
+            SmartDashboard.putData("shooter velocity 47", shooter.setVelocity(47));
+            SmartDashboard.putData("shooter velocity 48", shooter.setVelocity(48));
+            SmartDashboard.putData("shooter velocity 49", shooter.setVelocity(49));
+            SmartDashboard.putData("shooter velocity 50", shooter.setVelocity(50));
 
             // SmartDashboard.putData("shooter set voltage 0V", shooter.setVoltage(0));
             // SmartDashboard.putData("shooter set voltage .25V", shooter.setVoltage(0.25));
@@ -321,7 +340,7 @@ public class RobotContainer {
             // SmartDashboard.putData("shooter set voltage 4.5V", shooter.setVoltage(4.5));
             // SmartDashboard.putData("shooter set voltage 6V", shooter.setVoltage(6));
             // SmartDashboard.putData("shooter set voltage 9V", shooter.setVoltage(9));
-            // SmartDashboard.putData("shooter set voltage 12V", shooter.setVoltage(12));
+            SmartDashboard.putData("shooter set voltage 12V", shooter.setVoltage(12));
             
              
            
@@ -380,7 +399,7 @@ public class RobotContainer {
     }
     //Auto
      public void autoInit(){
-                    drivetrain.seedFieldCentric(Rotation2d.fromDegrees(180));
+                    drivetrain.seedFieldCentric(Rotation2d.fromDegrees(270)); //was 180
     }
 
 
@@ -590,6 +609,25 @@ public class RobotContainer {
                                 targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
                 }
+
+// public Command driveToDistance(CommandSwerveDrivetrain drivetrain, Translation2d redTarget, Translation2d blueTarget) {
+//         return  drivetrain.applyRequest(
+//                     () -> {
+
+//                         var KpDistance = -0.1f;  // Proportional control constant for distance
+//                         var current_distance = Estimate_Distance();  // see the 'Case Study: Estimating Distance' 
+
+//               if (joystick->GetRawButton(9)) {
+//                 float distance_error = desired_distance - current_distance;
+//             //   driving_adjust = KpDistance * distance_error;
+//             //   left_command += distance_adjust;
+//             //   right_command += distance_adjust;
+
+//                     });
+//                 }
+        
+       
+
     // public Command aimAtOutpostMegaTag2(CommandSwerveDrivetrain drivetrain, Translation2d target) {
     //     return  drivetrain.applyRequest(
     //                 () -> {
@@ -620,6 +658,8 @@ public class RobotContainer {
     //                             targetingAngularVelocity); // Drive counterclockwise with negative X (left)
     //                 });
     //             }
+
+
 //     private Command alignToClosestHubPoint() {
 //         return new AlignToHubPoint(
 //         drivetrain,
@@ -630,6 +670,7 @@ public class RobotContainer {
 // }
                 
             }
+           
 
 
 

@@ -43,7 +43,7 @@ public class Indexer extends SubsystemBase {
   // Constants
   // public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
   private final DCMotor dcMotor = DCMotor.getKrakenX44(2);
-  private final int canID = 23;
+  private final int canID = 11;
   // private final int canID2 = 667;
   private final double gearRatio = 1;
   private final double kP = 1; //started at 1
@@ -138,7 +138,7 @@ public class Indexer extends SubsystemBase {
     // Apply gear ratio
     config.Feedback.SensorToMechanismRatio = gearRatio;
 
-    config.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     // Apply configuration
     motor.getConfigurator().apply(config);

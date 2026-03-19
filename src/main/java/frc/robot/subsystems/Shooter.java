@@ -59,6 +59,8 @@ public class Shooter extends SubsystemBase {
   private final double statorCurrentLimit = 60;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
+  private double setVelocityTest = 44;
+
 
 
   // Motor controller
@@ -181,6 +183,19 @@ public class Shooter extends SubsystemBase {
     );
   }
  
+  public void increaseVelocityTest(double amount) {
+  setVelocityTest += 1;
+  }
+
+  public void decreaseVelocityTest(double amount) { 
+  setVelocityTest -= 1;
+  }
+
+  public double getVelocityTest() {
+  return setVelocityTest;
+  }
+  
+
   /**
    * Get the current position in Rotations.
    * @return Position in Rotations
@@ -271,6 +286,9 @@ public class Shooter extends SubsystemBase {
     return run(() -> motor.setVoltage(voltage));
   }
 
+  public Command runVelocityTest() {
+    return run(() -> motor.setControl( velocityRequest.withVelocity(setVelocityTest)));
+}
   /**
    * Creates a command to stop the pivot.
    * @return A command that stops the pivot
@@ -286,4 +304,8 @@ public class Shooter extends SubsystemBase {
   public Command setVelocity(double velocity) {
     return run(() ->  motor.setControl(velocityRequest.withVelocity(velocity)));
   }
+
+  public void setVelocityDirect(double velocity) {
+    motor.setControl(velocityRequest.withVelocity(velocity));
+}
 }

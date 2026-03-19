@@ -42,7 +42,7 @@
 // public class Hood extends SubsystemBase {
 
 //   // Constants
-//   // public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
+// //   public static final CANBus kCANBus = new CANBus("", "./logs/example.hoot");
 //   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
 //   private final int canID = 21;
 //   private final double gearRatio = 1;
@@ -82,9 +82,9 @@
 //   /**
 //    * Creates a new Pivot Subsystem.
 //    */
-//   public Hood(CommandSwerveDrivetrain drivetrain) {
+//   public Hood(CommandSwerveDrivetrain drivetrain, CANBus canBus) {
 //     // Initialize motor controller
-//     motor = new TalonFX(canID,canBus);
+//     motor = new TalonFX(canID, canBus);
 //     //drivetrain
 //     this.drivetrain = drivetrain;
 

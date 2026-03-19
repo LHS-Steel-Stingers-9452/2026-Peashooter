@@ -41,8 +41,8 @@ public class VisionPros extends SubsystemBase {
         this.pigeon = pigeon;
         tyToHoodAngleMap.put(0.0, 1.746);
         LimelightHelpers.setCameraPose_RobotSpace( "limelight-left", 
-     0.153, 
      0.35, 
+     0.153, 
      0.478, 
      0, 
      10, 
@@ -53,7 +53,7 @@ public class VisionPros extends SubsystemBase {
      0.524, 
      0, 
      0, 
-     270 );
+     90 );
 
      
         
@@ -77,7 +77,7 @@ public class VisionPros extends SubsystemBase {
         // do nothing
     }
      else {
-        processLimelightMt1();
+        processLimelight3GMt2();
     }
 
         // if (DriverStation.isTeleop()) {
@@ -99,6 +99,7 @@ public class VisionPros extends SubsystemBase {
 
 
     }
+    
     
     private void processLimelight(String limelightName) {
         double rawGyroYaw = pigeon.getYaw().getValueAsDouble();
@@ -164,7 +165,7 @@ public class VisionPros extends SubsystemBase {
         }
     }
     private void processLimelightMt2() {
-        LimelightHelpers.SetIMUMode(LEFT_LL, 4);
+        LimelightHelpers.SetIMUMode(LEFT_LL, 3);
         LimelightHelpers.SetIMUAssistAlpha(LEFT_LL, 0.01);
         var driveState = drivetrain.getState();
         double headingDog = driveState.Pose.getRotation().getDegrees(); 
@@ -187,10 +188,10 @@ public class VisionPros extends SubsystemBase {
         LimelightHelpers.SetRobotOrientation("limelight-center", headingDog, 0, 0, 0, 0, 0); 
 
        
-        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight-center");
+        LimelightHelpers.PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-center");
         
         if (shouldAcceptPoseEstimate(poseEstimate, driveState.Pose)) {
-             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.004, 0.004, 999999999));
+             drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.004, 0.004, 0.004));
              drivetrain.addVisionMeasurement(poseEstimate.pose, poseEstimate.timestampSeconds);
              
         }
