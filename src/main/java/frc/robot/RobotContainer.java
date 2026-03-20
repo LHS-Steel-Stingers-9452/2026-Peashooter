@@ -195,7 +195,7 @@ public class RobotContainer {
     //Left Trigger = Intake
         joystick
             .L2()
-            .whileTrue(intake.setVoltage(-8));
+            .whileTrue(intake.setVoltage(-6));
     // Right Trigger = Indexer + Kicker  
         joystick
             .R2() 
@@ -313,6 +313,10 @@ public class RobotContainer {
             SmartDashboard.putData("shooter velocity 20", shooter.setVelocity(20));
             SmartDashboard.putData("shooter velocity 25", shooter.setVelocity(25));
             SmartDashboard.putData("shooter velocity 30", shooter.setVelocity(30));
+            SmartDashboard.putData("shooter velocity 31", shooter.setVelocity(31));
+            SmartDashboard.putData("shooter velocity 32", shooter.setVelocity(32));
+            SmartDashboard.putData("shooter velocity 33", shooter.setVelocity(33));
+            SmartDashboard.putData("shooter velocity 34", shooter.setVelocity(34));
             SmartDashboard.putData("shooter velocity 35", shooter.setVelocity(35));
             SmartDashboard.putData("shooter velocity 36", shooter.setVelocity(36));
             SmartDashboard.putData("shooter velocity 37", shooter.setVelocity(37));
@@ -329,6 +333,12 @@ public class RobotContainer {
             SmartDashboard.putData("shooter velocity 48", shooter.setVelocity(48));
             SmartDashboard.putData("shooter velocity 49", shooter.setVelocity(49));
             SmartDashboard.putData("shooter velocity 50", shooter.setVelocity(50));
+            SmartDashboard.putData("shooter velocity 51", shooter.setVelocity(51));
+            SmartDashboard.putData("shooter velocity 52", shooter.setVelocity(52));
+            SmartDashboard.putData("shooter velocity 53", shooter.setVelocity(53));
+            SmartDashboard.putData("shooter velocity 54", shooter.setVelocity(54));
+            SmartDashboard.putData("shooter velocity 55", shooter.setVelocity(55));
+
 
             // SmartDashboard.putData("shooter set voltage 0V", shooter.setVoltage(0));
             // SmartDashboard.putData("shooter set voltage .25V", shooter.setVoltage(0.25));
@@ -385,6 +395,7 @@ public class RobotContainer {
             // SmartDashboard.putData("hood position 10", hood.setPosition(10));
         // gyro
             // SmartDashboard.getData("getRotation3d():" + pigeon.getRotation3d().getAngle());
+        
 
             // SmartDashboard.putData("set hood from vision", hood.setPosition(visionpros::getHoodAngleFromTy));
 

@@ -75,15 +75,9 @@ public class VisionPros extends SubsystemBase {
         processLimelightMt2();
     } else if (DriverStation.isAutonomousEnabled()) {
         // do nothing
-<<<<<<< HEAD
     }
      else {
         processLimelight3GMt2();
-=======
-        // processLimelightMt2();
-    } else {
-        processLimelightMt1();
->>>>>>> f40eeebe5439257f0dbce8445b44ed908aef1f7f
     }
 
         // if (DriverStation.isTeleop()) {
