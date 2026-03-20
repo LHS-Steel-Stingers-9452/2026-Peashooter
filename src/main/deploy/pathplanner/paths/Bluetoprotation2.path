@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.8,
-        "y": 0.2
+        "x": 3.8061626248216838,
+        "y": 0.6127246790299581
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.800000000000001,
-        "y": 0.2
+        "x": 4.806162624821685,
+        "y": 0.6127246790299581
       },
       "isLocked": false,
       "linkedName": "BluebottomTrench67"
@@ -109,7 +109,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 84.73070510450054
+    "rotation": 81.46923439005195
   },
   "useDefaultConstraints": false
 }
