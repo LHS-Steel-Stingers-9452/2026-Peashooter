@@ -1,0 +1,63 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 12.539605263157895,
+        "y": 0.6308552631578948
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 9.270087719298246,
+        "y": 0.669320175438596
+      },
+      "isLocked": false,
+      "linkedName": "SDRreddepottrench"
+    },
+    {
+      "anchor": {
+        "x": 9.212390350877193,
+        "y": 3.3618640350877196
+      },
+      "prevControl": {
+        "x": 9.26047149122807,
+        "y": 0.6789364035087728
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "SDR MiddleNeutralred"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.16666666666666674,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 0.8223270440251542,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.48146580583845
+  },
+  "useDefaultConstraints": false
+}

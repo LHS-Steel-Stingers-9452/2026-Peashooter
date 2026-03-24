@@ -3,35 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.726887298747764,
-        "y": 0.6693201754385962
+        "x": 12.539605263157895,
+        "y": 7.439144736842105
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.413717105263158,
-        "y": 0.6404714912280703
+        "x": 10.25094298245614,
+        "y": 7.660317982456141
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.595384615384615,
-        "y": 0.6693201754385962
+        "x": 10.616359649122808,
+        "y": 5.246644736842104
       },
       "prevControl": {
-        "x": 1.932905701754386,
-        "y": 1.0924342105263156
+        "x": 9.991304824561404,
+        "y": 7.467993421052631
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bluetrenchoutpost6"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.12264150943396235,
-      "rotationDegrees": -89.94406654327764
+      "waypointRelativePos": 0.8301886792452831,
+      "rotationDegrees": 179.09657141035547
     }
   ],
   "constraintZones": [],
@@ -39,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 0.24067796610169498,
+      "waypointRelativePos": 0.2064631956912031,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -50,8 +50,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -59,13 +59,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -179.31282457309058
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -89.21303541449831
+    "rotation": 90.92404535277288
   },
   "useDefaultConstraints": false
 }

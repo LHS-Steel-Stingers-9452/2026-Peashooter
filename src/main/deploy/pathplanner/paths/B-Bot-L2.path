@@ -87,14 +87,19 @@
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 0.60499662390276,
-      "endWaypointRelativePos": 3.435516542876376,
-      "command": null
+      "waypointRelativePos": 0.5170556552962298,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -102,13 +107,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 87.70938995736147
+    "rotation": 83.9712598100953
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 87.70938995736147
+    "rotation": 83.9712598100953
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

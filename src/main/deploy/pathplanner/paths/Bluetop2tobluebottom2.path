@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.8579172610556345,
-        "y": 7.496091298145506
+        "x": 3.971546052631579,
+        "y": 7.4006798245614025
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.492763752283704,
-        "y": 7.871124192882348
+        "x": 6.339228076012438,
+        "y": 7.436162766129671
       },
       "isLocked": false,
       "linkedName": "Bluetoptrench67"
     },
     {
       "anchor": {
-        "x": 6.1351973684210535,
-        "y": 6.092872807017543
+        "x": 6.436529516994633,
+        "y": 6.152415026833632
       },
       "prevControl": {
-        "x": 6.1351973684210535,
-        "y": 7.274496178369198
+        "x": 6.436529516994633,
+        "y": 7.334038398185286
       },
       "nextControl": {
-        "x": 6.1351973684210535,
-        "y": 4.102313596491227
+        "x": 6.436529516994633,
+        "y": 4.161855816307315
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.635241228070175,
-        "y": 1.0058881578947365
+        "x": 6.436529516994633,
+        "y": 1.0251878354203927
       },
       "prevControl": {
-        "x": 6.947102180509578,
-        "y": 1.4305498803654133
+        "x": 6.753321324298397,
+        "y": 1.1547844838628416
       },
       "nextControl": {
-        "x": 6.183278508771929,
-        "y": 0.3904495614035083
+        "x": 5.365652951699463,
+        "y": 0.5871019677996413
       },
       "isLocked": false,
       "linkedName": null
@@ -52,8 +52,8 @@
         "y": 0.7462500000000001
       },
       "prevControl": {
-        "x": 6.5102302631578945,
-        "y": 0.5154605263157885
+        "x": 5.495456171735242,
+        "y": 0.5384257602862248
       },
       "nextControl": null,
       "isLocked": false,
@@ -68,6 +68,10 @@
     {
       "waypointRelativePos": 0.8018867924528301,
       "rotationDegrees": 162.16131848028826
+    },
+    {
+      "waypointRelativePos": 2.5508021390374367,
+      "rotationDegrees": 90.97878840605044
     }
   ],
   "constraintZones": [],
@@ -75,7 +79,7 @@
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 0.7378815080789949,
+      "waypointRelativePos": 0.2644067796610166,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -101,7 +105,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -83.95776465402402
+    "rotation": -79.25299921056535
   },
   "useDefaultConstraints": false
 }

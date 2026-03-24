@@ -75,6 +75,7 @@ public class VisionPros extends SubsystemBase {
         processLimelightMt2();
     } else if (DriverStation.isAutonomousEnabled()) {
         // do nothing
+        // processLimelightMt1();
     }
      else {
         processLimelight3GMt2();
@@ -82,7 +83,7 @@ public class VisionPros extends SubsystemBase {
 
         // if (DriverStation.isTeleop()) {
         //     processLimelightMt2();
-        //     // processLimelight3GMt2();
+            // processLimelight3GMt2();
         // } else {
         //     processLimelightMt1();
         // }

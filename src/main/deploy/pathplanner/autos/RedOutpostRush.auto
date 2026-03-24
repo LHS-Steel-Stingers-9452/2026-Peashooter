@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R-Top-L1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "pathName": "RedToptoRedBottom1rotation"
           }
         },
         {
@@ -23,15 +17,9 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "R-Top-L2"
+            "pathName": "Bottomtotoprotation267"
           }
         },
         {

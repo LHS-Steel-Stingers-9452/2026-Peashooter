@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RedToptoRedBottom1rotation"
+            "pathName": "BottomRedtotopred"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 5.0
+            "name": "dumpMag"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bottomtotoprotation267"
+            "pathName": "Redtopauto-bottomauto"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 5.0
+            "name": "dumpMag"
           }
         }
       ]

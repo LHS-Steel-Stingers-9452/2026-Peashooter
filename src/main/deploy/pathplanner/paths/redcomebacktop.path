@@ -1,0 +1,63 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 9.029682017543859,
+        "y": 4.717752192982456
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 9.01044956140351,
+        "y": 7.391063596491227
+      },
+      "isLocked": false,
+      "linkedName": "SDRneutralmidredtop65"
+    },
+    {
+      "anchor": {
+        "x": 12.539605263157895,
+        "y": 7.439144736842105
+      },
+      "prevControl": {
+        "x": 9.020065789473684,
+        "y": 7.419912280701754
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "SDRplace"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.3050314465408805,
+      "rotationDegrees": -178.70169527605017
+    },
+    {
+      "waypointRelativePos": 0.8097484276729568,
+      "rotationDegrees": -90.10170824969302
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -102.89754652559817
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -179.33380002981687
+  },
+  "useDefaultConstraints": false
+}

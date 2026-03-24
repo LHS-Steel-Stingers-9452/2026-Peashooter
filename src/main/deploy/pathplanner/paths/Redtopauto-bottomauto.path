@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 12.683848684210528,
-        "y": 7.391063596491227
+        "x": 12.453059210526316,
+        "y": 7.439144736842105
       },
       "prevControl": null,
       "nextControl": {
-        "x": 10.289407894736842,
-        "y": 7.583388157894737
+        "x": 10.05861842105263,
+        "y": 7.631469298245615
       },
       "isLocked": false,
       "linkedName": "Redtopfartrench667"
@@ -20,12 +20,12 @@
         "y": 6.073640350877192
       },
       "prevControl": {
-        "x": 9.607172523074146,
-        "y": 7.626870961238703
+        "x": 9.933449590768264,
+        "y": 7.672619939844058
       },
       "nextControl": {
-        "x": 10.21247807017544,
-        "y": 5.179331140350877
+        "x": 10.05479427549195,
+        "y": 4.318944543828264
       },
       "isLocked": false,
       "linkedName": null
@@ -36,12 +36,12 @@
         "y": 1.8232675438596484
       },
       "prevControl": {
-        "x": 9.702817982456141,
-        "y": 4.90046052631579
+        "x": 10.298175313059035,
+        "y": 3.523899821109123
       },
       "nextControl": {
-        "x": 10.09140070539786,
-        "y": 0.7555781482707891
+        "x": 9.800876261106783,
+        "y": 0.7679397307920974
       },
       "isLocked": false,
       "linkedName": null
@@ -62,7 +62,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.15566037735849061,
+      "waypointRelativePos": 0.28877005347593576,
       "rotationDegrees": -91.14438948610986
     },
     {
@@ -83,23 +83,12 @@
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 0.9210053859964087,
+      "waypointRelativePos": 0.14237288135593204,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
           "name": "autoIntakeFuel"
-        }
-      }
-    },
-    {
-      "name": "dumpMag",
-      "waypointRelativePos": 2.6822262118491933,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "dumpMag"
         }
       }
     }
@@ -120,7 +109,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -112.90576965841717
+    "rotation": -102.09475707701216
   },
   "useDefaultConstraints": false
 }

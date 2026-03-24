@@ -7,13 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RedToptrenchtoredoutpost"
+            "pathName": "BlueTopRotation1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "dumpMag"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Redoutpost-redtoptrench"
+            "pathName": "Bluetoprotation2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "dumpMag"
           }
         }
       ]

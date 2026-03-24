@@ -7,37 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "B-Top-L1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.34
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "dumpMag"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.0
+            "pathName": "RightAngleDepotRed"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "B-Top-L2"
+            "pathName": "ComebackRed"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "dumpMag"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of Copy of RightAngleDepotRed"
           }
         }
       ]

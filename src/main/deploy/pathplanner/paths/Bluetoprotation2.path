@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.8061626248216838,
-        "y": 0.6127246790299581
+        "x": 4.077324561403509,
+        "y": 0.6020065789473676
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.806162624821685,
-        "y": 0.6127246790299581
+        "x": 5.07732456140351,
+        "y": 0.6020065789473676
       },
       "isLocked": false,
       "linkedName": "BluebottomTrench67"
@@ -52,8 +52,8 @@
         "y": 7.3429824561403505
       },
       "prevControl": {
-        "x": 6.0775,
-        "y": 7.42952850877193
+        "x": 6.079570661896245,
+        "y": 7.645152057245081
       },
       "nextControl": null,
       "isLocked": false,
@@ -70,8 +70,8 @@
       "rotationDegrees": 36.939316598127036
     },
     {
-      "waypointRelativePos": 1.9481132075471712,
-      "rotationDegrees": 42.58189107729503
+      "waypointRelativePos": 1.8288770053475933,
+      "rotationDegrees": -0.6212299560278606
     },
     {
       "waypointRelativePos": 2.551886792452832,
@@ -83,7 +83,7 @@
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 0.9640933572710951,
+      "waypointRelativePos": 0.40677966101694907,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -103,13 +103,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -79.31270522505982
+    "rotation": -68.48801334509291
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 81.46923439005195
+    "rotation": 73.763975826025
   },
   "useDefaultConstraints": false
 }

@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.478972895863052,
+        "x": 4.0,
         "y": 7.444336661911555
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.8024393723252485,
+        "x": 4.323466476462197,
         "y": 7.444336661911555
       },
       "isLocked": false,
@@ -64,11 +64,11 @@
     },
     {
       "anchor": {
-        "x": 4.478972895863052,
+        "x": 4.0,
         "y": 7.444336661911555
       },
       "prevControl": {
-        "x": 4.996519258202567,
+        "x": 4.517546362339515,
         "y": 7.41845934379458
       },
       "nextControl": null,
@@ -92,8 +92,13 @@
     {
       "name": "autoIntakeFuel",
       "waypointRelativePos": 0.60499662390276,
-      "endWaypointRelativePos": 3.435516542876376,
-      "command": null
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -106,13 +111,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -88.45184230102204
+    "rotation": -77.00639657866054
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -88.45184230102204
+    "rotation": -77.00639657866054
   },
   "useDefaultConstraints": true
 }

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 12.796887298747766,
-        "y": 0.7655813953488371
+        "x": 12.501140350877192,
+        "y": 0.6500877192982455
       },
       "prevControl": null,
       "nextControl": {
-        "x": 10.314400715563506,
-        "y": 0.48974955277280846
+        "x": 9.807723535134793,
+        "y": 0.5851861092803564
       },
       "isLocked": false,
       "linkedName": "Bottomred67"
@@ -17,31 +17,31 @@
     {
       "anchor": {
         "x": 10.314400715563506,
-        "y": 1.9175849731663686
+        "y": 1.6904293381037565
       },
       "prevControl": {
-        "x": 11.028318425760284,
-        "y": 0.35994633273703047
+        "x": 9.924991055456172,
+        "y": 0.6520035778175304
       },
       "nextControl": {
-        "x": 9.550476602269054,
-        "y": 3.58432849308154
+        "x": 10.95817518160708,
+        "y": 3.4071612475532875
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 10.314400715563506,
-        "y": 5.876583184257603
+        "x": 10.13592128801431,
+        "y": 6.363345259391771
       },
       "prevControl": {
-        "x": 10.280141103348006,
-        "y": 4.0265641246204416
+        "x": 10.10166167579881,
+        "y": 4.5133261997546095
       },
       "nextControl": {
-        "x": 10.346851520572448,
-        "y": 7.6289266547406065
+        "x": 10.168372093023253,
+        "y": 8.115688729874778
       },
       "isLocked": false,
       "linkedName": null
@@ -52,8 +52,8 @@
         "y": 7.401771019677997
       },
       "prevControl": {
-        "x": 11.56375670840787,
-        "y": 7.628926654740608
+        "x": 11.515080500894456,
+        "y": 7.28819320214669
       },
       "nextControl": null,
       "isLocked": false,
@@ -62,7 +62,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5133689839572194,
+      "waypointRelativePos": 0.18449197860962632,
       "rotationDegrees": 89.50322823307512
     },
     {
@@ -83,23 +83,12 @@
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 0.9210053859964091,
+      "waypointRelativePos": 0.2745762711864407,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
           "name": "autoIntakeFuel"
-        }
-      }
-    },
-    {
-      "name": "dumpMag",
-      "waypointRelativePos": 2.606822262118492,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "dumpMag"
         }
       }
     }
@@ -120,7 +109,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 104.93141717813754
+    "rotation": 97.97676878752661
   },
   "useDefaultConstraints": false
 }

@@ -7,37 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueTopRotation1"
+            "pathName": "B-Top-L1"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "dumpMag"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bluetoprotation2"
+            "pathName": "B-Top-L2"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "dumpMag"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.5
           }
         }
       ]

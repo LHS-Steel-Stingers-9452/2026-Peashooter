@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BottomRedtotopred"
+            "pathName": "BlueBottomTrenchtoTopbluetrench"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 5.0
+            "name": "dumpMag"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Redtopauto-bottomauto"
+            "pathName": "Bluetop2tobluebottom2"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 5.0
+            "name": "dumpMag"
           }
         }
       ]

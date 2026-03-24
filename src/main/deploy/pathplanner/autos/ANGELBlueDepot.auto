@@ -5,6 +5,18 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Bluedepotstart"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "bluemidtotopblue"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "dumpMag"
@@ -13,31 +25,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RedToptrenchtoredoutpost"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Redoutpost-redtoptrench"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "dumpMag"
+            "pathName": "bluetopend"
           }
         }
       ]
     }
   },
-  "resetOdom": false,
+  "resetOdom": true,
   "folder": null,
   "choreoAuto": false
 }

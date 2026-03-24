@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 12.558837719298246,
-        "y": 0.6020065789473676
+        "y": 0.5923903508771924
       },
       "prevControl": null,
       "nextControl": {
         "x": 12.308837719298246,
-        "y": 0.6020065789473676
+        "y": 0.5923903508771924
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 9.106611842105263,
-        "y": 0.9481907894736832
+        "x": 9.202774122807018,
+        "y": 1.3039912280701753
       },
       "prevControl": {
-        "x": 9.779747807017541,
-        "y": 0.5923903508771922
+        "x": 9.453935926999032,
+        "y": 0.4795253056137808
       },
       "nextControl": {
-        "x": 8.118076943591918,
-        "y": 1.4707020929735966
+        "x": 8.760427631578947,
+        "y": 2.7560416666666665
       },
       "isLocked": false,
       "linkedName": null
@@ -48,12 +48,12 @@
     },
     {
       "anchor": {
-        "x": 12.683848684210528,
-        "y": 7.391063596491227
+        "x": 12.453059210526316,
+        "y": 7.439144736842105
       },
       "prevControl": {
-        "x": 11.98186403508772,
-        "y": 7.487225877192982
+        "x": 11.78953947368421,
+        "y": 7.3622149122807015
       },
       "nextControl": null,
       "isLocked": false,
@@ -67,11 +67,11 @@
     },
     {
       "waypointRelativePos": 0.9591194968553457,
-      "rotationDegrees": -34.36397957034866
+      "rotationDegrees": 22.338970501834282
     },
     {
       "waypointRelativePos": 1.8443396226415083,
-      "rotationDegrees": -24.427
+      "rotationDegrees": -27.261422738323773
     },
     {
       "waypointRelativePos": 2.353773584905663,
@@ -83,23 +83,12 @@
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 1.1903052064631952,
+      "waypointRelativePos": 0.5186440677966098,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
           "name": "autoIntakeFuel"
-        }
-      }
-    },
-    {
-      "name": "dumpMag",
-      "waypointRelativePos": 2.4667863554757634,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "dumpMag"
         }
       }
     }
@@ -114,7 +103,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -112.90576965841717
+    "rotation": -102.09475707701216
   },
   "reversed": false,
   "folder": null,

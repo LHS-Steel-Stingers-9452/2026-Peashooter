@@ -79,7 +79,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.8235294117647057,
-      "rotationDegrees": 86.37756994366173
+      "rotationDegrees": 86.37756994366174
     },
     {
       "waypointRelativePos": 1.1257995735607693,
@@ -103,9 +103,14 @@
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 0.32315978456014366,
-      "endWaypointRelativePos": 3.5260323159784557,
-      "command": null
+      "waypointRelativePos": 0.48833034111310586,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
     }
   ],
   "globalConstraints": {

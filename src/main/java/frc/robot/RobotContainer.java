@@ -109,8 +109,8 @@ public class RobotContainer {
 
     // private final AutoShoot autoshoot = new AutoShoot(drivetrain, shooter, physics, null, null);
 
-    private final Translation2d RED_HUB = new Translation2d(11.5, 4.0);
-    private final Translation2d BLUE_HUB = new Translation2d(4.7, 4.0);
+    private final Translation2d RED_HUB = new Translation2d(11.8, 4.025);
+    private final Translation2d BLUE_HUB = new Translation2d(4.7, 4.025);
 
 
 //     private final Translation2d HUB_POSITION = new Translation2d(11.5, 4);
@@ -138,7 +138,7 @@ public class RobotContainer {
         // hoodSafety(drivetrain, hood).schedule();
         // LimelightHelpers.SetRobotOrientation("limelight-left",drivetrain.getState().Pose.getRotation().getDegrees(), 0, 0, 0, 0, 0);
         //Auto Selection is already handled by Glass.
-        NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker));
+        NamedCommands.registerCommand("dumpMag", dumpMag(shooter, indexer, kicker, intakepivot,intake));
         NamedCommands.registerCommand("autoIntakeFuel",autoIntakeFuel(intake, intakepivot));
         NamedCommands.registerCommand("stopIntake",stopIntake(intake, intakepivot));
         // NamedCommands.registerCommand("intakeShuffle", intakeShuffle(intakepivot));
@@ -148,7 +148,7 @@ public class RobotContainer {
         // See if you need this if the options for the autos are not popping up.
          autoChooser.setDefaultOption("1", Commands.print("1"));
         //  autoChooser.addOption("OutpostToMiddleOfHub", getAutonomousCommand());
-        autoChooser.addOption("Dumpmagtest67", dumpMag(shooter, indexer,kicker));
+        autoChooser.addOption("Dumpmagtest67", dumpMag(shooter, indexer,kicker, intakepivot,intake));
         autoChooser.addOption("autoIntakeFuel", autoIntakeFuel(intake, intakepivot));
         autoChooser.addOption("stopIntake", stopIntake(intake, intakepivot));
         // autoChooser.addOption("intakeShuffle", intakeShuffle(intakepivot));
@@ -184,14 +184,14 @@ public class RobotContainer {
 
         // Reset the field-centric heading on start.
         joystick.touchpad().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        joystick.R3().whileTrue(indexer.setVelocity(-25).alongWith(kicker.setVelocity(-35).alongWith(shooter.setVelocity(-25))));
+        joystick.R3().whileTrue(indexer.setVelocity(-40).alongWith(kicker.setVelocity(-50).alongWith(shooter.setVelocity(-35))));
 
    
 //Joystick/controller buttons    
         
     //Left Bumper = AimAtHub
         joystick.L1()
-        .whileTrue(aimAtHubMegaTag2(drivetrain,new Translation2d(11.8, 4), new Translation2d(4.7, 4) ));
+        .whileTrue(aimAtHubMegaTag2(drivetrain,new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025) ));
     //Left Trigger = Intake
         joystick
             .L2()
@@ -204,14 +204,14 @@ public class RobotContainer {
             // ,(intake.setVoltage(10)))); 
     // Right Bumper = Aim at Hub
         joystick.R1()
-            .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.5, 4), new Translation2d(5,4)));
+            .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.75,4.025)));
         // .whileTrue(alignToClosestHubPoint());/
     // Face Buttons
-        // joystick 
-        //     .triangle() //trench shot
-        //     .onTrue(shooter.setVelocity(41));
-        joystick.triangle()
-    .whileTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
+        joystick 
+            .triangle() //trench shot
+            .onTrue(shooter.setVelocity(43));
+        // joystick.triangle()
+        //     .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
 
         joystick 
             .circle() //turn shooter off shot
@@ -252,14 +252,16 @@ public class RobotContainer {
             .onTrue(shooter.setVelocity(43)); //left trench
         joystick2
             .rightBumper()
-            .onTrue(shooter.setVelocity(43)); //right trench
+            .whileTrue(kicker.setVelocity(-50)); //right trench
+        joystick2
+            .rightTrigger()
+            .whileTrue(indexer.setVelocity(-40)); //right trench
         joystick2
             .y()
-
             .onTrue(shooter.setVelocity(40)); // tower shot
         joystick2
             .x()
-            .onTrue(shooter.setVelocity(48)); // depot shot
+            .onTrue(shooter.setVelocity(46)); // depot shot
         joystick2
             .b()
             .onTrue(shooter.setVelocity(44)); // outpost
@@ -269,11 +271,14 @@ public class RobotContainer {
         joystick2
             .leftTrigger()
             .whileTrue(drivetrain.applyRequest(() -> brake));
+        // joystick2
+        //     .povLeft()
+        //     .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
 
-        joystick2
-            .rightTrigger() 
-            .whileTrue(indexer.setVelocity(45)
-            .alongWith(kicker.setVelocity(25)));
+        // joystick2
+        //     .rightTrigger() 
+        //     .whileTrue(indexer.setVelocity(45)
+        //     .alongWith(kicker.setVelocity(25)));
 
         // joystick2.povUp()
         //     .onTrue(run shooter.increaseVelocityTest(100)));
@@ -425,14 +430,17 @@ public class RobotContainer {
     //     );
     // }
 
-    public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker){
+    public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker, IntakePivot intakepivot, Intake intake){
         // return shooter.setVelocity(44)
         //     .alongWith(new WaitCommand(1).andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25))));
         return shooter.setVelocity(42)
             .alongWith(
-                new WaitCommand(1)
-                    .andThen(kicker.setVelocity(25).alongWith(indexer.setVelocity(45))))
-                    .withTimeout(5)
+                new WaitCommand(0.5) //reduced to 0.5 for reasons
+                    .andThen(kicker.setVelocity(25).alongWith(indexer.setVelocity(45))),
+                new WaitCommand(6.0)
+                    .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0))))
+                    
+                    .withTimeout(7)
                     .andThen(indexer.setVoltageRun(0).alongWith(shooter.setVoltageRun(0), kicker.setVoltageRun(0))
                     .withTimeout(0.1));
     }
@@ -444,9 +452,9 @@ public class RobotContainer {
     // }
     
     public Command autoIntakeFuel(Intake intake, IntakePivot intakepivot){
-        return intake.setVoltage(-6)
+        return intake.setVoltage(-7)
             .alongWith(intakepivot.setPosition(26))
-            .withTimeout(3);
+            .withTimeout(4.5);
 
             // .withTimeout(4) 
             // .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0))); //test if setVoltageRun is needed instead.    
@@ -532,20 +540,43 @@ public class RobotContainer {
                     });
     }
     //for auto
-    public Command aimAtTargetAutoMT1() {
-    return  drivetrain.applyRequest(
+    public Command aimAtHubAutoMT2(CommandSwerveDrivetrain drivetrain, Translation2d redTarget, Translation2d blueTarget) {
+        return  drivetrain.applyRequest(
                     () -> {
-                        double kP = .03; //kp was .0176
-                        double targetingAngularVelocity = LimelightHelpers.getTX("limelight-left") * kP;
-                        targetingAngularVelocity *= MaxAngularRate;
-                        targetingAngularVelocity *= -1.0;
+
+                        var alliance = DriverStation.getAlliance();
+                        var target = redTarget;
+
+                        if (alliance.isPresent()) {
+
+                            if (alliance.get().equals(Alliance.Blue)){
+                                 target = blueTarget;
+                            }
+                           
+                        }
+                        
+                         var currentPose = drivetrain.getState().Pose;
+                         var direction =
+                            target.minus(currentPose.getTranslation());
+                        var error =
+                            direction.getAngle()
+                                .minus(currentPose.getRotation())
+                                .getRadians();
+                                
+                        double kP = 3; //kp was .0176
+                        double targetingAngularVelocity = error * kP;
+                        // targetingAngularVelocity *= MaxAngularRate;
+                        // targetingAngularVelocity *= -1.0;
+
+                        // var angle = Math.atan2(, )
+
+                        
                         return drive
                             .withVelocityX(0) // Drive forward with negative Y (forward)
                             .withVelocityY(0) // Drive left with negative X (left)
-                            .withRotationalRate(
-                                targetingAngularVelocity); // Drive counterclockwise with negative X (left)
+                            .withRotationalRate(targetingAngularVelocity); // Drive counterclockwise with negative X (left)
                     });
-}
+                }
 
 // do not use
     //  public Command aimAtHubno(CommandSwerveDrivetrain drivetrain) { //what does this command even do??

@@ -3,35 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.726887298747764,
-        "y": 0.6693201754385962
+        "x": 4.0388596491228075,
+        "y": 0.6789364035087715
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.413717105263158,
-        "y": 0.6404714912280703
+        "x": 6.952576754385965,
+        "y": 0.5346929824561402
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "SDRFINALBLUEBOTTOM"
     },
     {
       "anchor": {
-        "x": 0.595384615384615,
-        "y": 0.6693201754385962
+        "x": 6.000570175438596,
+        "y": 2.8329714912280703
       },
       "prevControl": {
-        "x": 1.932905701754386,
-        "y": 1.0924342105263156
+        "x": 6.894879385964913,
+        "y": 0.7077850877192979
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bluetrenchoutpost6"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.12264150943396235,
-      "rotationDegrees": -89.94406654327764
+      "waypointRelativePos": 0.3333333333333333,
+      "rotationDegrees": 89.398559142187
     }
   ],
   "constraintZones": [],
@@ -39,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 0.24067796610169498,
+      "waypointRelativePos": 0.3087971274685816,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -50,8 +50,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -59,13 +59,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -89.21303541449831
+    "rotation": 80.43331401028559
   },
   "useDefaultConstraints": false
 }

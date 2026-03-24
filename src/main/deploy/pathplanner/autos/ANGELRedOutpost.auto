@@ -7,37 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueBottomTrenchtoTopbluetrench"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "dumpMag"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
+            "pathName": "Redoutpoststart"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bluetop2tobluebottom2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
+            "pathName": "redcomebacktop"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "dumpMag"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "redtobottomhun"
           }
         }
       ]

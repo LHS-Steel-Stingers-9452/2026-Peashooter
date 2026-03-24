@@ -15,23 +15,23 @@ public class Physics {
 
     public Physics() {
         velocitySpeed.put(1.8, 33.0); //use
-        velocitySpeed.put(2.0, 35.2); //use
-        velocitySpeed.put(2.25, 36.1);
-        velocitySpeed.put(2.5, 37.0);
-        velocitySpeed.put(2.75, 38.0);
-        velocitySpeed.put(2.9, 38.0); //use
-        velocitySpeed.put(3.0, 38.8);
-        velocitySpeed.put(3.25, 39.8);
-        velocitySpeed.put(3.5, 40.6);
-        velocitySpeed.put(3.8, 42.0); //use
-        velocitySpeed.put(4.0, 42.4);
-        velocitySpeed.put(4.25, 43.3);
-        velocitySpeed.put(4.56, 45.0); //use
-        velocitySpeed.put(4.75, 45.0);
-        velocitySpeed.put(5.0, 45.9);
-        velocitySpeed.put(6.59, 50.0); //use
-        velocitySpeed.put(6.8, 55.0); //use
-        velocitySpeed.put(7.5, 57.0); //use
+        // velocitySpeed.put(2.0, 35.2); //use
+        velocitySpeed.put(2.1, 35.0);
+        velocitySpeed.put(2.9, 39.0); 
+        velocitySpeed.put(3.8, 43.0); 
+        velocitySpeed.put(4.56, 45.0); 
+        velocitySpeed.put(6.1, 47.0); //38.0
+        velocitySpeed.put(6.59, 50.0);
+        velocitySpeed.put(6.8, 55.0);
+        // velocitySpeed.put(3.8, 42.0); //use
+        // velocitySpeed.put(4.0, 42.4);
+        // velocitySpeed.put(4.25, 43.3);
+        // velocitySpeed.put(4.56, 45.0); //use
+        // velocitySpeed.put(4.75, 45.0);
+        // velocitySpeed.put(5.0, 45.9);
+        // velocitySpeed.put(6.59, 50.0); //use
+        // velocitySpeed.put(6.8, 55.0); //use
+        // velocitySpeed.put(7.5, 57.0); //use
 
 
 
@@ -45,7 +45,7 @@ public class Physics {
     // Get base interpolated velocity
     Double baseVelocity = velocitySpeed.get(distance);
     
-    double offset = SmartDashboard.getNumber("Shooter Offset", 0.0);
+    double offset = 3;
 
     // Final velocity
     double finalVelocity = baseVelocity + offset;

@@ -7,37 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "R-Bot-L1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.34
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "dumpMag"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 5.0
+            "pathName": "Blueoutpoststart"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "R-Bot-L2"
+            "pathName": "Bluemidtobluebottomtrenchfinal"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "dumpMag"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lastone"
           }
         }
       ]

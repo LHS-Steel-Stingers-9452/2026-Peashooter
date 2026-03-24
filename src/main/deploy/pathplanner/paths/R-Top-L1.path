@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 12.112781740370899,
+        "x": 12.15,
         "y": 7.444336661911555
       },
       "prevControl": null,
       "nextControl": {
-        "x": 11.349400855920116,
+        "x": 11.386619115549218,
         "y": 7.327888730385164
       },
       "isLocked": false,
@@ -92,8 +92,13 @@
     {
       "name": "autoIntakeFuel",
       "waypointRelativePos": 0.5401755570560427,
-      "endWaypointRelativePos": 3.2194463200540193,
-      "command": null
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
     }
   ],
   "globalConstraints": {

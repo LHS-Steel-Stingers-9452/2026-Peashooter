@@ -5,27 +5,21 @@
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 3.0
+            "pathName": "B-Bot-L1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "dumpMag"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "BlueTrenchBottomtoOutPost"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Blueoutposttobluebottomtrench"
+            "pathName": "B-Bot-L2"
           }
         },
         {

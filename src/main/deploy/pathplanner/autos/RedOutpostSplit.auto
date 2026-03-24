@@ -7,13 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "RedTopTrench-RedNeutralTop"
+            "pathName": "R-Top-L1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "dumpMag"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RedTopFarNeutral-bottom"
+            "pathName": "R-Top-L2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "dumpMag"
           }
         }
       ]

@@ -3,43 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.726887298747764,
-        "y": 0.6693201754385962
+        "x": 4.0,
+        "y": 0.6212390350877184
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.413717105263158,
-        "y": 0.6404714912280703
+        "x": 7.29876096491228,
+        "y": 0.6981688596491222
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.595384615384615,
-        "y": 0.6693201754385962
+        "x": 7.327609649122808,
+        "y": 3.3522478070175428
       },
       "prevControl": {
-        "x": 1.932905701754386,
-        "y": 1.0924342105263156
+        "x": 7.29876096491228,
+        "y": 0.6981688596491225
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Bluetrenchoutpost6"
+      "linkedName": "SDRFINALmidblueneutral"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.12264150943396235,
-      "rotationDegrees": -89.94406654327764
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "autoIntakeFuel",
-      "waypointRelativePos": 0.24067796610169498,
+      "waypointRelativePos": 0.25314183123877926,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -50,8 +45,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 1.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -59,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -89.21303541449831
+    "rotation": -90.93919094573563
   },
   "useDefaultConstraints": false
 }
