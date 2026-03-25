@@ -184,26 +184,31 @@ public class RobotContainer {
 
         // Reset the field-centric heading on start.
         joystick.touchpad().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-        joystick.R3().whileTrue(indexer.setVelocity(-40).alongWith(kicker.setVelocity(-50).alongWith(shooter.setVelocity(-35))));
+
+        // REMOVED antijam haran
+        //joystick.R3().whileTrue(indexer.setVelocity(-40).alongWith(kicker.setVelocity(-50).alongWith(shooter.setVelocity(-35))));
 
    
 //Joystick/controller buttons    
         
     //Left Bumper = AimAtHub
-        joystick.L1()
+        joystick
+            .L1()
         .whileTrue(aimAtHubMegaTag2(drivetrain,new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025) ));
     //Left Trigger = Intake
         joystick
             .L2()
             .whileTrue(intake.setVoltage(-6));
-    // Right Trigger = Indexer + Kicker  
+    // Right Trigger = Indexer + Kicker + X-LOCK for now
         joystick
             .R2() 
             .whileTrue(indexer.setVelocity(45)
-            .alongWith(kicker.setVelocity(25)));
+            .alongWith(kicker.setVelocity(25))
+            .alongWith(drivetrain.applyRequest(() -> brake)));
             // ,(intake.setVoltage(10)))); 
     // Right Bumper = Aim at Hub
-        joystick.R1()
+        joystick
+            .R1()
             .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.75,4.025)));
         // .whileTrue(alignToClosestHubPoint());/
     // Face Buttons
@@ -212,7 +217,6 @@ public class RobotContainer {
             .onTrue(shooter.setVelocity(43));
         // joystick.triangle()
         //     .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
-
         joystick 
             .circle() //turn shooter off shot
             .onTrue(shooter.setVelocity(0));
@@ -226,8 +230,8 @@ public class RobotContainer {
         //     .povDown()
         //     .onTrue(intake.setVoltage(6));
 
-    //D Pad Buttons
-        joystick        
+    //Driver stick buttons
+        joystick //slow button        
             .L3()
             .whileTrue(
              drivetrain.applyRequest(
@@ -242,6 +246,21 @@ public class RobotContainer {
                     -joystick.getRightX()
                         *MaxAngularRate)
             ));
+        joystick //FAST button aka turbo       
+            .R3()
+            .whileTrue(
+             drivetrain.applyRequest(
+                () -> 
+                 drive
+                .withVelocityX(
+                   (-joystick.getLeftY() * MaxSpeed)*(1)) 
+                .withVelocityY(
+                    (
+                        -joystick.getLeftX() * MaxSpeed)*(1))
+                .withRotationalRate(
+                    -joystick.getRightX()
+                        *MaxAngularRate)
+            ));
         // joystick2
         //     .povRight()
         //     .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12, 4)));
@@ -252,10 +271,10 @@ public class RobotContainer {
             .onTrue(shooter.setVelocity(43)); //left trench
         joystick2
             .rightBumper()
-            .whileTrue(kicker.setVelocity(-50)); //right trench
+            .whileTrue(kicker.setVelocity(-50)/* .alongWith(shooter.setVelocity(-35))*/); //shooter & kicker anti jam/reverse
         joystick2
             .rightTrigger()
-            .whileTrue(indexer.setVelocity(-40)); //right trench
+            .whileTrue(indexer.setVelocity(-40)); //spindexer anti jam/reverse
         joystick2
             .y()
             .onTrue(shooter.setVelocity(40)); // tower shot
@@ -268,7 +287,7 @@ public class RobotContainer {
         joystick2
             .a()
             .onTrue(shooter.setVelocity(0)); //stops shooter
-        joystick2
+        joystick2 //might need to remove
             .leftTrigger()
             .whileTrue(drivetrain.applyRequest(() -> brake));
         // joystick2
@@ -293,6 +312,8 @@ public class RobotContainer {
     //special buttons (start, select)    
     
         drivetrain.registerTelemetry(logger::telemeterize);
+
+        
 
     //Glass/SmartDashboard Buttons
                     // The format is "(subsystem name) set (variable) (amount)""
@@ -598,7 +619,6 @@ public class RobotContainer {
     //                     // targetingAngularVelocity *= -1.0;
 
     //                     // var angle = Math.atan2(, )
-
                         
     //                     return drive
     //                         .withVelocityX(
