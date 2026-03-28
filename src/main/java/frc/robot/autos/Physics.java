@@ -45,7 +45,7 @@ public class Physics {
     // Get base interpolated velocity
     Double baseVelocity = velocitySpeed.get(distance);
     
-    double offset = 3;
+    double offset = 0;
 
     // Final velocity
     double finalVelocity = baseVelocity + offset;

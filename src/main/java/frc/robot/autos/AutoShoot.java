@@ -52,10 +52,21 @@ public class AutoShoot extends Command {
         // Get robot pose
         Pose2d pose = drivetrain.getState().Pose;
 
-        // Calculate distance
-        var distance = pose.getTranslation().getDistance(target);
+        var speeds = drivetrain.getState().Speeds; // or getState().Speeds depending on your setup
+        double shotTime = 1.4;
 
         // Get velocity from physics
+        Translation2d velocityOffset = new Translation2d(
+        speeds.vxMetersPerSecond * shotTime,
+        speeds.vyMetersPerSecond * shotTime
+);
+        Translation2d adjustedTarget = target.plus(velocityOffset);
+        Translation2d realTarget = target;
+
+        
+        var distance = pose.getTranslation().getDistance(adjustedTarget);
+
+
         double targetVelocity = physics.setVelocity(distance);
 
         // Set shooter velocity ONLY

@@ -167,6 +167,9 @@ public class RobotContainer {
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
+        shooter.setDefaultCommand(
+        new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB)
+        );
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
@@ -195,23 +198,27 @@ public class RobotContainer {
     //Left Trigger = Intake
         joystick
             .L2()
-            .whileTrue(intake.setVoltage(-6));
+            .whileTrue(intake.setVoltage(-8));
     // Right Trigger = Indexer + Kicker  
         joystick
             .R2() 
-            .whileTrue(indexer.setVelocity(45)
-            .alongWith(kicker.setVelocity(25)));
+            .whileTrue(indexer.setVelocity(80)
+            .alongWith(kicker.setVelocity(50))); //indexer velocity 45, kicker velocity 25
             // ,(intake.setVoltage(10)))); 
     // Right Bumper = Aim at Hub
+        // joystick.R1()
+        //     .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.75,4.025)));
         joystick.R1()
-            .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.75,4.025)));
+            .whileTrue(aimAtHubMegaTag2(drivetrain, RED_HUB,BLUE_HUB));
+        joystick.R1()
+            .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
         // .whileTrue(alignToClosestHubPoint());/
     // Face Buttons
-        joystick 
-            .triangle() //trench shot
-            .onTrue(shooter.setVelocity(43));
-        // joystick.triangle()
-        //     .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
+        // joystick 
+        //     .triangle() //trench shot
+        //     .onTrue(shooter.setVelocity(43));
+        joystick.triangle()
+            .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
 
         joystick 
             .circle() //turn shooter off shot
