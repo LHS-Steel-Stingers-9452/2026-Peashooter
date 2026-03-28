@@ -166,6 +166,8 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     BaseStatusSignal.refreshAll(
         positionSignal, velocitySignal, voltageSignal, statorCurrentSignal, temperatureSignal);
+    BaseStatusSignal.refreshAll(
+        positionSignal2, velocitySignal2, voltageSignal2, statorCurrentSignal2, temperatureSignal2);
   }
 
   public void increaseVelocityTest(double amount) {

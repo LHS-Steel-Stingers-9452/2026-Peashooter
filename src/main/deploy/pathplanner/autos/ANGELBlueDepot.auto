@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bluedepotstart"
+            "pathName": "BlueDepot1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "bluemidtotopblue"
+            "pathName": "BlueDepot2"
           }
         },
         {
@@ -25,7 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "bluetopend"
+            "pathName": "BlueDepot3"
           }
         }
       ]

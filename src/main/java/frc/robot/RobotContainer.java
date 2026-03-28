@@ -18,11 +18,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 // import edu.wpi.first.wpilibj.PS5Controller;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 // import edu.wpi.first.wpilibj.simulation.PS5ControllerSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -34,6 +36,7 @@ import frc.robot.autos.Physics;
 import frc.robot.generated.TunerConstants;
 // import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Hood;
 // import frc.robot.autos.AlignToHubPoint;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
@@ -48,14 +51,13 @@ public class RobotContainer {
   private final CANBus CarnivoreCanBus = new CANBus("Carnivore", "./logs/example.hoot");
 
   // Subsystem Imports
-  // private final Climber climber = new Climber();
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
   private final Shooter shooter = new Shooter(rioCanBus);
   private final Kicker kicker = new Kicker(CarnivoreCanBus);
   private final Intake intake = new Intake(CarnivoreCanBus);
   private final IntakePivot intakepivot = new IntakePivot(rioCanBus);
   private final Indexer indexer = new Indexer(rioCanBus);
-  // private final Hood hood = new Hood(drivetrain, rioCanBus);
+  private final Hood hood = new Hood(drivetrain, rioCanBus);
 
   // Swerve
   private double MaxSpeed =
@@ -242,6 +244,7 @@ public class RobotContainer {
     // joystick2
     //     .povRight()
     //     .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12, 4)));
+    // Driver Rumble
 
     // LUIS BUTTONS ===========================================
     joystick2.leftBumper().onTrue(shooter.setVelocity(43)); // left trench
@@ -429,6 +432,14 @@ public class RobotContainer {
   //     .andThen(new WaitCommand(2))
   //     .andThen(intake.setVoltage(0));
   // }
+
+  // rumble command should be tested on another command
+  public Command rumbleCommand() {
+    return new StartEndCommand(
+            () -> joystick.setRumble(RumbleType.kBothRumble, 1.0),
+            () -> joystick.setRumble(RumbleType.kBothRumble, 0))
+        .withTimeout(.8);
+  }
 
   public Command autoIntakeFuel(Intake intake, IntakePivot intakepivot) {
     return intake.setVoltage(-7).alongWith(intakepivot.setPosition(26)).withTimeout(4.5);
