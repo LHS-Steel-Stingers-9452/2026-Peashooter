@@ -300,9 +300,9 @@ public class RobotContainer {
         joystick2 //might need to remove
             .leftTrigger()
             .whileTrue(drivetrain.applyRequest(() -> brake));
-        // joystick2
-        //     .povLeft()
-        //     .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
+        joystick2
+            .povLeft()
+            .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
 
         // joystick2
         //     .rightTrigger() 
