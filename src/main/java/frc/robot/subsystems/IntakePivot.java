@@ -243,4 +243,17 @@ public class IntakePivot extends SubsystemBase {
   public Command moveAtVelocityCommand(double velocity) {
     return run(() -> setVelocity(velocity));
   }
+
+  public boolean intakeAtPosition(double position) {
+    var currentPositon = getPosition();
+    var upperBound = position + 0.5;
+    var lowerBound = position - 0.5;
+    
+    if(currentPositon < upperBound && currentPositon > lowerBound) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
 }

@@ -167,9 +167,9 @@ public class RobotContainer {
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
-        shooter.setDefaultCommand(
-        new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB)
-        );
+        // shooter.setDefaultCommand(
+        // new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB)
+        // );
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
@@ -213,8 +213,8 @@ public class RobotContainer {
         //     .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.75,4.025)));
         joystick.R1()
             .whileTrue(aimAtHubMegaTag2(drivetrain, RED_HUB,BLUE_HUB));
-        joystick.R1()
-            .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
+        // joystick.R1()
+        //     .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
         // .whileTrue(alignToClosestHubPoint());/
     // Face Buttons
         // joystick 
@@ -235,6 +235,10 @@ public class RobotContainer {
         // joystick
         //     .povDown()
         //     .onTrue(intake.setVoltage(6));
+
+        joystick
+            .povUp()
+            .onTrue(intakeAgitate(intake, intakepivot));
 
     //Driver stick buttons
         joystick //slow button        
@@ -493,6 +497,16 @@ public class RobotContainer {
             .withTimeout(3);
 
     }
+    public Command intakeAgitate(Intake intake, IntakePivot intakepivot){
+        return intakepivot.setPosition(26)
+        .until(() -> intakepivot.intakeAtPosition(26))
+        .andThen(intakepivot.setPosition(13))
+        .until(() -> intakepivot.intakeAtPosition(13))
+        .andThen(intakepivot.setPosition(26))
+        .until(() -> intakepivot.intakeAtPosition(26));
+    }
+
+
 
     // public Command intakeShuffle(IntakePivot intakePivot) {
     //     return intakepivot.setPosition(0)
