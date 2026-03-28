@@ -33,9 +33,7 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/**
- * Pivot subsystem using TalonFX with Krakenx60 motor
- */
+/** Pivot subsystem using TalonFX with Krakenx60 motor */
 @Logged(name = "Shooter")
 public class Shooter extends SubsystemBase {
 
@@ -47,10 +45,10 @@ public class Shooter extends SubsystemBase {
   private final double gearRatio = 1;
   private final double kP = 0.2; // //70 started at 1, should improve recovery
   private final double kI = 0;
-  private final double kD = 0; //0.75//helped with reducing noise, somehwat
+  private final double kD = 0; // 0.75//helped with reducing noise, somehwat
   private final double kS = 0;
-  private final double kV = 0.127; //voltage, divide voltage by velocity
-  private final double kA = 0; //chat said try 1, removed for now bcuz extra variable
+  private final double kV = 0.127; // voltage, divide voltage by velocity
+  private final double kA = 0; // chat said try 1, removed for now bcuz extra variable
   // private final double kG = 0; // Unused for pivots
   // private final double maxVelocity = 1; // rad/s
   // private final double maxAcceleration = 1; // rad/s²
@@ -60,8 +58,6 @@ public class Shooter extends SubsystemBase {
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
   private double setVelocityTest = 44;
-
-
 
   // Motor controller
   private final TalonFX motor;
@@ -83,9 +79,7 @@ public class Shooter extends SubsystemBase {
   // Simulation
   private final SingleJointedArmSim pivotSim;
 
-  /**
-   * Creates a new Pivot Subsystem.
-   */
+  /** Creates a new Pivot Subsystem. */
   public Shooter(CANBus canBus) {
     // Initialize motor controller
     motor = new TalonFX(canID, canBus);
@@ -140,9 +134,7 @@ public class Shooter extends SubsystemBase {
     currentLimits.SupplyCurrentLimitEnable = enableSupplyLimit;
 
     // Set brake mode
-    config.MotorOutput.NeutralMode = brakeMode
-      ? NeutralModeValue.Brake
-      : NeutralModeValue.Coast;
+    config.MotorOutput.NeutralMode = brakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
     // Apply gear ratio
     config.Feedback.SensorToMechanismRatio = gearRatio;
@@ -154,50 +146,43 @@ public class Shooter extends SubsystemBase {
     motor.setPosition(0);
 
     // Initialize simulation
-    pivotSim = new SingleJointedArmSim(
-      dcMotor, // Motor type
-      gearRatio,
-      0.01, // Arm moment of inertia - Small value since there are no arm parameters
-      0.1, // Arm length (m) - Small value since there are no arm parameters
-      Units.degreesToRadians(-90), // Min angle (rad)
-      Units.degreesToRadians(90), // Max angle (rad)
-      false, // Simulate gravity - Disable gravity for pivot
-      Units.degreesToRadians(0) // Starting position (rad)
-    );
-      //Second motor became opposed
+    pivotSim =
+        new SingleJointedArmSim(
+            dcMotor, // Motor type
+            gearRatio,
+            0.01, // Arm moment of inertia - Small value since there are no arm parameters
+            0.1, // Arm length (m) - Small value since there are no arm parameters
+            Units.degreesToRadians(-90), // Min angle (rad)
+            Units.degreesToRadians(90), // Max angle (rad)
+            false, // Simulate gravity - Disable gravity for pivot
+            Units.degreesToRadians(0) // Starting position (rad)
+            );
+    // Second motor became opposed
     motor2.setControl(new Follower(canID, MotorAlignmentValue.Opposed));
   }
 
-  /**
-   * Update simulation and telemetry.
-   */
+  /** Update simulation and telemetry. */
   @Override
   public void periodic() {
     BaseStatusSignal.refreshAll(
-      positionSignal,
-      velocitySignal,
-      voltageSignal,
-      statorCurrentSignal,
-      temperatureSignal
-
-    );
+        positionSignal, velocitySignal, voltageSignal, statorCurrentSignal, temperatureSignal);
   }
- 
+
   public void increaseVelocityTest(double amount) {
-  setVelocityTest += 1;
+    setVelocityTest += 1;
   }
 
-  public void decreaseVelocityTest(double amount) { 
-  setVelocityTest -= 1;
+  public void decreaseVelocityTest(double amount) {
+    setVelocityTest -= 1;
   }
 
   public double getVelocityTest() {
-  return setVelocityTest;
+    return setVelocityTest;
   }
-  
 
   /**
    * Get the current position in Rotations.
+   *
    * @return Position in Rotations
    */
   @Logged(name = "Position/Rotations")
@@ -214,6 +199,7 @@ public class Shooter extends SubsystemBase {
 
   /**
    * Get the current velocity in rotations per second.
+   *
    * @return Velocity in rotations per second
    */
   @Logged(name = "Velocity")
@@ -228,6 +214,7 @@ public class Shooter extends SubsystemBase {
 
   /**
    * Get the current applied voltage.
+   *
    * @return Applied voltage
    */
   @Logged(name = "Voltage")
@@ -239,8 +226,10 @@ public class Shooter extends SubsystemBase {
   public double getVoltage2() {
     return voltageSignal2.getValueAsDouble();
   }
+
   /**
    * Get the current motor current.
+   *
    * @return Motor current in amps
    */
   @Logged(name = "Current")
@@ -255,6 +244,7 @@ public class Shooter extends SubsystemBase {
 
   /**
    * Get the current motor temperature.
+   *
    * @return Motor temperature in Celsius
    */
   @Logged(name = "Temperature")
@@ -267,30 +257,30 @@ public class Shooter extends SubsystemBase {
     return temperatureSignal2.getValueAsDouble();
   }
 
-
-  
-
   /**
    * Set motor voltage directly.
+   *
    * @param voltage The voltage to apply
    */
   /*public void setVoltage(double voltage) {
-    motor.setVoltage(voltage);
-  }
-*/
+      motor.setVoltage(voltage);
+    }
+  */
   public Command setVoltage(double voltage) {
     return runOnce(() -> motor.setVoltage(voltage));
   }
-  
+
   public Command setVoltageRun(double voltage) {
     return run(() -> motor.setVoltage(voltage));
   }
 
   public Command runVelocityTest() {
-    return run(() -> motor.setControl( velocityRequest.withVelocity(setVelocityTest)));
-}
+    return run(() -> motor.setControl(velocityRequest.withVelocity(setVelocityTest)));
+  }
+
   /**
    * Creates a command to stop the pivot.
+   *
    * @return A command that stops the pivot
    */
   public Command stopCommand() {
@@ -299,13 +289,14 @@ public class Shooter extends SubsystemBase {
 
   /**
    * Creates a command to move the pivot at a specific velocity.
+   *
    * @return A command that moves the pivot at the specified velocity
    */
   public Command setVelocity(double velocity) {
-    return run(() ->  motor.setControl(velocityRequest.withVelocity(velocity)));
+    return run(() -> motor.setControl(velocityRequest.withVelocity(velocity)));
   }
 
   public void setVelocityDirect(double velocity) {
     motor.setControl(velocityRequest.withVelocity(velocity));
-}
+  }
 }

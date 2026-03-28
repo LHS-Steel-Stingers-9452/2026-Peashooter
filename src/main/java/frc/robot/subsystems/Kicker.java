@@ -2,42 +2,27 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Volt;
 
-// import static edu.wpi.first.units.Units.Radians;
-// import static edu.wpi.first.units.Units.RadiansPerSecond;
-// import static edu.wpi.first.units.Units.Rotations;
-// import static edu.wpi.first.units.Units.RotationsPerSecond;
-
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
-// import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-// import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-// import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
-// import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.epilogue.Logged;
-// import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.*;
-// import edu.wpi.first.wpilibj.RobotController;
-// import edu.wpi.first.wpilibj.simulation.BatterySim;
-// import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/**
- * Pivot subsystem using TalonFX with Krakenx60 motor
- */
+/** Pivot subsystem using TalonFX with Krakenx60 motor */
 @Logged(name = "Kicker")
 public class Kicker extends SubsystemBase {
 
@@ -46,11 +31,11 @@ public class Kicker extends SubsystemBase {
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 16;
   private final double gearRatio = 1;
-  private final double kP = 0; //started at 1
+  private final double kP = 0; // started at 1
   private final double kI = 0;
-  private final double kD = 0; //helped with reducing noise, somehwat
+  private final double kD = 0; // helped with reducing noise, somehwat
   private final double kS = 0;
-  private final double kV = 0.133; //voltage, divide voltage by velocity
+  private final double kV = 0.133; // voltage, divide voltage by velocity
   private final double kA = 0;
   // private final double kG = 0; // Unused for pivots
   // private final double maxVelocity = 1; // rad/s
@@ -60,7 +45,6 @@ public class Kicker extends SubsystemBase {
   private final double statorCurrentLimit = 150;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
-
 
   // Motor controller
   private final TalonFX motor;
@@ -76,12 +60,10 @@ public class Kicker extends SubsystemBase {
   // Simulation
   private final SingleJointedArmSim pivotSim;
 
-  /**
-   * Creates a new Pivot Subsystem.
-   */
+  /** Creates a new Pivot Subsystem. */
   public Kicker(CANBus canBus) {
     // Initialize motor controller
-    motor = new TalonFX(canID,canBus);
+    motor = new TalonFX(canID, canBus);
 
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);
@@ -120,9 +102,7 @@ public class Kicker extends SubsystemBase {
     currentLimits.SupplyCurrentLimitEnable = enableSupplyLimit;
 
     // Set brake mode
-    config.MotorOutput.NeutralMode = brakeMode
-      ? NeutralModeValue.Brake
-      : NeutralModeValue.Coast;
+    config.MotorOutput.NeutralMode = brakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
     // Apply gear ratio
     config.Feedback.SensorToMechanismRatio = gearRatio;
@@ -135,37 +115,31 @@ public class Kicker extends SubsystemBase {
     motor.setPosition(0);
 
     // Initialize simulation
-    pivotSim = new SingleJointedArmSim(
-      dcMotor, // Motor type
-      gearRatio,
-      0.01, // Arm moment of inertia - Small value since there are no arm parameters
-      0.1, // Arm length (m) - Small value since there are no arm parameters
-      Units.degreesToRadians(-90), // Min angle (rad)
-      Units.degreesToRadians(90), // Max angle (rad)
-      false, // Simulate gravity - Disable gravity for pivot
-      Units.degreesToRadians(0) // Starting position (rad)
-    );
+    pivotSim =
+        new SingleJointedArmSim(
+            dcMotor, // Motor type
+            gearRatio,
+            0.01, // Arm moment of inertia - Small value since there are no arm parameters
+            0.1, // Arm length (m) - Small value since there are no arm parameters
+            Units.degreesToRadians(-90), // Min angle (rad)
+            Units.degreesToRadians(90), // Max angle (rad)
+            false, // Simulate gravity - Disable gravity for pivot
+            Units.degreesToRadians(0) // Starting position (rad)
+            );
 
     setDefaultCommand(setVoltage(0));
   }
 
-  /**
-   * Update simulation and telemetry.
-   */
+  /** Update simulation and telemetry. */
   @Override
   public void periodic() {
     BaseStatusSignal.refreshAll(
-      positionSignal,
-      velocitySignal,
-      voltageSignal,
-      statorCurrentSignal,
-      temperatureSignal
-
-    );
+        positionSignal, velocitySignal, voltageSignal, statorCurrentSignal, temperatureSignal);
   }
- 
+
   /**
    * Get the current position in Rotations.
+   *
    * @return Position in Rotations
    */
   @Logged(name = "Position/Rotations")
@@ -176,6 +150,7 @@ public class Kicker extends SubsystemBase {
 
   /**
    * Get the current velocity in rotations per second.
+   *
    * @return Velocity in rotations per second
    */
   @Logged(name = "Velocity")
@@ -185,6 +160,7 @@ public class Kicker extends SubsystemBase {
 
   /**
    * Get the current applied voltage.
+   *
    * @return Applied voltage
    */
   @Logged(name = "Voltage")
@@ -192,13 +168,14 @@ public class Kicker extends SubsystemBase {
     return voltageSignal.getValueAsDouble();
   }
 
-  @Logged(name="SupplyVotlage")
+  @Logged(name = "SupplyVotlage")
   public double supplyVoltage() {
     return motor.getSupplyVoltage(true).getValueAsDouble();
   }
 
   /**
    * Get the current motor current.
+   *
    * @return Motor current in amps
    */
   public double getCurrent() {
@@ -207,36 +184,37 @@ public class Kicker extends SubsystemBase {
 
   /**
    * Get the current motor temperature.
+   *
    * @return Motor temperature in Celsius
    */
   public double getTemperature() {
     return temperatureSignal.getValueAsDouble();
   }
 
-
   public Command setVelocity(double velocity) {
-    return run(() ->  motor.setControl(velocityRequest.withVelocity(velocity)));
+    return run(() -> motor.setControl(velocityRequest.withVelocity(velocity)));
   }
 
   public Command setVoltageRun(double voltage) {
     return run(() -> motor.setVoltage(voltage));
   }
-  
 
   /**
    * Set motor voltage directly.
+   *
    * @param voltage The voltage to apply
    */
   /*public void setVoltage(double voltage) {
-    motor.setVoltage(voltage);
-  }
-*/
+      motor.setVoltage(voltage);
+    }
+  */
   public Command setVoltage(double voltage) {
     return runOnce(() -> motor.setControl(voltageRequest.withOutput(Volt.of(voltage))));
   }
 
   /**
    * Creates a command to stop the pivot.
+   *
    * @return A command that stops the pivot
    */
   public Command stopCommand() {
@@ -245,6 +223,7 @@ public class Kicker extends SubsystemBase {
 
   /**
    * Creates a command to move the pivot at a specific velocity.
+   *
    * @return A command that moves the pivot at the specified velocity
    */
   public Command moveAtVelocityCommand(double velocity) {

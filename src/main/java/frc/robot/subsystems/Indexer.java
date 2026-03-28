@@ -16,10 +16,8 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.MotorAlignmentValue;
 // import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.epilogue.Logged;
@@ -34,9 +32,7 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/**
- * Pivot subsystem using TalonFX with Krakenx60 motor
- */
+/** Pivot subsystem using TalonFX with Krakenx60 motor */
 @Logged(name = "Indexer")
 public class Indexer extends SubsystemBase {
 
@@ -46,11 +42,11 @@ public class Indexer extends SubsystemBase {
   private final int canID = 11;
   // private final int canID2 = 667;
   private final double gearRatio = 1;
-  private final double kP = 1; //started at 1
+  private final double kP = 1; // started at 1
   private final double kI = 0;
-  private final double kD = 0; //helped with reducing noise, somehwat
+  private final double kD = 0; // helped with reducing noise, somehwat
   private final double kS = 0;
-  private final double kV = 0.109; //voltage, divide voltage by velocity
+  private final double kV = 0.109; // voltage, divide voltage by velocity
   private final double kA = 0;
   // private final double kG = 0; // Unused for pivots
   // private final double maxVelocity = 1; // rad/s
@@ -60,7 +56,6 @@ public class Indexer extends SubsystemBase {
   private final double statorCurrentLimit = 60;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
-
 
   // Motor controller
   private final TalonFX motor;
@@ -82,12 +77,10 @@ public class Indexer extends SubsystemBase {
   // Simulation
   private final SingleJointedArmSim pivotSim;
 
-  /**
-   * Creates a new Pivot Subsystem.
-   */
+  /** Creates a new Pivot Subsystem. */
   public Indexer(CANBus canBus) {
     // Initialize motor controller
-    motor = new TalonFX(canID,canBus);
+    motor = new TalonFX(canID, canBus);
     // motor2 = new TalonFX(canID2,kCANBus.getName());
 
     // Create control requests
@@ -131,9 +124,7 @@ public class Indexer extends SubsystemBase {
     currentLimits.SupplyCurrentLimitEnable = enableSupplyLimit;
 
     // Set brake mode
-    config.MotorOutput.NeutralMode = brakeMode
-      ? NeutralModeValue.Brake
-      : NeutralModeValue.Coast;
+    config.MotorOutput.NeutralMode = brakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
     // Apply gear ratio
     config.Feedback.SensorToMechanismRatio = gearRatio;
@@ -147,39 +138,33 @@ public class Indexer extends SubsystemBase {
     motor.setPosition(0);
 
     // Initialize simulation
-    pivotSim = new SingleJointedArmSim(
-      dcMotor, // Motor type
-      gearRatio,
-      0.01, // Arm moment of inertia - Small value since there are no arm parameters
-      0.1, // Arm length (m) - Small value since there are no arm parameters
-      Units.degreesToRadians(-90), // Min angle (rad)
-      Units.degreesToRadians(90), // Max angle (rad)
-      false, // Simulate gravity - Disable gravity for pivot
-      Units.degreesToRadians(0) // Starting position (rad)
-    );
-        
+    pivotSim =
+        new SingleJointedArmSim(
+            dcMotor, // Motor type
+            gearRatio,
+            0.01, // Arm moment of inertia - Small value since there are no arm parameters
+            0.1, // Arm length (m) - Small value since there are no arm parameters
+            Units.degreesToRadians(-90), // Min angle (rad)
+            Units.degreesToRadians(90), // Max angle (rad)
+            false, // Simulate gravity - Disable gravity for pivot
+            Units.degreesToRadians(0) // Starting position (rad)
+            );
+
     // motor2.setControl(new Follower(canID, MotorAlignmentValue.Opposed));
 
     setDefaultCommand(setVoltage(0));
   }
 
-  /**
-   * Update simulation and telemetry.
-   */
+  /** Update simulation and telemetry. */
   @Override
   public void periodic() {
     BaseStatusSignal.refreshAll(
-      positionSignal,
-      velocitySignal,
-      voltageSignal,
-      statorCurrentSignal,
-      temperatureSignal
-
-    );
+        positionSignal, velocitySignal, voltageSignal, statorCurrentSignal, temperatureSignal);
   }
- 
+
   /**
    * Get the current position in Rotations.
+   *
    * @return Position in Rotations
    */
   @Logged(name = "Position/Rotations")
@@ -196,6 +181,7 @@ public class Indexer extends SubsystemBase {
 
   /**
    * Get the current velocity in rotations per second.
+   *
    * @return Velocity in rotations per second
    */
   @Logged(name = "Velocity")
@@ -209,6 +195,7 @@ public class Indexer extends SubsystemBase {
   // }
   /**
    * Get the current applied voltage.
+   *
    * @return Applied voltage
    */
   @Logged(name = "Voltage")
@@ -222,6 +209,7 @@ public class Indexer extends SubsystemBase {
   // }
   /**
    * Get the current motor current.
+   *
    * @return Motor current in amps
    */
   @Logged(name = "Current")
@@ -236,6 +224,7 @@ public class Indexer extends SubsystemBase {
 
   /**
    * Get the current motor temperature.
+   *
    * @return Motor temperature in Celsius
    */
   @Logged(name = "Temperature")
@@ -248,28 +237,30 @@ public class Indexer extends SubsystemBase {
   //   return temperatureSignal2.getValueAsDouble();
   // }
 
-
   public Command setVelocity(double velocity) {
-    return run(() ->  motor.setControl(velocityRequest.withVelocity(velocity)));
+    return run(() -> motor.setControl(velocityRequest.withVelocity(velocity)));
   }
 
   /**
    * Set motor voltage directly.
+   *
    * @param voltage The voltage to apply
    */
   /*public void setVoltage(double voltage) {
-    motor.setVoltage(voltage);
-  }
-*/
+      motor.setVoltage(voltage);
+    }
+  */
   public Command setVoltage(double voltage) {
     return runOnce(() -> motor.setVoltage(voltage));
   }
+
   public Command setVoltageRun(double voltage) {
     return run(() -> motor.setVoltage(voltage));
   }
 
   /**
    * Creates a command to stop the pivot.
+   *
    * @return A command that stops the pivot
    */
   public Command stopCommand() {
@@ -278,6 +269,7 @@ public class Indexer extends SubsystemBase {
 
   /**
    * Creates a command to move the pivot at a specific velocity.
+   *
    * @return A command that moves the pivot at the specified velocity
    */
   public Command moveAtVelocityCommand(double velocity) {

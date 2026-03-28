@@ -62,7 +62,6 @@
 //   private final double supplyCurrentLimit = 40;
 //   // private boolean safetyEnabled = false;
 
-
 //   // Motor controller
 //   private final TalonFX motor;
 //   private final PositionVoltage positionRequest;
@@ -72,7 +71,6 @@
 //   private final StatusSignal<Voltage> voltageSignal;
 //   private final StatusSignal<Current> statorCurrentSignal;
 //   private final StatusSignal<Temperature> temperatureSignal;
-
 
 //   private final CommandSwerveDrivetrain drivetrain;
 
@@ -167,7 +165,7 @@
 //     //     hoodSafety();
 //     // }
 //   }
- 
+
 //   /**
 //    * Get the current position in Rotations.
 //    * @return Position in Rotations
@@ -256,11 +254,11 @@
 //    * @return A command that moves the pivot at the specified velocity
 //    */
 //   public Command moveAtVelocityCommand(double velocity) {
-//     return run(() -> setVelocity(velocity));  
+//     return run(() -> setVelocity(velocity));
 //   }
 
 //   public Command resetEncoder() {
-//     return runOnce(() -> motor.setPosition(0)).ignoringDisable(true);  
+//     return runOnce(() -> motor.setPosition(0)).ignoringDisable(true);
 //   }
 
 //   public void hoodSafety(){

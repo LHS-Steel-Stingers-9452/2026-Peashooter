@@ -31,9 +31,7 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/**
- * Pivot subsystem using TalonFX with Krakenx60 motor
- */
+/** Pivot subsystem using TalonFX with Krakenx60 motor */
 @Logged(name = "IntakePivot")
 public class IntakePivot extends SubsystemBase {
 
@@ -42,11 +40,11 @@ public class IntakePivot extends SubsystemBase {
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 15;
   private final double gearRatio = 1;
-  private final double kP = 0.3; //started at 1
+  private final double kP = 0.3; // started at 1
   private final double kI = 0;
-  private final double kD = 0; //helped with reducing noise, somehwat
+  private final double kD = 0; // helped with reducing noise, somehwat
   private final double kS = 0;
-  private final double kV = 0; //voltage, divide voltage by velocity
+  private final double kV = 0; // voltage, divide voltage by velocity
   private final double kA = 0;
   // private final double kG = 0; // Unused for pivots
   // private final double maxVelocity = 1; // rad/s
@@ -70,9 +68,7 @@ public class IntakePivot extends SubsystemBase {
   // Simulation
   private final SingleJointedArmSim pivotSim;
 
-  /**
-   * Creates a new Pivot Subsystem.
-   */
+  /** Creates a new Pivot Subsystem. */
   public IntakePivot(CANBus canBus) {
     // Initialize motor controller
     motor = new TalonFX(canID, canBus);
@@ -113,9 +109,7 @@ public class IntakePivot extends SubsystemBase {
     currentLimits.SupplyCurrentLimitEnable = enableSupplyLimit;
 
     // Set brake mode
-    config.MotorOutput.NeutralMode = brakeMode
-      ? NeutralModeValue.Brake
-      : NeutralModeValue.Coast;
+    config.MotorOutput.NeutralMode = brakeMode ? NeutralModeValue.Brake : NeutralModeValue.Coast;
 
     // Apply gear ratio
     config.Feedback.SensorToMechanismRatio = gearRatio;
@@ -127,35 +121,29 @@ public class IntakePivot extends SubsystemBase {
     motor.setPosition(0);
 
     // Initialize simulation
-    pivotSim = new SingleJointedArmSim(
-      dcMotor, // Motor type
-      gearRatio,
-      0.01, // Arm moment of inertia - Small value since there are no arm parameters
-      0.1, // Arm length (m) - Small value since there are no arm parameters
-      Units.degreesToRadians(-90), // Min angle (rad)
-      Units.degreesToRadians(90), // Max angle (rad)
-      false, // Simulate gravity - Disable gravity for pivot
-      Units.degreesToRadians(0) // Starting position (rad)
-    );
+    pivotSim =
+        new SingleJointedArmSim(
+            dcMotor, // Motor type
+            gearRatio,
+            0.01, // Arm moment of inertia - Small value since there are no arm parameters
+            0.1, // Arm length (m) - Small value since there are no arm parameters
+            Units.degreesToRadians(-90), // Min angle (rad)
+            Units.degreesToRadians(90), // Max angle (rad)
+            false, // Simulate gravity - Disable gravity for pivot
+            Units.degreesToRadians(0) // Starting position (rad)
+            );
   }
 
-  /**
-   * Update simulation and telemetry.
-   */
+  /** Update simulation and telemetry. */
   @Override
   public void periodic() {
     BaseStatusSignal.refreshAll(
-      positionSignal,
-      velocitySignal,
-      voltageSignal,
-      statorCurrentSignal,
-      temperatureSignal
-
-    );
+        positionSignal, velocitySignal, voltageSignal, statorCurrentSignal, temperatureSignal);
   }
- 
+
   /**
    * Get the current position in Rotations.
+   *
    * @return Position in Rotations
    */
   @Logged(name = "Position")
@@ -166,6 +154,7 @@ public class IntakePivot extends SubsystemBase {
 
   /**
    * Get the current velocity in rotations per second.
+   *
    * @return Velocity in rotations per second
    */
   @Logged(name = "Velocity")
@@ -175,6 +164,7 @@ public class IntakePivot extends SubsystemBase {
 
   /**
    * Get the current applied voltage.
+   *
    * @return Applied voltage
    */
   @Logged(name = "Voltage")
@@ -184,6 +174,7 @@ public class IntakePivot extends SubsystemBase {
 
   /**
    * Get the current motor current.
+   *
    * @return Motor current in amps
    */
   public double getCurrent() {
@@ -192,6 +183,7 @@ public class IntakePivot extends SubsystemBase {
 
   /**
    * Get the current motor temperature.
+   *
    * @return Motor temperature in Celsius
    */
   public double getTemperature() {
@@ -205,8 +197,8 @@ public class IntakePivot extends SubsystemBase {
   //   motor.setControl(positionRequest.withPosition(positionRotations));
   // }
 
-   public Command setPosition(double position) {
-    return run(() ->  motor.setControl(positionRequest.withPosition(position)));
+  public Command setPosition(double position) {
+    return run(() -> motor.setControl(positionRequest.withPosition(position)));
   }
 
   public void setVelocity(double velocity) {
@@ -215,18 +207,20 @@ public class IntakePivot extends SubsystemBase {
 
   /**
    * Set motor voltage directly.
+   *
    * @param voltage The voltage to apply
    */
   /*public void setVoltage(double voltage) {
-    motor.setVoltage(voltage);
-  }
-*/
+      motor.setVoltage(voltage);
+    }
+  */
   public Command setVoltage(double voltage) {
     return runOnce(() -> motor.setVoltage(voltage));
   }
 
   /**
    * Creates a command to stop the pivot.
+   *
    * @return A command that stops the pivot
    */
   public Command stopCommand() {
@@ -234,10 +228,12 @@ public class IntakePivot extends SubsystemBase {
   }
 
   public Command resetEncoder() {
-    return runOnce(() -> motor.setPosition(0)).ignoringDisable(true);  
+    return runOnce(() -> motor.setPosition(0)).ignoringDisable(true);
   }
+
   /**
    * Creates a command to move the pivot at a specific velocity.
+   *
    * @return A command that moves the pivot at the specified velocity
    */
   public Command moveAtVelocityCommand(double velocity) {
@@ -248,12 +244,11 @@ public class IntakePivot extends SubsystemBase {
     var currentPositon = getPosition();
     var upperBound = position + 0.5;
     var lowerBound = position - 0.5;
-    
-    if(currentPositon < upperBound && currentPositon > lowerBound) {
+
+    if (currentPositon < upperBound && currentPositon > lowerBound) {
       return true;
     } else {
       return false;
     }
-
   }
 }

@@ -38,7 +38,8 @@
 
 //   // Constants
 //   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
-//   private final int canID = 33;  // Drive/steer motors are single digit 1-8, other motors start at)
+//   private final int canID = 33;  // Drive/steer motors are single digit 1-8, other motors start
+// at)
 //   private final double gearRatio = 1;
 //   private final double kP = 1; //started at 1
 //   private final double kI = 0;
@@ -95,7 +96,6 @@
 //     statorCurrentSignal.setUpdateFrequency(10);
 //     temperatureSignal.setUpdateFrequency(5);
 
-
 //     TalonFXConfiguration config = new TalonFXConfiguration();
 
 //     // Configure PID for slot 0
@@ -147,7 +147,7 @@
 //   @Override
 //   public void periodic() {
 //   }
- 
+
 //   /**
 //    * Get the current position in Rotations.
 //    * @return Position in Rotations
@@ -191,7 +191,6 @@
 //   public double getTemperature() {
 //     return temperatureSignal.getValueAsDouble();
 //   }
-
 
 //   public void setVelocity(double velocity) {
 //     motor.setControl(velocityRequest.withVelocity(velocity));
