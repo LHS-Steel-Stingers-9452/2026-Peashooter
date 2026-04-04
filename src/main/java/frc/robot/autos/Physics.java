@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 @Logged
 public class Physics {
   private final InterpolatingDoubleTreeMap velocitySpeed = new InterpolatingDoubleTreeMap();
+  private final InterpolatingDoubleTreeMap hoodAngle = new InterpolatingDoubleTreeMap();
+  private final InterpolatingDoubleTreeMap shotTime = new InterpolatingDoubleTreeMap();
+
 
   // Distance limits
   private static final double MIN_DISTANCE = 1.0;
@@ -22,6 +25,10 @@ public class Physics {
     velocitySpeed.put(6.1, 47.0); // 38.0
     velocitySpeed.put(6.59, 50.0);
     velocitySpeed.put(6.8, 55.0);
+
+    shotTime.put(3.0, 0.1); //test
+
+
     // velocitySpeed.put(3.8, 42.0); //use
     // velocitySpeed.put(4.0, 42.4);
     // velocitySpeed.put(4.25, 43.3);
@@ -41,7 +48,7 @@ public class Physics {
 
     // Get base interpolated velocity
     Double baseVelocity = velocitySpeed.get(distance);
-
+    
     double offset = 0;
 
     // Final velocity
@@ -56,5 +63,9 @@ public class Physics {
     SmartDashboard.getNumber("Final Velocity", finalVelocity);
 
     return finalVelocity;
+  }
+
+  public double getShotTime(double distance) {
+    return shotTime.get(distance);
   }
 }

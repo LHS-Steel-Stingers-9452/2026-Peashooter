@@ -126,6 +126,8 @@ public class Hood extends SubsystemBase {
             false, // Simulate gravity - Disable gravity for pivot
             Units.degreesToRadians(0) // Starting position (rad)
             );
+
+    setDefaultCommand(run(this::hoodSafety));
   }
 
   /** Update simulation and telemetry. */

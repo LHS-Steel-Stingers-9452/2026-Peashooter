@@ -1,5 +1,6 @@
 package frc.robot.autos;
 
+import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -21,6 +22,7 @@ public class ShootOnTheDrive extends Command {
       CommandSwerveDrivetrain drivetrain,
       Shooter shooter,
       Physics physics,
+      SwerveRequest.FieldCentric drive,
       Translation2d redTarget,
       Translation2d blueTarget) {
     this.drivetrain = drivetrain;
@@ -28,7 +30,6 @@ public class ShootOnTheDrive extends Command {
     this.physics = physics;
     this.redTarget = redTarget;
     this.blueTarget = blueTarget;
-
     addRequirements(shooter);
   }
 
@@ -46,7 +47,7 @@ public class ShootOnTheDrive extends Command {
     double shotTime = 1.2;
     Translation2d velocityOffset =
         new Translation2d(speeds.vxMetersPerSecond * shotTime, speeds.vyMetersPerSecond * shotTime);
-    Translation2d adjustedTarget = target.minus(velocityOffset);
+    Translation2d adjustedTarget = target.plus(velocityOffset);
     double distance = pose.getTranslation().getDistance(adjustedTarget);
     double targetVelocity = physics.setVelocity(distance);
     shooter.setVelocityDirect(targetVelocity);
