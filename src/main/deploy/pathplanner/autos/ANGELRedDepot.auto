@@ -23,6 +23,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "aimAuto"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "RedDepot3"

@@ -33,6 +33,7 @@ import frc.robot.autos.AutoShoot;
 // import frc.robot.autos.AutoShoot;
 // import frc.robot.autos.AlignToHubPoint;
 import frc.robot.autos.Physics;
+import frc.robot.autos.ShootOnTheDrive;
 import frc.robot.generated.TunerConstants;
 // import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -132,7 +133,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("autoIntakeFuel", autoIntakeFuel(intake, intakepivot));
     NamedCommands.registerCommand("stopIntake", stopIntake(intake, intakepivot));
     // NamedCommands.registerCommand("intakeShuffle", intakeShuffle(intakepivot));
-    // NamedCommands.registerCommand("aimAtTargetAuto",aimAtTargetAuto());
+    NamedCommands.registerCommand("aimAuto",aimAtHubAutoMT2(drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)).withTimeout(1.2));
     NamedCommands.registerCommand(
         "print", Commands.runOnce(() -> System.out.println("commandsent")));
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -188,13 +189,17 @@ public class RobotContainer {
 
     // DRIVER BUTTONS aka Haran ==============================================
     // Left Bumper = AimAtHub
-    joystick
+    // joystick
+    //     .L1()
+    //     .whileTrue(
+    //         aimAtHubMegaTag2(
+    //             drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)));
+     joystick
         .L1()
-        .whileTrue(
-            aimAtHubMegaTag2(
-                drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)));
+        .whileTrue( new ShootOnTheDrive(drivetrain,shooter,physics, drive, joystick, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)));
+    
     // Left Trigger = Intake
-    joystick.L2().whileTrue(intake.setVoltage(-8));
+    joystick.L2().whileTrue(intake.setVoltage(-6));
     // Right Trigger = Indexer + Kicker
     joystick
         .R2()
@@ -220,7 +225,7 @@ public class RobotContainer {
     joystick
         .circle() // turn shooter off shot
         .onTrue(shooter.setVelocity(0));
-    joystick.cross().onTrue(intakepivot.setPosition(26));
+    joystick.cross().onTrue(intakepivot.setPosition(-26));
     joystick.square().onTrue(intakepivot.setPosition(0));
     // joystick
     //     .povDown()
@@ -417,8 +422,9 @@ public class RobotContainer {
         .alongWith(
             new WaitCommand(0.5) // reduced to 0.5 for reasons
                 .andThen(kicker.setVelocity(25).alongWith(indexer.setVelocity(45))),
-            new WaitCommand(6.0)
-                .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0))))
+            new WaitCommand(6.0))
+            //     .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0))))
+
         .withTimeout(7)
         .andThen(
             indexer

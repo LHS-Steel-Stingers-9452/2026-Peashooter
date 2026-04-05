@@ -36,12 +36,7 @@
       "name": "autoIntakeFuel",
       "waypointRelativePos": 0.3070017953321356,
       "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "autoIntakeFuel"
-        }
-      }
+      "command": null
     }
   ],
   "globalConstraints": {

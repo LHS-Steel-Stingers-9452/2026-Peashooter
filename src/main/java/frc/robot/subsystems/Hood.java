@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
@@ -43,7 +44,7 @@ public class Hood extends SubsystemBase {
   private final double statorCurrentLimit = 60;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
-  // private boolean safetyEnabled = false;
+  private boolean safetyEnabled = false;
 
   // Motor controller
   private final TalonFX motor;
@@ -127,23 +128,23 @@ public class Hood extends SubsystemBase {
             Units.degreesToRadians(0) // Starting position (rad)
             );
 
-    setDefaultCommand(run(this::hoodSafety));
+    // setDefaultCommand(run(this::hoodSafety));
   }
 
   /** Update simulation and telemetry. */
   @Override
   public void periodic() {
-    // BaseStatusSignal.refreshAll(
-    //   positionSignal,
-    //   velocitySignal,
-    //   voltageSignal,
-    //   statorCurrentSignal,
-    //   temperatureSignal
-    // );
+    BaseStatusSignal.refreshAll(
+      positionSignal,
+      velocitySignal,
+      voltageSignal,
+      statorCurrentSignal,
+      temperatureSignal
+    );
 
-    // if (safetyEnabled) {
-    //     hoodSafety();
-    // }
+    if (safetyEnabled) {
+        hoodSafety();
+    }
   }
 
   /**

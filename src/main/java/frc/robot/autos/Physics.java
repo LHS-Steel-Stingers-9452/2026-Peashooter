@@ -26,7 +26,13 @@ public class Physics {
     velocitySpeed.put(6.59, 50.0);
     velocitySpeed.put(6.8, 55.0);
 
-    shotTime.put(3.0, 0.1); //test
+    shotTime.put(3.5,1.31);
+    shotTime.put(3.25,1.24);
+    shotTime.put(3.0, 1.16);
+    shotTime.put(2.98, 1.16);
+    shotTime.put(2.75,1.13);
+    shotTime.put(2.5, 1.113);
+     //test
 
 
     // velocitySpeed.put(3.8, 42.0); //use

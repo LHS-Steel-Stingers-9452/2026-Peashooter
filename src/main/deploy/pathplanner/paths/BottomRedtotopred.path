@@ -1,0 +1,115 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 12.558837719298246,
+        "y": 0.5923903508771924
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 12.308837719298246,
+        "y": 0.5923903508771924
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 9.202774122807018,
+        "y": 1.3039912280701753
+      },
+      "prevControl": {
+        "x": 9.453935926999032,
+        "y": 0.4795253056137808
+      },
+      "nextControl": {
+        "x": 8.760427631578947,
+        "y": 2.7560416666666665
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 9.856677631578949,
+        "y": 7.150657894736842
+      },
+      "prevControl": {
+        "x": 9.12517286090833,
+        "y": 6.70050111278569
+      },
+      "nextControl": {
+        "x": 10.60674342105263,
+        "y": 7.612236842105263
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 12.453059210526316,
+        "y": 7.439144736842105
+      },
+      "prevControl": {
+        "x": 11.78953947368421,
+        "y": 7.3622149122807015
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Redtopfartrench667"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.509433962264151,
+      "rotationDegrees": 87.41530606349892
+    },
+    {
+      "waypointRelativePos": 0.9591194968553457,
+      "rotationDegrees": 22.338970501834282
+    },
+    {
+      "waypointRelativePos": 1.8443396226415083,
+      "rotationDegrees": -27.261422738323773
+    },
+    {
+      "waypointRelativePos": 2.353773584905663,
+      "rotationDegrees": -90.84706584648458
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "autoIntakeFuel",
+      "waypointRelativePos": 0.5186440677966098,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -102.09475707701216
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}

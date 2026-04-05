@@ -36,12 +36,7 @@
       "name": "autoIntakeFuel",
       "waypointRelativePos": 0.26750448833034113,
       "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "autoIntakeFuel"
-        }
-      }
+      "command": null
     }
   ],
   "globalConstraints": {
@@ -60,7 +55,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -89.97265190652823
+    "rotation": -89.97265190652824
   },
   "useDefaultConstraints": false
 }

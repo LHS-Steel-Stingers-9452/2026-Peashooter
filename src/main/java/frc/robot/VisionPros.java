@@ -30,8 +30,8 @@ public class VisionPros extends SubsystemBase {
     LimelightHelpers.setCameraPose_RobotSpace("limelight-left", 0.35, 0.153, 0.478, 0, 10, 0);
     LimelightHelpers.setCameraPose_RobotSpace(
         "limelight-center",
-        0.243, // 0.381
-        0.137,
+        0.137, // 0.381
+        0.243, //0.137
         0.524,
         0,
         0,
@@ -54,7 +54,7 @@ public class VisionPros extends SubsystemBase {
       processLimelightMt2();
     } else if (DriverStation.isAutonomousEnabled()) {
       // do nothing
-      // processLimelightMt1();
+      processLimelightMt2();
     } else {
       processLimelight3GMt2();
     }
