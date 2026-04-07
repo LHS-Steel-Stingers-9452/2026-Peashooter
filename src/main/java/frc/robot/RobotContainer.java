@@ -118,6 +118,7 @@ public class RobotContainer {
     // Auto Selection is already handled by Glass.
     NamedCommands.registerCommand(
         "dumpMag", dumpMag(shooter, indexer, kicker, intakepivot, intake));
+    NamedCommands.registerCommand("revUP", revUP(shooter));
     NamedCommands.registerCommand("autoIntakeFuel", autoIntakeFuel(intake, intakepivot));
     NamedCommands.registerCommand("stopIntake", stopIntake(intake, intakepivot));
     // NamedCommands.registerCommand("intakeShuffle", intakeShuffle(intakepivot));
@@ -416,12 +417,12 @@ public class RobotContainer {
     return shooter
         .setVelocity(42)
         .alongWith(
-            new WaitCommand(0.5) // reduced to 0.5 for reasons
+            new WaitCommand(0) // reduced to 0.5 for reasons
                 .andThen(kicker.setVelocity(25).alongWith(indexer.setVelocity(45))),
             new WaitCommand(6.0))
                 .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0)))
 
-        .withTimeout(7)
+        .withTimeout(5.5)
         .andThen(
             indexer
                 .setVoltageRun(0)
@@ -445,10 +446,9 @@ public class RobotContainer {
 
   public Command autoIntakeFuel(Intake intake, IntakePivot intakepivot) {
     return intake.setVoltage(-7).alongWith(intakepivot.setPosition(-26)).withTimeout(4.5);
-
-    // .withTimeout(4)
-    // .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0))); //test if
-    // setVoltageRun is needed instead.
+  }
+  public Command revUP(Shooter shooter) {
+    return shooter.setVelocity(42).withTimeout(0.1);
   }
 
   public Command stopIntake(Intake intake, IntakePivot intakepivot) {
