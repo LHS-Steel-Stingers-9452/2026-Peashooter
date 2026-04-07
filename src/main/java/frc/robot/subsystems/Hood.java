@@ -15,11 +15,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.Supplier;
+
 
 /** Pivot subsystem using TalonFX with Krakenx60 motor */
 @Logged(name = "Hood")
@@ -44,7 +47,7 @@ public class Hood extends SubsystemBase {
   private final double statorCurrentLimit = 60;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
-  private boolean safetyEnabled = false;
+  private boolean safetyEnabled = true;
 
   // Motor controller
   private final TalonFX motor;
@@ -216,6 +219,10 @@ public class Hood extends SubsystemBase {
     motor.setControl(velocityRequest.withVelocity(velocity));
   }
 
+  public void setAngleDirect(double angle) {
+    motor.setControl(positionRequest.withPosition(angle));
+  }
+
   /**
    * Set motor voltage directly.
    *
@@ -252,23 +259,33 @@ public class Hood extends SubsystemBase {
   }
 
   public void hoodSafety() {
+
+    // Default to RED side
+    Translation2d target1 = new Translation2d(14.462, 2);
+    Translation2d target2 = new Translation2d(14.462, 6);
+
+    var alliance = DriverStation.getAlliance();
+
+    // If RED, switch to red-side coordinates
+    if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+        target1 = new Translation2d(1.462, 2);
+        target2 = new Translation2d(1.462, 6);
+    }
+
     var currentPose = drivetrain.getState().Pose;
     var currentTranslation = currentPose.getTranslation();
 
-    Translation2d target1 = new Translation2d(12, 7);
-    Translation2d target2 = new Translation2d(12, 0);
-
-    double radius = 1.5;
+    double radius = 2.875;
 
     double distance1 = currentTranslation.getDistance(target1);
     double distance2 = currentTranslation.getDistance(target2);
 
     if (distance1 <= radius || distance2 <= radius) {
-      motor.setControl(positionRequest.withPosition(0));
+        motor.setControl(positionRequest.withPosition(10));
     } else {
-      motor.setControl(positionRequest.withPosition(10));
+        motor.setControl(positionRequest.withPosition(0));
     }
-  }
+}
 }
 // public Command hoodSafety(CommandSwerveDrivetrain drivetrain, Hood hood) {
 //     return Commands.run(() -> {

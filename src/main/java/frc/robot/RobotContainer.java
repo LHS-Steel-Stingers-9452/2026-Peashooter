@@ -34,6 +34,7 @@ import frc.robot.autos.AutoShoot;
 // import frc.robot.autos.AlignToHubPoint;
 import frc.robot.autos.Physics;
 import frc.robot.autos.ShootOnTheDrive;
+import frc.robot.autos.AutoPass;
 import frc.robot.generated.TunerConstants;
 // import frc.robot.subsystems.Hood;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -104,6 +105,10 @@ public class RobotContainer {
 
   private final Translation2d RED_HUB = new Translation2d(11.8, 4.025);
   private final Translation2d BLUE_HUB = new Translation2d(4.7, 4.025);
+  private final Translation2d RED_OUTPOST = new Translation2d(15.0,7.0);
+  private final Translation2d BLUE_OUTPOST = new Translation2d(0.5, 0.5);
+
+
 
   //     private final Translation2d HUB_POSITION = new Translation2d(11.5, 4);
   //     private final Translation2d[] HUB_ALIGNMENT_POINTS = new Translation2d[] {
@@ -233,6 +238,8 @@ public class RobotContainer {
     // Driver DPAD buttons
     joystick.povUp().onTrue(intakeAgitate(intake, intakepivot));
 
+    joystick.options().whileTrue(new AutoPass(drivetrain, shooter, physics, hood, drive, joystick, RED_OUTPOST, BLUE_OUTPOST));
+
     // Driver stick buttons
     joystick // slow button
         .L3()
@@ -334,6 +341,21 @@ public class RobotContainer {
     SmartDashboard.putData("shooter velocity 53", shooter.setVelocity(53));
     SmartDashboard.putData("shooter velocity 54", shooter.setVelocity(54));
     SmartDashboard.putData("shooter velocity 55", shooter.setVelocity(55));
+    SmartDashboard.putData("shooter velocity 60", shooter.setVelocity(60));
+    SmartDashboard.putData("shooter velocity 65", shooter.setVelocity(65));
+    SmartDashboard.putData("shooter velocity 70", shooter.setVelocity(70));
+    SmartDashboard.putData("shooter velocity 75", shooter.setVelocity(75));
+    SmartDashboard.putData("shooter velocity 80", shooter.setVelocity(80));
+    SmartDashboard.putData("shooter velocity 85", shooter.setVelocity(85));
+    SmartDashboard.putData("shooter velocity 90", shooter.setVelocity(90));
+    SmartDashboard.putData("shooter velocity 95", shooter.setVelocity(95));
+    SmartDashboard.putData("shooter velocity 100", shooter.setVelocity(100));
+
+
+
+
+
+
 
     // SmartDashboard.putData("shooter set voltage 0V", shooter.setVoltage(0));
     // SmartDashboard.putData("shooter set voltage .25V", shooter.setVoltage(0.25));
@@ -377,7 +399,7 @@ public class RobotContainer {
     // SmartDashboard.putData("spindexer set voltage 9V", indexer.setVoltage(9));
     // SmartDashboard.putData("spindexer set voltage 12V", indexer.setVoltage(12));
     // Hood buttons
-    // SmartDashboard.putData("hood reset encoder", hood.resetEncoder());
+    SmartDashboard.putData("hood reset encoder", hood.resetEncoder());
     // SmartDashboard.putData("hood position 0", hood.setPosition(0));
     // SmartDashboard.putData("hood position 1", hood.setPosition(1));
     // SmartDashboard.putData("hood position 1.74, far trench shot", hood.setPosition(1.746));
@@ -423,7 +445,7 @@ public class RobotContainer {
             new WaitCommand(0.5) // reduced to 0.5 for reasons
                 .andThen(kicker.setVelocity(25).alongWith(indexer.setVelocity(45))),
             new WaitCommand(6.0))
-            //     .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0))))
+                .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0)))
 
         .withTimeout(7)
         .andThen(
@@ -448,7 +470,7 @@ public class RobotContainer {
   }
 
   public Command autoIntakeFuel(Intake intake, IntakePivot intakepivot) {
-    return intake.setVoltage(-7).alongWith(intakepivot.setPosition(26)).withTimeout(4.5);
+    return intake.setVoltage(-7).alongWith(intakepivot.setPosition(-26)).withTimeout(4.5);
 
     // .withTimeout(4)
     // .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0))); //test if

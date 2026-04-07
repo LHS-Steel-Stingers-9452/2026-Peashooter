@@ -23,7 +23,7 @@ public class AutoShoot extends Command {
   public AutoShoot(
       CommandSwerveDrivetrain drivetrain,
       Shooter shooter,
-      Physics physics,
+      Physics physics, 
       Translation2d redTarget,
       Translation2d blueTarget) {
     this.drivetrain = drivetrain;
@@ -50,7 +50,7 @@ public class AutoShoot extends Command {
     Pose2d pose = drivetrain.getState().Pose;
 
     var speeds = drivetrain.getState().Speeds; // or getState().Speeds depending on your setup
-    double shotTime = 1.4;
+    double shotTime = 0; //1.4
 
     // Get velocity from physics
     Translation2d velocityOffset =
@@ -64,6 +64,7 @@ public class AutoShoot extends Command {
 
     // Set shooter velocity ONLY
     shooter.setVelocityDirect(targetVelocity);
+
   }
 
   @Override

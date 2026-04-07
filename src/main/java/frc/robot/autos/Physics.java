@@ -32,7 +32,13 @@ public class Physics {
     shotTime.put(2.98, 1.16);
     shotTime.put(2.75,1.13);
     shotTime.put(2.5, 1.113);
-     //test
+
+    //hood angle testing
+    hoodAngle.put(5.0,3.0);
+    hoodAngle.put(6.0,2.0);
+    hoodAngle.put(7.0,1.0);
+    hoodAngle.put(8.0,0.0);
+
 
 
     // velocitySpeed.put(3.8, 42.0); //use
@@ -70,8 +76,31 @@ public class Physics {
 
     return finalVelocity;
   }
+  public double setPassVelocity(double distance) {
+
+    // Clamp distance
+    distance = Math.max(MIN_DISTANCE, Math.min(MAX_DISTANCE, distance));
+
+    // Get base interpolated velocity
+    Double baseVelocity = velocitySpeed.get(distance);
+    
+    double offset = 2;
+
+    // Final velocity
+    double finalPassVelocity = baseVelocity + offset;
+
+    // Dashboard debugging
+    SmartDashboard.putNumber("ShootPassDistance", distance);
+    SmartDashboard.getNumber("ShootPassDistance", distance);
+
+    return finalPassVelocity;
+  }
+
 
   public double getShotTime(double distance) {
     return shotTime.get(distance);
+  }
+  public double getHoodAngle(double distance) {
+    return hoodAngle.get(distance);
   }
 }

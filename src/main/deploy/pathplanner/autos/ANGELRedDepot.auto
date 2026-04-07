@@ -19,13 +19,13 @@
         {
           "type": "named",
           "data": {
-            "name": "dumpMag"
+            "name": "aimAuto"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "aimAuto"
+            "name": "dumpMag"
           }
         },
         {
