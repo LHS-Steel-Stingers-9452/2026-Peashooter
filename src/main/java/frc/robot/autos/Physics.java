@@ -7,13 +7,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 @Logged
 public class Physics {
   private final InterpolatingDoubleTreeMap velocitySpeed = new InterpolatingDoubleTreeMap();
-  private final InterpolatingDoubleTreeMap hoodAngle = new InterpolatingDoubleTreeMap();
+  // private final InterpolatingDoubleTreeMap hoodAngle = new InterpolatingDoubleTreeMap();
   private final InterpolatingDoubleTreeMap shotTime = new InterpolatingDoubleTreeMap();
+  private final InterpolatingDoubleTreeMap velocityPassSpeed = new InterpolatingDoubleTreeMap();
+
 
 
   // Distance limits
   private static final double MIN_DISTANCE = 1.0;
   private static final double MAX_DISTANCE = 10;
+  // private static final double MAXPASS_DISTANCE = 20;
 
   public Physics() {
     velocitySpeed.put(1.8, 33.0); // use
@@ -21,10 +24,20 @@ public class Physics {
     velocitySpeed.put(2.1, 35.0);
     velocitySpeed.put(2.9, 39.0);
     velocitySpeed.put(3.8, 43.0);
-    velocitySpeed.put(4.56, 45.0);
+    velocitySpeed.put(4.56, 46.0);
+    velocitySpeed.put(4.65, 47.5);
+    velocitySpeed.put(5.304, 50.0);
+
     velocitySpeed.put(6.1, 47.0); // 38.0
     velocitySpeed.put(6.59, 50.0);
     velocitySpeed.put(6.8, 55.0);
+    velocitySpeed.put(7.39, 45.0); // use
+    velocitySpeed.put(9.22, 50.0);
+    velocitySpeed.put(11.23, 55.0);
+    velocitySpeed.put(13.49, 60.0);
+    velocitySpeed.put(14.73, 65.0);
+    velocitySpeed.put(16.46, 70.0); // 38.0
+    velocitySpeed.put( 17.81, 75.0 );
 
     shotTime.put(3.5,1.31);
     shotTime.put(3.25,1.24);
@@ -34,10 +47,20 @@ public class Physics {
     shotTime.put(2.5, 1.113);
 
     //hood angle testing
-    hoodAngle.put(5.0,3.0);
-    hoodAngle.put(6.0,2.0);
-    hoodAngle.put(7.0,1.0);
-    hoodAngle.put(8.0,0.0);
+    // hoodAngle.put(5.0,3.0);
+    // hoodAngle.put(6.0,2.0);
+    // hoodAngle.put(7.0,1.0);
+    // hoodAngle.put(8.0,0.0);
+
+    
+    // velocitySpeed.put(7.39, 45.0); // use
+    // velocitySpeed.put(9.22, 50.0);
+    // velocitySpeed.put(11.23, 55.0);
+    // velocitySpeed.put(13.49, 60.0);
+    // velocitySpeed.put(14.73, 65.0);
+    // velocitySpeed.put(16.46, 70.0); // 38.0
+    // velocitySpeed.put( 17.81, 75.0 );
+
 
 
 
@@ -78,13 +101,13 @@ public class Physics {
   }
   public double setPassVelocity(double distance) {
 
-    // Clamp distance
-    distance = Math.max(MIN_DISTANCE, Math.min(MAX_DISTANCE, distance));
+    // // Clamp distance
+    // distance = Math.max(MIN_DISTANCE, Math.min(MAXPASS_DISTANCE, distance));
 
     // Get base interpolated velocity
-    Double baseVelocity = velocitySpeed.get(distance);
+    Double baseVelocity = velocityPassSpeed.get(distance);
     
-    double offset = 2;
+    double offset = 0;
 
     // Final velocity
     double finalPassVelocity = baseVelocity + offset;
@@ -98,9 +121,12 @@ public class Physics {
 
 
   public double getShotTime(double distance) {
+    double min = 2;
+    double max = 7;
+    distance = Math.max(min, Math.min(max, distance));
     return shotTime.get(distance);
   }
-  public double getHoodAngle(double distance) {
-    return hoodAngle.get(distance);
-  }
+  // public double getHoodAngle(double distance) {
+  //   return hoodAngle.get(distance);
+  // }
 }

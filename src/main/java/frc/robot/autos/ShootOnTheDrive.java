@@ -189,7 +189,7 @@ public class ShootOnTheDrive extends Command {
         fieldSpeeds.vyMetersPerSecond);
 
     // 0. latency compensation
-    double latency = 0.1; // tune this, likely 0.1-0.2s
+    double latency = 0.2; // tune this, likely 0.1-0.2s
     Translation2d futurePos = pose.getTranslation().plus(robotVelocity.times(latency));
 
     // 1. Compute vector from robot to real target
@@ -225,6 +225,7 @@ public class ShootOnTheDrive extends Command {
             .withVelocityX(-joystick.getLeftY() * MaxSpeed)
             .withVelocityY(-joystick.getLeftX() * MaxSpeed)
             .withRotationalRate(targetingAngularVelocity));
+    
   }
 
   @Override

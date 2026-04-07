@@ -88,9 +88,7 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  // private final PS5Controller joystick = new PS5Controller(0);
   private final CommandPS5Controller joystick = new CommandPS5Controller(0);
-  // private final CommandXboxController joystick = new CommandXboxController(1);
   private final CommandXboxController joystick2 = new CommandXboxController(1);
 
   // public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -104,26 +102,11 @@ public class RobotContainer {
   // private final AutoShoot autoshoot = new AutoShoot(drivetrain, shooter, physics, null, null);
 
   private final Translation2d RED_HUB = new Translation2d(11.8, 4.025);
-  private final Translation2d BLUE_HUB = new Translation2d(4.7, 4.025);
   private final Translation2d RED_OUTPOST = new Translation2d(15.0,7.0);
+  private final Translation2d RED_DEPOT = new Translation2d(15.0, 1);
+  private final Translation2d BLUE_HUB = new Translation2d(4.7, 4.025);
   private final Translation2d BLUE_OUTPOST = new Translation2d(0.5, 0.5);
-
-
-
-  //     private final Translation2d HUB_POSITION = new Translation2d(11.5, 4);
-  //     private final Translation2d[] HUB_ALIGNMENT_POINTS = new Translation2d[] {
-  //     //LeftTrench
-  //     new Translation2d(12.7, 7.3),
-  //     //RightTrench
-  //     new Translation2d(12.7, 0.6),
-  //     //Tower
-  //     new Translation2d(14.7, 4.0),
-  //     //Depot
-  //     new Translation2d(15.7, 1),
-  //     //Outpost
-  //     new Translation2d(15.5, 7.3)
-
-  // };
+  private final Translation2d BLUE_DEPOT = new Translation2d(1.0,7.0);
 
   private final SendableChooser<Command> autoChooser;
 
@@ -192,7 +175,7 @@ public class RobotContainer {
     // REMOVED antijam haran
     // joystick.R3().whileTrue(indexer.setVelocity(-40).alongWith(kicker.setVelocity(-50).alongWith(shooter.setVelocity(-35))));
 
-    // DRIVER BUTTONS aka Haran ==============================================
+    // ================================ DRIVER BUTTONS aka Haran ==============================================
     // Left Bumper = AimAtHub
     // joystick
     //     .L1()
@@ -204,7 +187,7 @@ public class RobotContainer {
         .whileTrue( new ShootOnTheDrive(drivetrain,shooter,physics, drive, joystick, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)));
     
     // Left Trigger = Intake
-    joystick.L2().whileTrue(intake.setVoltage(-6));
+    joystick.L2().whileTrue(intake.setVoltage(-5.5));
     // Right Trigger = Indexer + Kicker
     joystick
         .R2()
@@ -238,7 +221,10 @@ public class RobotContainer {
     // Driver DPAD buttons
     joystick.povUp().onTrue(intakeAgitate(intake, intakepivot));
 
-    joystick.options().whileTrue(new AutoPass(drivetrain, shooter, physics, hood, drive, joystick, RED_OUTPOST, BLUE_OUTPOST));
+    joystick.options().whileTrue(new AutoPass(drivetrain, shooter, physics, drive, joystick, RED_OUTPOST, BLUE_OUTPOST));
+        
+    joystick.create().whileTrue(new AutoPass(drivetrain, shooter, physics, drive, joystick, RED_DEPOT, BLUE_DEPOT));
+
 
     // Driver stick buttons
     joystick // slow button
@@ -258,7 +244,8 @@ public class RobotContainer {
     //     .whileTrue(aimAtTargetMega(drivetrain, new Translation2d(12, 4)));
     // Driver Rumble
 
-    // LUIS BUTTONS ===========================================
+    // ================================= LUIS BUTTONS ===========================================
+
     joystick2.leftBumper().onTrue(shooter.setVelocity(43)); // left trench
     joystick2
         .rightBumper()
@@ -288,8 +275,6 @@ public class RobotContainer {
 
     // joystick2.povDown()
     //     .onTrue(Commands.runOnce(() -> (-100)));
-
-    // special buttons (start, select)
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -413,27 +398,16 @@ public class RobotContainer {
 
     // SmartDashboard.putData("set hood from vision",
     // hood.setPosition(visionpros::getHoodAngleFromTy));
-
-    // Named Commands, Necessary for autos!   NOT THE COMMANDS THEMSELVES, basically translating
-    // them to be used on pathplanner
-
-    // NamedCommands.registerCommand("Dump Mag", dumpMag(shooter, indexer, kicker));
-
   }
 
-  // Auto
+  // Auto fieldcentric reset
   public void autoInit() {
     drivetrain.seedFieldCentric(Rotation2d.fromDegrees(270)); // was 180
   }
 
-  // Subsystem Commands
-  // public Command loadFuel(){
-  //     return kicker.setVoltage(3)
-  //     .alongWith(
-  //         indexer.setVoltage(3)
-  //     );
-  // }
-
+ // Named Commands, Necessary for autos!   NOT THE COMMANDS THEMSELVES, basically translating
+ // them to be used on pathplanner
+ 
   public Command dumpMag(
       Shooter shooter, Indexer indexer, Kicker kicker, IntakePivot intakepivot, Intake intake) {
     // return shooter.setVelocity(44)
@@ -462,12 +436,12 @@ public class RobotContainer {
   // }
 
   // rumble command should be tested on another command
-  public Command rumbleCommand() {
-    return new StartEndCommand(
-            () -> joystick.setRumble(RumbleType.kBothRumble, 1.0),
-            () -> joystick.setRumble(RumbleType.kBothRumble, 0))
-        .withTimeout(.8);
-  }
+//   public Command rumbleCommand() {
+//     return new StartEndCommand(
+//             () -> joystick.setRumble(RumbleType.kBothRumble, 1.0),
+//             () -> joystick.setRumble(RumbleType.kBothRumble, 0))
+//         .withTimeout(.8);
+//   }
 
   public Command autoIntakeFuel(Intake intake, IntakePivot intakepivot) {
     return intake.setVoltage(-7).alongWith(intakepivot.setPosition(-26)).withTimeout(4.5);
@@ -661,64 +635,4 @@ public class RobotContainer {
                   targetingAngularVelocity); // Drive counterclockwise with negative X (left)
         });
   }
-
-  // public Command driveToDistance(CommandSwerveDrivetrain drivetrain, Translation2d redTarget,
-  // Translation2d blueTarget) {
-  //         return  drivetrain.applyRequest(
-  //                     () -> {
-
-  //                         var KpDistance = -0.1f;  // Proportional control constant for distance
-  //                         var current_distance = Estimate_Distance();  // see the 'Case Study:
-  // Estimating Distance'
-
-  //               if (joystick->GetRawButton(9)) {
-  //                 float distance_error = desired_distance - current_distance;
-  //             //   driving_adjust = KpDistance * distance_error;
-  //             //   left_command += distance_adjust;
-  //             //   right_command += distance_adjust;
-
-  //                     });
-  //                 }
-
-  // public Command aimAtOutpostMegaTag2(CommandSwerveDrivetrain drivetrain, Translation2d target) {
-  //     return  drivetrain.applyRequest(
-  //                 () -> {
-
-  //                      var currentPose = drivetrain.getState().Pose;
-  //                      var direction =
-  //                         target.minus(currentPose.getTranslation());
-  //                     var error =
-  //                         direction.getAngle()
-  //                             .minus(currentPose.getRotation())
-  //                             .getRadians();
-
-  //                     double kP = 3; //kp was .0176
-  //                     double targetingAngularVelocity = error * kP;
-  //                     // targetingAngularVelocity *= MaxAngularRate;
-  //                     // targetingAngularVelocity *= -1.0;
-
-  //                     // var angle = Math.atan2(, )
-
-  //                     return drive
-  //                         .withVelocityX(
-  //                             -joystick.getLeftY()
-  //                                 * MaxSpeed) // Drive forward with negative Y (forward)
-  //                         .withVelocityY(
-  //                             -joystick.getLeftX() * MaxSpeed) // Drive left with negative X
-  // (left)
-  //                         .withRotationalRate(
-  //                             targetingAngularVelocity); // Drive counterclockwise with negative
-  // X (left)
-  //                 });
-  //             }
-
-  //     private Command alignToClosestHubPoint() {
-  //         return new AlignToHubPoint(
-  //         drivetrain,
-  //         HUB_ALIGNMENT_POINTS[0],   // dummy value
-  //         HUB_ALIGNMENT_POINTS,
-  //         HUB_POSITION
-  //         );
-  // }
-
 }

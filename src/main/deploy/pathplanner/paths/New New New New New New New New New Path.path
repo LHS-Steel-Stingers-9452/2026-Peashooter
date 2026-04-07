@@ -3,35 +3,91 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.462,
-        "y": 2.0
+        "x": 4.3759033989266545,
+        "y": 7.239516994633274
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.461999999999998,
-        "y": 2.0
+        "x": 5.868640429338104,
+        "y": 7.077262969588551
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.581681574239715,
-        "y": 2.0
+        "x": 8.497155635056906,
+        "y": 6.136189624332292
       },
       "prevControl": {
-        "x": 13.581681574239715,
-        "y": 2.0
+        "x": 8.247108964761253,
+        "y": 7.395045274786275
+      },
+      "nextControl": {
+        "x": 8.967692307686601,
+        "y": 3.7672808586793414
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.998443649373882,
+        "y": 4.659677996422182
+      },
+      "prevControl": {
+        "x": 6.071160114523205,
+        "y": 4.024620867465376
+      },
+      "nextControl": {
+        "x": 5.755062611801091,
+        "y": 6.785205724511183
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.3759033989266545,
+        "y": 7.239516994633274
+      },
+      "prevControl": {
+        "x": 6.0308944543828265,
+        "y": 7.077262969588551
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.2647058823529411,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 0.6016042780748664,
+      "rotationDegrees": -152.33660982511503
+    },
+    {
+      "waypointRelativePos": 1.3636363636363644,
+      "rotationDegrees": 157.0843668759808
+    },
+    {
+      "waypointRelativePos": 2.1256684491978635,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

@@ -26,7 +26,7 @@ public class AutoPass extends Command {
   private final CommandSwerveDrivetrain drivetrain;
   private final Shooter shooter;
   private final Physics physics;
-  private final Hood hood;
+  // private final Hood hood;
   private final SwerveRequest.FieldCentric drive;
   private final CommandPS5Controller joystick;
   private final Translation2d redTarget;
@@ -36,7 +36,7 @@ public class AutoPass extends Command {
       CommandSwerveDrivetrain drivetrain,
       Shooter shooter,
       Physics physics,
-      Hood hood,
+      // Hood hood,
       SwerveRequest.FieldCentric drive,
       CommandPS5Controller joystick,
       Translation2d redTarget,
@@ -44,7 +44,7 @@ public class AutoPass extends Command {
     this.drivetrain = drivetrain;
     this.shooter = shooter;
     this.physics = physics;
-    this.hood = hood;
+    // this.hood = hood;
     this.redTarget = redTarget;
     this.blueTarget = blueTarget;
     this.joystick = joystick;
@@ -83,11 +83,12 @@ public class AutoPass extends Command {
 
     // 2. Look up horizontal velocity from tuned table at real distance (v = d / tof)
     double shotTime = physics.getShotTime(realDistance);
-    double horizontalVelocity = realDistance / shotTime;
+    // double horizontalVelocity = realDistance / shotTime; PUT PACK IF NOT WORK
+    double shooterSpeed = physics.setVelocity(realDistance); //CHAT
+    Translation2d targetVelocityVector = targetDirection.times(shooterSpeed); //CHAT
 
-    
     // 3. Build the ideal stationary shot velocity vector
-    Translation2d targetVelocityVector = targetDirection.times(horizontalVelocity);
+    // Translation2d targetVelocityVector = targetDirection.times(horizontalVelocity); PUT BACK IF NOT WORK
 
     // 4. Subtract robot velocity to get the required exit vector
     Translation2d shotVector = targetVelocityVector.minus(robotVelocity);
@@ -97,12 +98,12 @@ public class AutoPass extends Command {
     double error = aimAngle.minus(pose.getRotation()).getRadians();
 
     // 6. Set shooter velocity based on real distance
-    double targetVelocity = physics.setPassVelocity(realDistance);
+    double targetVelocity = physics.setVelocity(realDistance);
 
-    double targetHood = physics.getHoodAngle(realDistance);
+    // double targetHood = physics.getHoodAngle(realDistance);
 
     shooter.setVelocityDirect(targetVelocity);
-    hood.setPosition(targetHood);
+    // hood.setPosition(targetHood);
     // 7. Drive with corrected rotational rate
     double kP = 3.0;
     double targetingAngularVelocity = error * kP;
@@ -118,7 +119,7 @@ public class AutoPass extends Command {
   @Override
   public void end(boolean interrupted) {
     shooter.setVelocity(0);
-    hood.setPosition(0);
+    // hood.setPosition(0);
   }
 
   @Override
