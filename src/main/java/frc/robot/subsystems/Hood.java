@@ -33,7 +33,7 @@ public class Hood extends SubsystemBase {
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 21;
   private final double gearRatio = 1;
-  private final double kP = 1; // started at 1
+  private final double kP = 1.5; // started at 1
   private final double kI = 0;
   private final double kD = 0; // helped with reducing noise, somehwat
   private final double kS = 0;
@@ -47,7 +47,9 @@ public class Hood extends SubsystemBase {
   private final double statorCurrentLimit = 60;
   private final boolean enableSupplyLimit = false;
   private final double supplyCurrentLimit = 40;
-  private boolean safetyEnabled = true;
+  // private boolean safetyEnabled = true;
+  // private boolean wasInZone = false;
+  // private boolean initialized = false;
 
   // Motor controller
   private final TalonFX motor;
@@ -145,10 +147,14 @@ public class Hood extends SubsystemBase {
       temperatureSignal
     );
 
-    if (safetyEnabled) {
-        hoodSafety();
+    // if (safetyEnabled) {
+    //     hoodSafety();
+    // }
+    // if (DriverStation.isTeleop()) {
+    //   hoodSafety();
     }
-  }
+
+    
 
   /**
    * Get the current position in Rotations.
@@ -203,17 +209,17 @@ public class Hood extends SubsystemBase {
     return run(() -> motor.setControl(positionRequest.withPosition(position)));
   }
 
-  public Command setPosition(Supplier<Double> positionSupplier) {
-    return run(
-        () -> {
-          var pos = positionSupplier.get();
-          SmartDashboard.putNumber("Hood pos", pos);
-          if (pos < 0 || pos > 8) {
-            return;
-          }
-          motor.setControl(positionRequest.withPosition(pos));
-        });
-  }
+  // public Command setPosition(Supplier<Double> positionSupplier) {
+  //   return run(
+  //       () -> {
+  //         var pos = positionSupplier.get();
+  //         SmartDashboard.putNumber("Hood pos", pos);
+  //         if (pos < 0 || pos > 8) {
+  //           return;
+  //         }
+  //         motor.setControl(positionRequest.withPosition(pos));
+  //       });
+  // }
 
   public void setVelocity(double velocity) {
     motor.setControl(velocityRequest.withVelocity(velocity));
@@ -258,34 +264,34 @@ public class Hood extends SubsystemBase {
     return runOnce(() -> motor.setPosition(0)).ignoringDisable(true);
   }
 
-  public void hoodSafety() {
+//   public void hoodSafety() {
 
-    // Default to RED side
-    Translation2d target1 = new Translation2d(14.462, 2);
-    Translation2d target2 = new Translation2d(14.462, 6);
+//     // Default to RED side
+//     Translation2d target1 = new Translation2d(14.462, 2);
+//     Translation2d target2 = new Translation2d(14.462, 6);
 
-    var alliance = DriverStation.getAlliance();
+//     var alliance = DriverStation.getAlliance();
 
-    // If RED, switch to red-side coordinates
-    if (alliance.isPresent() && alliance.get() == Alliance.Red) {
-        target1 = new Translation2d(1.462, 2);
-        target2 = new Translation2d(1.462, 6);
-    }
+//     // If RED, switch to red-side coordinates
+//     if (alliance.isPresent() && alliance.get() == Alliance.Red) {
+//         target1 = new Translation2d(1.462, 2);
+//         target2 = new Translation2d(1.462, 6);
+//     }
 
-    var currentPose = drivetrain.getState().Pose;
-    var currentTranslation = currentPose.getTranslation();
+//     var currentPose = drivetrain.getState().Pose;
+//     var currentTranslation = currentPose.getTranslation();
 
-    double radius = 2.875;
+//     double radius = 2.875;
 
-    double distance1 = currentTranslation.getDistance(target1);
-    double distance2 = currentTranslation.getDistance(target2);
+//     double distance1 = currentTranslation.getDistance(target1);
+//     double distance2 = currentTranslation.getDistance(target2);
 
-    if (distance1 <= radius || distance2 <= radius) {
-        motor.setControl(positionRequest.withPosition(10));
-    } else {
-        motor.setControl(positionRequest.withPosition(0));
-    }
-}
+//     if (distance1 <= radius || distance2 <= radius) {
+//         motor.setControl(positionRequest.withPosition(10));
+//     } else {
+//         motor.setControl(positionRequest.withPosition(0));
+//     }
+// }
 }
 // public Command hoodSafety(CommandSwerveDrivetrain drivetrain, Hood hood) {
 //     return Commands.run(() -> {

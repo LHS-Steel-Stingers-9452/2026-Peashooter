@@ -88,7 +88,8 @@ public class RobotContainer {
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
-  private final CommandPS5Controller joystick = new CommandPS5Controller(0);
+//   private final CommandPS5Controller joystick = new CommandPS5Controller(0);
+private final CommandXboxController joystick = new CommandXboxController(0);
   private final CommandXboxController joystick2 = new CommandXboxController(1);
 
   // public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -121,17 +122,21 @@ public class RobotContainer {
     NamedCommands.registerCommand("revUP", revUP(shooter));
     NamedCommands.registerCommand("autoIntakeFuel", autoIntakeFuel(intake, intakepivot));
     NamedCommands.registerCommand("stopIntake", stopIntake(intake, intakepivot));
-    // NamedCommands.registerCommand("intakeShuffle", intakeShuffle(intakepivot));
-    NamedCommands.registerCommand("aimAuto",aimAtHubAutoMT2(drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)).withTimeout(1.2));
+    NamedCommands.registerCommand("AutoShoot", new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB).withTimeout(0.2));
+
+    
+    // NamedCommands.registerCommand("intakeShuffle", intakeShuffle(intakplepivot));
+    NamedCommands.registerCommand("aimAuto",aimAtHubAutoMT2(drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)).withTimeout(0.5));
     NamedCommands.registerCommand(
         "print", Commands.runOnce(() -> System.out.println("commandsent")));
     autoChooser = AutoBuilder.buildAutoChooser();
-    // See if you need this if the options for the autos are not popping up.
+    // See if you need this if the options for the autos are not popping up.=
     autoChooser.setDefaultOption("1", Commands.print("1"));
     //  autoChooser.addOption("OutpostToMiddleOfHub", getAutonomousCommand());
     autoChooser.addOption("Dumpmagtest67", dumpMag(shooter, indexer, kicker, intakepivot, intake));
     autoChooser.addOption("autoIntakeFuel", autoIntakeFuel(intake, intakepivot));
     autoChooser.addOption("stopIntake", stopIntake(intake, intakepivot));
+    autoChooser.addOption("DoNothing", new WaitCommand(0.5));
     // autoChooser.addOption("intakeShuffle", intakeShuffle(intakepivot));
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -171,7 +176,7 @@ public class RobotContainer {
     // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
     // Reset the field-centric heading on start.
-    joystick.touchpad().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+    joystick.povLeft().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
     // REMOVED antijam haran
     // joystick.R3().whileTrue(indexer.setVelocity(-40).alongWith(kicker.setVelocity(-50).alongWith(shooter.setVelocity(-35))));
@@ -184,24 +189,24 @@ public class RobotContainer {
     //         aimAtHubMegaTag2(
     //             drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)));
      joystick
-        .L1()
-        .whileTrue( new ShootOnTheDrive(drivetrain,shooter,physics, drive, joystick, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)));
+        .leftBumper()
+        .whileTrue(new ShootOnTheDrive(drivetrain,shooter,physics, drive, joystick, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)));
     
     // Left Trigger = Intake
-    joystick.L2().whileTrue(intake.setVoltage(-5.5));
+    joystick.leftTrigger().whileTrue(intake.setVoltage(-6));
     // Right Trigger = Indexer + Kicker
     joystick
-        .R2()
+        .rightTrigger()
         .whileTrue(
             indexer
                 .setVelocity(80)
                 .alongWith(kicker.setVelocity(50))); // indexer velocity 45, kicker velocity 25
     // ,(intake.setVoltage(10))));
-    // Right Bumper = Aim at Hub
+    // Right Bumpler = Aim at Hub
     // joystick.R1()
     //     .whileTrue(aimAtHubMegaTag2(drivetrain, new Translation2d(11.8, 4.025), new
     // Translation2d(4.75,4.025)));
-    joystick.R1().whileTrue(aimAtHubMegaTag2(drivetrain, RED_HUB, BLUE_HUB));
+    joystick.rightBumper().whileTrue(aimAtHubMegaTag2(drivetrain, RED_HUB, BLUE_HUB));
     // joystick.R1()
     //     .onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
     // .whileTrue(alignToClosestHubPoint());/
@@ -209,27 +214,27 @@ public class RobotContainer {
     // joystick
     //     .triangle() //trench shot
     //     .onTrue(shooter.setVelocity(43));
-    joystick.triangle().onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
+    joystick.y().onTrue(new AutoShoot(drivetrain, shooter, physics, RED_HUB, BLUE_HUB));
 
     joystick
-        .circle() // turn shooter off shot
+        .b() // turn shooter off shot
         .onTrue(shooter.setVelocity(0));
-    joystick.cross().onTrue(intakepivot.setPosition(-26));
-    joystick.square().onTrue(intakepivot.setPosition(0));
+    joystick.a().onTrue(intakepivot.setPosition(-26));
+    joystick.x().onTrue(intakepivot.setPosition(0));
     // joystick
     //     .povDown()
     //     .onTrue(intake.setVoltage(6));
     // Driver DPAD buttons
     joystick.povUp().onTrue(intakeAgitate(intake, intakepivot));
 
-    joystick.options().whileTrue(new AutoPass(drivetrain, shooter, physics, drive, joystick, RED_OUTPOST, BLUE_OUTPOST));
+    joystick.start().whileTrue(new AutoPass(drivetrain, shooter, physics, drive, joystick, RED_OUTPOST, BLUE_OUTPOST));
         
-    joystick.create().whileTrue(new AutoPass(drivetrain, shooter, physics, drive, joystick, RED_DEPOT, BLUE_DEPOT));
+    joystick.povRight().whileTrue(new AutoPass(drivetrain, shooter, physics, drive, joystick, RED_DEPOT, BLUE_DEPOT));
 
 
     // Driver stick buttons
     joystick // slow button
-        .L3()
+        .leftStick()
         .whileTrue(
             drivetrain.applyRequest(
                 () ->
@@ -238,7 +243,7 @@ public class RobotContainer {
                         .withVelocityY((-joystick.getLeftX() * MaxSpeed) * (.45))
                         .withRotationalRate(-joystick.getRightX() * MaxAngularRate)));
     joystick // fast button removed, unneeded
-        .R3()
+        .rightStick()
         .whileTrue(drivetrain.applyRequest(() -> brake));
     // joystick2
     //     .povRight()
@@ -259,6 +264,30 @@ public class RobotContainer {
     joystick2.x().onTrue(shooter.setVelocity(46)); // depot shot
     joystick2.b().onTrue(shooter.setVelocity(44)); // outpost
     joystick2.a().onTrue(shooter.setVelocity(0)); // stops shooter
+
+    joystick2.povUp().onTrue(hood.setPosition(10));
+    joystick2.povDown().onTrue(hood.setPosition(0));
+
+    joystick2
+        .leftTrigger()
+        .whileTrue(
+            indexer
+                .setVelocity(135)
+                .alongWith(kicker.setVelocity(75)));
+                
+    joystick2
+        .povLeft()
+        .whileTrue(
+            indexer
+                .setVelocity(80)
+                .alongWith(kicker.setVelocity(50)));
+    joystick2
+        .povRight()
+        .whileTrue(
+            indexer
+                .setVelocity(112.5)
+                .alongWith(kicker.setVelocity(62.5)));
+
     // joystick2 //might need to remove
     //     .leftTrigger()
     //     .whileTrue(drivetrain.applyRequest(() -> brake));
@@ -298,44 +327,44 @@ public class RobotContainer {
     // SmartDashboard.putData("kicker set voltage 12V", kicker.setVoltage(-12));
 
     // Shooter buttons
-    SmartDashboard.putData("shooter velocity 5", shooter.setVelocity(5));
-    SmartDashboard.putData("shooter velocity 20", shooter.setVelocity(20));
-    SmartDashboard.putData("shooter velocity 25", shooter.setVelocity(25));
-    SmartDashboard.putData("shooter velocity 30", shooter.setVelocity(30));
-    SmartDashboard.putData("shooter velocity 31", shooter.setVelocity(31));
-    SmartDashboard.putData("shooter velocity 32", shooter.setVelocity(32));
-    SmartDashboard.putData("shooter velocity 33", shooter.setVelocity(33));
-    SmartDashboard.putData("shooter velocity 34", shooter.setVelocity(34));
-    SmartDashboard.putData("shooter velocity 35", shooter.setVelocity(35));
-    SmartDashboard.putData("shooter velocity 36", shooter.setVelocity(36));
-    SmartDashboard.putData("shooter velocity 37", shooter.setVelocity(37));
-    SmartDashboard.putData("shooter velocity 38", shooter.setVelocity(38));
-    SmartDashboard.putData("shooter velocity 39", shooter.setVelocity(39));
-    SmartDashboard.putData("shooter velocity 40", shooter.setVelocity(40));
-    SmartDashboard.putData("shooter velocity 41", shooter.setVelocity(41));
-    SmartDashboard.putData("shooter velocity 42", shooter.setVelocity(42));
-    SmartDashboard.putData("shooter velocity 43", shooter.setVelocity(43));
-    SmartDashboard.putData("shooter velocity 44", shooter.setVelocity(44));
-    SmartDashboard.putData("shooter velocity 45", shooter.setVelocity(45));
-    SmartDashboard.putData("shooter velocity 46", shooter.setVelocity(46));
-    SmartDashboard.putData("shooter velocity 47", shooter.setVelocity(47));
-    SmartDashboard.putData("shooter velocity 48", shooter.setVelocity(48));
-    SmartDashboard.putData("shooter velocity 49", shooter.setVelocity(49));
-    SmartDashboard.putData("shooter velocity 50", shooter.setVelocity(50));
-    SmartDashboard.putData("shooter velocity 51", shooter.setVelocity(51));
-    SmartDashboard.putData("shooter velocity 52", shooter.setVelocity(52));
-    SmartDashboard.putData("shooter velocity 53", shooter.setVelocity(53));
-    SmartDashboard.putData("shooter velocity 54", shooter.setVelocity(54));
-    SmartDashboard.putData("shooter velocity 55", shooter.setVelocity(55));
-    SmartDashboard.putData("shooter velocity 60", shooter.setVelocity(60));
-    SmartDashboard.putData("shooter velocity 65", shooter.setVelocity(65));
-    SmartDashboard.putData("shooter velocity 70", shooter.setVelocity(70));
-    SmartDashboard.putData("shooter velocity 75", shooter.setVelocity(75));
-    SmartDashboard.putData("shooter velocity 80", shooter.setVelocity(80));
-    SmartDashboard.putData("shooter velocity 85", shooter.setVelocity(85));
-    SmartDashboard.putData("shooter velocity 90", shooter.setVelocity(90));
-    SmartDashboard.putData("shooter velocity 95", shooter.setVelocity(95));
-    SmartDashboard.putData("shooter velocity 100", shooter.setVelocity(100));
+    // SmartDashboard.putData("shooter velocity 5", shooter.setVelocity(5));
+    // SmartDashboard.putData("shooter velocity 20", shooter.setVelocity(20));
+    // SmartDashboard.putData("shooter velocity 25", shooter.setVelocity(25));
+    // SmartDashboard.putData("shooter velocity 30", shooter.setVelocity(30));
+    // SmartDashboard.putData("shooter velocity 31", shooter.setVelocity(31));
+    // SmartDashboard.putData("shooter velocity 32", shooter.setVelocity(32));
+    // SmartDashboard.putData("shooter velocity 33", shooter.setVelocity(33));
+    // SmartDashboard.putData("shooter velocity 34", shooter.setVelocity(34));
+    // SmartDashboard.putData("shooter velocity 35", shooter.setVelocity(35));
+    // SmartDashboard.putData("shooter velocity 36", shooter.setVelocity(36));
+    // SmartDashboard.putData("shooter velocity 37", shooter.setVelocity(37));
+    // SmartDashboard.putData("shooter velocity 38", shooter.setVelocity(38));
+    // SmartDashboard.putData("shooter velocity 39", shooter.setVelocity(39));
+    // SmartDashboard.putData("shooter velocity 40", shooter.setVelocity(40));
+    // SmartDashboard.putData("shooter velocity 41", shooter.setVelocity(41));
+    // SmartDashboard.putData("shooter velocity 42", shooter.setVelocity(42));
+    // SmartDashboard.putData("shooter velocity 43", shooter.setVelocity(43));
+    // SmartDashboard.putData("shooter velocity 44", shooter.setVelocity(44));
+    // SmartDashboard.putData("shooter velocity 45", shooter.setVelocity(45));
+    // SmartDashboard.putData("shooter velocity 46", shooter.setVelocity(46));
+    // SmartDashboard.putData("shooter velocity 47", shooter.setVelocity(47));
+    // SmartDashboard.putData("shooter velocity 48", shooter.setVelocity(48));
+    // SmartDashboard.putData("shooter velocity 49", shooter.setVelocity(49));
+    // SmartDashboard.putData("shooter velocity 50", shooter.setVelocity(50));
+    // SmartDashboard.putData("shooter velocity 51", shooter.setVelocity(51));
+    // SmartDashboard.putData("shooter velocity 52", shooter.setVelocity(52));
+    // SmartDashboard.putData("shooter velocity 53", shooter.setVelocity(53));
+    // SmartDashboard.putData("shooter velocity 54", shooter.setVelocity(54));
+    // SmartDashboard.putData("shooter velocity 55", shooter.setVelocity(55));
+    // SmartDashboard.putData("shooter velocity 60", shooter.setVelocity(60));
+    // SmartDashboard.putData("shooter velocity 65", shooter.setVelocity(65));
+    // SmartDashboard.putData("shooter velocity 70", shooter.setVelocity(70));
+    // SmartDashboard.putData("shooter velocity 75", shooter.setVelocity(75));
+    // SmartDashboard.putData("shooter velocity 80", shooter.setVelocity(80));
+    // SmartDashboard.putData("shooter velocity 85", shooter.setVelocity(85));
+    // SmartDashboard.putData("shooter velocity 90", shooter.setVelocity(90));
+    // SmartDashboard.putData("shooter velocity 95", shooter.setVelocity(95));
+    // SmartDashboard.putData("shooter velocity 100", shooter.setVelocity(100));
 
 
 
@@ -353,7 +382,7 @@ public class RobotContainer {
     // SmartDashboard.putData("shooter set voltage 4.5V", shooter.setVoltage(4.5));
     // SmartDashboard.putData("shooter set voltage 6V", shooter.setVoltage(6));
     // SmartDashboard.putData("shooter set voltage 9V", shooter.setVoltage(9));
-    SmartDashboard.putData("shooter set voltage 12V", shooter.setVoltage(12));
+    // SmartDashboard.putData("shooter set voltage 12V", shooter.setVoltage(12));
 
     /*
     SmartDashboard.putData("set velocity 25 rps shooter", shooter.setVelocity(25));
@@ -364,8 +393,8 @@ public class RobotContainer {
 
     // Intake Buttons
     SmartDashboard.putData("intake pivot reset encoder", intakepivot.resetEncoder());
-    SmartDashboard.putData("intake pivot position 0", intakepivot.setPosition(0));
-    SmartDashboard.putData("intake pivot position 8", intakepivot.setPosition(8));
+    // SmartDashboard.putData("intake pivot position 0", intakepivot.setPosition(0));
+    // SmartDashboard.putData("intake pivot position 8", intakepivot.setPosition(8));
     // SmartDashboard.putData("intake set voltage 0V", intake.setVoltage(0));
     // SmartDashboard.putData("intake set voltage 3V", intake.setVoltage(3));
     // SmartDashboard.putData("intake set voltage 6V", intake.setVoltage(6));
@@ -385,7 +414,7 @@ public class RobotContainer {
     // SmartDashboard.putData("spindexer set voltage 9V", indexer.setVoltage(9));
     // SmartDashboard.putData("spindexer set voltage 12V", indexer.setVoltage(12));
     // Hood buttons
-    SmartDashboard.putData("hood reset encoder", hood.resetEncoder());
+    // SmartDashboard.putData("hood reset encoder", hood.resetEncoder());
     // SmartDashboard.putData("hood position 0", hood.setPosition(0));
     // SmartDashboard.putData("hood position 1", hood.setPosition(1));
     // SmartDashboard.putData("hood position 1.74, far trench shot", hood.setPosition(1.746));
@@ -409,20 +438,19 @@ public class RobotContainer {
  // Named Commands, Necessary for autos!   NOT THE COMMANDS THEMSELVES, basically translating
  // them to be used on pathplanner
  
-  public Command dumpMag(
-      Shooter shooter, Indexer indexer, Kicker kicker, IntakePivot intakepivot, Intake intake) {
+  public Command dumpMag(Shooter shooter, Indexer indexer, Kicker kicker, IntakePivot intakepivot, Intake intake) {
     // return shooter.setVelocity(44)
     //     .alongWith(new
     // WaitCommand(1).andThen(indexer.setVelocity(45).alongWith(kicker.setVelocity(25))));
     return shooter
-        .setVelocity(42)
+        .setVelocity(40)
         .alongWith(
             new WaitCommand(0) // reduced to 0.5 for reasons
-                .andThen(kicker.setVelocity(25).alongWith(indexer.setVelocity(45))),
-            new WaitCommand(6.0))
-                .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltageRun(0)))
-
-        .withTimeout(5.5)
+                .andThen(kicker.setVelocity(50).alongWith(indexer.setVelocity(80))),
+            new WaitCommand(3))
+                .andThen(intakepivot.setPosition(0).alongWith(intake.setVoltage(0)))
+                
+        .withTimeout(5)
         .andThen(
             indexer
                 .setVoltageRun(0)
@@ -445,7 +473,7 @@ public class RobotContainer {
 //   }
 
   public Command autoIntakeFuel(Intake intake, IntakePivot intakepivot) {
-    return intake.setVoltage(-7).alongWith(intakepivot.setPosition(-26)).withTimeout(4.5);
+    return intake.setVoltage(-7.75).alongWith(intakepivot.setPosition(-26)).withTimeout(4.5);
   }
   public Command revUP(Shooter shooter) {
     return shooter.setVelocity(42).withTimeout(0.1);

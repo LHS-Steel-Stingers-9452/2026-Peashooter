@@ -1,0 +1,130 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.0189445438282645,
+        "y": 7.417996422182468
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.864364937388194,
+        "y": 7.4828980322003575
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.474955277280859,
+        "y": 5.470948121645796
+      },
+      "prevControl": {
+        "x": 7.4100536672629715,
+        "y": 7.336869409660106
+      },
+      "nextControl": {
+        "x": 7.523145230841146,
+        "y": 4.085486956787525
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.079570661896244,
+        "y": 5.097763864042934
+      },
+      "prevControl": {
+        "x": 6.112021466905188,
+        "y": 3.8159570661896245
+      },
+      "nextControl": {
+        "x": 6.017562947414412,
+        "y": 7.547068586075346
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.0189445438282645,
+        "y": 7.417996422182468
+      },
+      "prevControl": {
+        "x": 6.5014311270125225,
+        "y": 7.466672629695886
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "spiritbomb"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.11229946524064235,
+      "rotationDegrees": -89.57253982227665
+    },
+    {
+      "waypointRelativePos": 0.4572192513368984,
+      "rotationDegrees": -157.71242245633908
+    },
+    {
+      "waypointRelativePos": 0.8743315508021394,
+      "rotationDegrees": -178.21040935282647
+    },
+    {
+      "waypointRelativePos": 1.6203208556149737,
+      "rotationDegrees": 33.360392807799116
+    },
+    {
+      "waypointRelativePos": 2.767379679144388,
+      "rotationDegrees": -88.47788464061558
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "autoIntakeFuel",
+      "waypointRelativePos": 0.11186440677966097,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
+    },
+    {
+      "name": "revUP",
+      "waypointRelativePos": 2.15593220338983,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "revUP"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -80.58300672200544
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": false
+}

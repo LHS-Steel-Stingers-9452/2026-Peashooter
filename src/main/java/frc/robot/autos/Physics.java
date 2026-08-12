@@ -90,12 +90,12 @@ public class Physics {
     double finalVelocity = baseVelocity + offset;
 
     // Dashboard debugging
-    SmartDashboard.putNumber("Shoot Distance", distance);
-    SmartDashboard.putNumber("Base Velocity", baseVelocity);
-    SmartDashboard.putNumber("Final Velocity", finalVelocity);
-    SmartDashboard.getNumber("Shoot Distance", distance);
-    SmartDashboard.getNumber("Base Velocity", baseVelocity);
-    SmartDashboard.getNumber("Final Velocity", finalVelocity);
+    // SmartDashboard.putNumber("Shoot Distance", distance);
+    // SmartDashboard.putNumber("Base Velocity", baseVelocity);
+    // SmartDashboard.putNumber("Final Velocity", finalVelocity);
+    // SmartDashboard.getNumber("Shoot Distance", distance);
+    // SmartDashboard.getNumber("Base Velocity", baseVelocity);
+    // SmartDashboard.getNumber("Final Velocity", finalVelocity);
 
     return finalVelocity;
   }
@@ -113,8 +113,8 @@ public class Physics {
     double finalPassVelocity = baseVelocity + offset;
 
     // Dashboard debugging
-    SmartDashboard.putNumber("ShootPassDistance", distance);
-    SmartDashboard.getNumber("ShootPassDistance", distance);
+    // SmartDashboard.putNumber("ShootPassDistance", distance);
+    // SmartDashboard.getNumber("ShootPassDistance", distance);
 
     return finalPassVelocity;
   }

@@ -1,0 +1,75 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 12.602182468694098,
+        "y": 7.417996422182468
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 13.591932021466905,
+        "y": 7.320644007155635
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 15.81481216457961,
+        "y": 7.417996422182468
+      },
+      "prevControl": {
+        "x": 14.662808586762075,
+        "y": 7.369320214669052
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "lulu"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.19654088050314472,
+      "rotationDegrees": 91.92794468276342
+    },
+    {
+      "waypointRelativePos": 0.389937106918239,
+      "rotationDegrees": 100.76009101382499
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "autoIntakeFuel",
+      "waypointRelativePos": 0.1864406779661017,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.5,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": false
+}

@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     m_timeAndJoystickReplay.update();
     CommandScheduler.getInstance().run();
-    SmartDashboard.putString("alliance", DriverStation.getAlliance().toString());
+    // SmartDashboard.putString("alliance", DriverStation.getAlliance().toString());
   }
 
   @Override

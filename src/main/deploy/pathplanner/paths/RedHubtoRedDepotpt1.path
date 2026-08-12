@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 12.962719298245615,
+        "y": 4.044616228070175
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 15.193684210525136,
+        "y": 4.083081140355417
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 15.54948464912163,
+        "y": 2.092521929829102
+      },
+      "prevControl": {
+        "x": 14.13589912280584,
+        "y": 2.1117543859694523
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "evan"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "autoIntakeFuel",
+      "waypointRelativePos": 0.22441651705565543,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -93.01278750403587
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 89.20427644726072
+  },
+  "useDefaultConstraints": false
+}

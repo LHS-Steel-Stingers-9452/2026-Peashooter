@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Shooter;
@@ -28,7 +29,7 @@ public class AutoPass extends Command {
   private final Physics physics;
   // private final Hood hood;
   private final SwerveRequest.FieldCentric drive;
-  private final CommandPS5Controller joystick;
+  private final CommandXboxController joystick;
   private final Translation2d redTarget;
   private final Translation2d blueTarget;
 
@@ -38,7 +39,7 @@ public class AutoPass extends Command {
       Physics physics,
       // Hood hood,
       SwerveRequest.FieldCentric drive,
-      CommandPS5Controller joystick,
+      CommandXboxController joystick,
       Translation2d redTarget,
       Translation2d blueTarget) {
     this.drivetrain = drivetrain;

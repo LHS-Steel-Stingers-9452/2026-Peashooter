@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.923201754385965,
+        "y": 5.929396929824561
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.923201754385965,
+        "y": 5.929396929824561
+      },
+      "isLocked": false,
+      "linkedName": "supernerddepotblueend"
+    },
+    {
+      "anchor": {
+        "x": 1.7117324561403509,
+        "y": 4.073464912280701
+      },
+      "prevControl": {
+        "x": 2.8272149122807018,
+        "y": 4.111929824561403
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "revUP",
+      "waypointRelativePos": 0.35906642728904836,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "revUP"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -0.590657214646728
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 89.07595464722732
+  },
+  "useDefaultConstraints": true
+}

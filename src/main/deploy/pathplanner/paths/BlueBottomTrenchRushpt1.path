@@ -1,0 +1,114 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.98649373881932,
+        "y": 0.6195527728085859
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.880590339892667,
+        "y": 0.5222003577817531
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.423771929824561,
+        "y": 3.909989035087719
+      },
+      "prevControl": {
+        "x": 7.444789587452531,
+        "y": 2.587460141857326
+      },
+      "nextControl": {
+        "x": 7.381437292774885,
+        "y": 6.57388154269554
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.98649373881932,
+        "y": 7.35309481216458
+      },
+      "prevControl": {
+        "x": 8.172647584973166,
+        "y": 7.758729874776387
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "supersaiyan"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.09625668449197862,
+      "rotationDegrees": -89.63889813017914
+    },
+    {
+      "waypointRelativePos": 0.3208556149732621,
+      "rotationDegrees": -47.40105829418928
+    },
+    {
+      "waypointRelativePos": 0.4591194968553459,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.2547169811320764,
+      "rotationDegrees": 0.8294064438103347
+    },
+    {
+      "waypointRelativePos": 1.8609625668449203,
+      "rotationDegrees": -90.28213736616982
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "autoIntakeFuel",
+      "waypointRelativePos": 0.12203389830508386,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
+    },
+    {
+      "name": "revUP",
+      "waypointRelativePos": 1.5389830508474542,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "revUP"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -79.4300087791729
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "useDefaultConstraints": false
+}

@@ -18,6 +18,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 // import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.epilogue.Logged;
@@ -41,7 +42,7 @@ public class IntakePivot extends SubsystemBase {
   private final DCMotor dcMotor = DCMotor.getKrakenX60(1);
   private final int canID = 15;
   private final double gearRatio = 1;
-  private final double kP = 0.3; // started at 1
+  private final double kP = 0.3; // started at 1 NOW 0.3
   private final double kI = 0;
   private final double kD = 0; // helped with reducing noise, somehwat
   private final double kS = 0;
@@ -77,6 +78,7 @@ public class IntakePivot extends SubsystemBase {
     // Create control requests
     positionRequest = new PositionVoltage(0).withSlot(0);
     velocityRequest = new VelocityVoltage(0).withSlot(0);
+
 
     // get status signals
     positionSignal = motor.getPosition();

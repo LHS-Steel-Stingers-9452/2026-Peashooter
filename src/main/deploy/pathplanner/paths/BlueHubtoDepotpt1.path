@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.6253618421052627,
+        "y": 4.044616228070175
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.2405372807017545,
+        "y": 4.044616228070175
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.923201754385965,
+        "y": 5.929396929824561
+      },
+      "prevControl": {
+        "x": 2.875296052631579,
+        "y": 5.91016447368421
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "supernerddepotblueend"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "autoIntakeFuel",
+      "waypointRelativePos": 0.2190305206463192,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoIntakeFuel"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 89.07595464722732
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -89.9772097704933
+  },
+  "useDefaultConstraints": false
+}

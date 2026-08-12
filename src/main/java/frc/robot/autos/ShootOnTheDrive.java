@@ -30,7 +30,7 @@
 //   private final Shooter shooter;
 //   private final Physics physics;
 //   private final SwerveRequest.FieldCentric drive;
-//   private final CommandPS5Controller joystick;
+//   private final Command joystick;
 
 //   private final Translation2d redTarget;
 //   private final Translation2d blueTarget;
@@ -135,6 +135,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Shooter;
@@ -146,7 +147,7 @@ public class ShootOnTheDrive extends Command {
   private final Shooter shooter;
   private final Physics physics;
   private final SwerveRequest.FieldCentric drive;
-  private final CommandPS5Controller joystick;
+  private final CommandXboxController joystick;
   private final Translation2d redTarget;
   private final Translation2d blueTarget;
 
@@ -155,7 +156,7 @@ public class ShootOnTheDrive extends Command {
       Shooter shooter,
       Physics physics,
       SwerveRequest.FieldCentric drive,
-      CommandPS5Controller joystick,
+      CommandXboxController joystick,
       Translation2d redTarget,
       Translation2d blueTarget) {
     this.drivetrain = drivetrain;
@@ -189,7 +190,7 @@ public class ShootOnTheDrive extends Command {
         fieldSpeeds.vyMetersPerSecond);
 
     // 0. latency compensation
-    double latency = 0.2; // tune this, likely 0.1-0.2s
+    double latency = 0.4; // tune this, likely 0.1-0.2s
     Translation2d futurePos = pose.getTranslation().plus(robotVelocity.times(latency));
 
     // 1. Compute vector from robot to real target
@@ -222,10 +223,11 @@ public class ShootOnTheDrive extends Command {
     var MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     drivetrain.setControl(
         drive
-            .withVelocityX(-joystick.getLeftY() * MaxSpeed)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed)
+            .withVelocityX((-joystick.getLeftY() * MaxSpeed) *(.25))
+            .withVelocityY((-joystick.getLeftX() * MaxSpeed) *(.25))
             .withRotationalRate(targetingAngularVelocity));
     
+        
   }
 
   @Override
