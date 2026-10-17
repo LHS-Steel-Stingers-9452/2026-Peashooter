@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.0196271929824565,
-        "y": 0.6789364035087715
+        "x": 7.744352272727273,
+        "y": 3.9113181818181815
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.0196271929824565,
-        "y": 0.6789364035087715
+        "x": 7.6825113636363636,
+        "y": 6.12728409090909
       },
       "isLocked": false,
-      "linkedName": "BlueBottomTrench"
+      "linkedName": "Newx7"
     },
     {
       "anchor": {
-        "x": 4.490822368421052,
-        "y": 0.9001096491228067
+        "x": 3.89990909090909,
+        "y": 7.518704545454545
       },
       "prevControl": {
-        "x": 3.4908223684210524,
-        "y": 0.9001096491228068
+        "x": 7.785579545454541,
+        "y": 7.951590909090909
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "aimAuto",
+      "waypointRelativePos": 0.9928186714542193,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "dumpMag"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -81.15818543980829
   },
   "reversed": false,
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 83.79655209830814
+    "rotation": -174.93638314696994
   },
   "useDefaultConstraints": true
 }
