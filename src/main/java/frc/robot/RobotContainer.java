@@ -127,6 +127,7 @@ private final CommandXboxController joystick = new CommandXboxController(0);
     
     // NamedCommands.registerCommand("intakeShuffle", intakeShuffle(intakplepivot));
     NamedCommands.registerCommand("aimAuto",aimAtHubAutoMT2(drivetrain, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)).withTimeout(0.5));
+    NamedCommands.registerCommand("pivotIntakeTest",pivotIntakeTest(intake, intakepivot));
     NamedCommands.registerCommand(
         "print", Commands.runOnce(() -> System.out.println("commandsent")));
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -135,6 +136,7 @@ private final CommandXboxController joystick = new CommandXboxController(0);
     //  autoChooser.addOption("OutpostToMiddleOfHub", getAutonomousCommand());
     autoChooser.addOption("Dumpmagtest67", dumpMag(shooter, indexer, kicker, intakepivot, intake));
     autoChooser.addOption("autoIntakeFuel", autoIntakeFuel(intake, intakepivot));
+    autoChooser.addOption("pivotIntakeTest", pivotIntakeTest(intake, intakepivot));
     autoChooser.addOption("stopIntake", stopIntake(intake, intakepivot));
     autoChooser.addOption("DoNothing", new WaitCommand(0.5));
     // autoChooser.addOption("intakeShuffle", intakeShuffle(intakepivot));
@@ -193,7 +195,7 @@ private final CommandXboxController joystick = new CommandXboxController(0);
         .whileTrue(new ShootOnTheDrive(drivetrain,shooter,physics, drive, joystick, new Translation2d(11.8, 4.025), new Translation2d(4.7, 4.025)));
     
     // Left Trigger = Intake
-    joystick.leftTrigger().whileTrue(intake.setVoltage(-6));
+    joystick.leftTrigger().whileTrue(intake.setVoltage(-9));
     // Right Trigger = Indexer + Kicker
     joystick
         .rightTrigger()
@@ -263,7 +265,7 @@ private final CommandXboxController joystick = new CommandXboxController(0);
     joystick2.y().onTrue(shooter.setVelocity(40)); // tower shot
     joystick2.x().onTrue(shooter.setVelocity(46)); // depot shot
     joystick2.b().onTrue(shooter.setVelocity(44)); // outpost
-    joystick2.a().onTrue(shooter.setVelocity(0)); // stops shooter
+    joystick2.a().onTrue(shooter.       setVelocity(0)); // stops shooter
 
     joystick2.povUp().onTrue(hood.setPosition(10));
     joystick2.povDown().onTrue(hood.setPosition(0));
@@ -470,7 +472,17 @@ private final CommandXboxController joystick = new CommandXboxController(0);
 //             () -> joystick.setRumble(RumbleType.kBothRumble, 1.0),
 //             () -> joystick.setRumble(RumbleType.kBothRumble, 0))
 //         .withTimeout(.8);
-//   }
+
+
+//   
+
+  public Command pivotIntakeTest(Intake intake, IntakePivot intakepivot) {
+    return intakepivot.setPosition(-26)
+        .alongWith(new WaitCommand(1))
+    .andThen(intakepivot.setPosition(0))
+        .alongWith(new WaitCommand(1))
+    .andThen(intakepivot.setPosition(26));
+  }
 
   public Command autoIntakeFuel(Intake intake, IntakePivot intakepivot) {
     return intake.setVoltage(-7.75).alongWith(intakepivot.setPosition(-26)).withTimeout(4.5);
